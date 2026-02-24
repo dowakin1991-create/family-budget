@@ -3,155 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Бюджет НАСТЯ💞 і АНТОН💪</title>
+    <title>Бюджет НАСТЯ💞 & АНТОН💪</title>
     <style>
-        /* CSS для плавних 120Hz анімацій та тем */
         :root {
-            --bg-color: #f4f6f9;
-            --card-bg: #ffffff;
-            --text-main: #1d1d1f;
-            --text-secondary: #86868b;
-            --accent: #007aff;
-            --expense: #ff3b30;
-            --income: #34c759;
+            --bg-color: #f4f6f9; --card-bg: #ffffff; --text-main: #1d1d1f;
+            --text-secondary: #86868b; --accent: #007aff; --expense: #ff3b30; --income: #34c759;
         }
         [data-theme="dark"] {
-            --bg-color: #000000; /* Глибокий OLED чорний */
-            --card-bg: #1c1c1e;
-            --text-main: #f5f5f7;
-            --text-secondary: #86868b;
+            --bg-color: #000000; --card-bg: #1c1c1e; --text-main: #f5f5f7; --text-secondary: #8a8a8e;
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            transition: background-color 0.4s ease, color 0.4s ease;
-            -webkit-tap-highlight-color: transparent; /* Прибирає синє підсвічування при тапі на iOS */
-        }
-        .app-container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            animation: fadeInDown 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .names { font-size: 1.2rem; font-weight: 700; }
-        .theme-toggle {
-            background: var(--card-bg); border: none; color: var(--text-main);
-            padding: 12px; border-radius: 50%; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: transform 0.2s ease;
-            font-size: 1.2rem;
-        }
-        .theme-toggle:active { transform: scale(0.9); }
-        .balance-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            margin-bottom: 25px;
-            animation: zoomIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .balance-title { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 8px; font-weight: 500;}
-        .balance-amount { font-size: 2.8rem; font-weight: 800; margin: 0; }
-        .actions {
-            display: flex; gap: 12px; margin-bottom: 15px;
-            animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
-        }
-        .btn {
-            flex: 1; padding: 16px; border-radius: 18px; border: none;
-            font-size: 1rem; font-weight: bold; color: white;
-            cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px;
-            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.2s ease;
-        }
-        .btn:active { transform: scale(0.95); opacity: 0.9; }
-        .btn-expense { background-color: var(--expense); }
-        .btn-income { background-color: var(--income); }
-        .btn-scan { background-color: var(--accent); width: 100%; margin-bottom: 30px; animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;}
+        body { font-family: -apple-system, sans-serif; background: var(--bg-color); color: var(--text-main); margin: 0; transition: 0.4s; }
+        .app-container { max-width: 480px; margin: 0 auto; padding: 20px; }
         
-        .transactions-title { font-size: 1.2rem; margin-bottom: 15px; font-weight: 700;}
-        .transaction-item {
-            background: var(--card-bg); padding: 16px; border-radius: 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-            animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
-        }
-        .t-left { display: flex; align-items: center; gap: 15px; }
-        .t-icon { font-size: 1.8rem; background: var(--bg-color); padding: 10px; border-radius: 16px; }
-        .t-name { font-weight: 600; margin: 0 0 4px 0; font-size: 1.05rem;}
-        .t-date { font-size: 0.8rem; color: var(--text-secondary); margin: 0; }
-        .t-amount.minus { color: var(--expense); font-weight: bold; font-size: 1.1rem;}
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .logo-wrap { text-align: center; margin-bottom: 25px; animation: zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .app-logo { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--card-bg); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
 
-        /* Ключові кадри для анімацій входу */
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes zoomIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+        .balance-card {
+            background: var(--card-bg); border-radius: 28px; padding: 30px;
+            text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.05); margin-bottom: 20px;
+        }
+        .balance-amount { font-size: 2.8rem; font-weight: 800; margin: 5px 0; }
+
+        /* Стилі для звіту */
+        .report-section { background: var(--card-bg); border-radius: 28px; padding: 20px; margin-top: 25px; }
+        .chart { display: flex; align-items: flex-end; justify-content: space-between; height: 100px; margin-top: 20px; padding: 0 10px; }
+        .bar { width: 30px; background: var(--accent); border-radius: 8px 8px 4px 4px; position: relative; transition: height 1s ease; }
+        .bar span { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--text-secondary); }
+        .day-label { font-size: 10px; color: var(--text-secondary); text-align: center; margin-top: 8px; }
+
+        .actions { display: flex; gap: 12px; }
+        .btn { flex: 1; padding: 18px; border-radius: 20px; border: none; font-weight: 700; color: white; cursor: pointer; }
+        .btn-expense { background: var(--expense); }
+        .btn-income { background: var(--income); }
+
+        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
     <div class="app-container">
         <header>
-            <div class="names">НАСТЯ💞 & АНТОН💪</div>
-            <button class="theme-toggle" onclick="toggleTheme()">🌗</button>
+            <div style="font-weight: 700;">НАСТЯ💞 & АНТОН💪</div>
+            <button onclick="toggleTheme()" style="background:none; border:none; font-size:1.5rem;">🌗</button>
         </header>
 
+        <div class="logo-wrap">
+            <img src="IMG_9283.png" alt="Logo" class="app-logo" onerror="this.src='https://via.placeholder.com/120?text=Logo'">
+        </div>
+
         <div class="balance-card">
-            <div class="balance-title">Спільний залишок</div>
-            <h1 class="balance-amount">24 500 ₴</h1>
+            <div style="color: var(--text-secondary); font-size: 0.9rem;">Поточний баланс</div>
+            <div class="balance-amount">24 500 ₴</div>
+            <div style="color: var(--income); font-weight: 600;">+ 5 200 ₴ (цей тиждень)</div>
         </div>
 
         <div class="actions">
             <button class="btn btn-expense">➖ Витрата</button>
             <button class="btn btn-income">➕ Дохід</button>
         </div>
-        <button class="btn btn-scan">📷 Сканувати чек</button>
 
-        <h3 class="transactions-title">Останні операції</h3>
-        <div class="transaction-list">
-            <div class="transaction-item">
-                <div class="t-left">
-                    <div class="t-icon">🍎</div>
-                    <div>
-                        <p class="t-name">Сільпо</p>
-                        <p class="t-date">Сьогодні, 12:45 • НАСТЯ💞</p>
-                    </div>
-                </div>
-                <div class="t-amount minus">- 850 ₴</div>
-            </div>
-            <div class="transaction-item" style="animation-delay: 0.25s;">
-                <div class="t-left">
-                    <div class="t-icon">🍿</div>
-                    <div>
-                        <p class="t-name">Кінотеатр</p>
-                        <p class="t-date">Вчора, 19:20 • АНТОН💪</p>
-                    </div>
-                </div>
-                <div class="t-amount minus">- 600 ₴</div>
+        <div class="report-section">
+            <div style="font-weight: 700; margin-bottom: 5px;">Щотижневий звіт</div>
+            <div style="color: var(--text-secondary); font-size: 0.8rem;">Витрати за останні 7 днів</div>
+            <div class="chart">
+                <div class="bar" style="height: 40%; background: var(--expense);"><span>400</span><div class="day-label" style="margin-top: 105px;">Пн</div></div>
+                <div class="bar" style="height: 70%; background: var(--expense);"><span>750</span><div class="day-label" style="margin-top: 105px;">Вт</div></div>
+                <div class="bar" style="height: 30%; background: var(--expense);"><span>300</span><div class="day-label" style="margin-top: 105px;">Ср</div></div>
+                <div class="bar" style="height: 90%; background: var(--expense);"><span>1.2k</span><div class="day-label" style="margin-top: 105px;">Чт</div></div>
+                <div class="bar" style="height: 50%; background: var(--expense);"><span>550</span><div class="day-label" style="margin-top: 105px;">Пт</div></div>
+                <div class="bar" style="height: 85%; background: var(--expense);"><span>900</span><div class="day-label" style="margin-top: 105px;">Сб</div></div>
+                <div class="bar" style="height: 20%; background: var(--income);"><span>150</span><div class="day-label" style="margin-top: 105px;">Нд</div></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Проста логіка перемикання тем
         function toggleTheme() {
-            const html = document.documentElement;
-            if (html.getAttribute('data-theme') === 'dark') {
-                html.removeAttribute('data-theme');
-            } else {
-                html.setAttribute('data-theme', 'dark');
-            }
+            const h = document.documentElement;
+            h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
         }
     </script>
 </body>
 </html>
-
