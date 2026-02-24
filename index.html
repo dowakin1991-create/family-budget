@@ -1,254 +1,303 @@
 <!DOCTYPE html>
-<html lang="uk" data-theme="dark">
+<html lang="uk" data-theme="dark-blue">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Бюджет НАСТЯ💞 & АНТОН💪</title>
+    <title>Budget Together</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
+        /* БАЗОВІ ЗМІННІ ТА ТЕМИ */
         :root {
-            --bg-color: #f4f6f9; --card-bg: #ffffff; --text-main: #1d1d1f;
-            --text-secondary: #86868b; --accent: #007aff; --expense: #ff3b30; --income: #34c759;
+            /* Світлі теми */
+            --bg-pink: #ffe6f2; --card-pink: #ffffff; --text-pink: #33001b;
+            --bg-blue: #e6f2ff; --card-blue: #ffffff; --text-blue: #001b33;
+            --bg-green: #e6ffe6; --card-green: #ffffff; --text-green: #003300;
+            --bg-yellow: #ffffe6; --card-yellow: #ffffff; --text-yellow: #333300;
+            
+            /* Темні градієнти */
+            --bg-dark-blue: linear-gradient(135deg, #000000, #001f3f);
+            --bg-dark-red: linear-gradient(135deg, #000000, #3f0000);
+            --bg-dark-green: linear-gradient(135deg, #000000, #002b0c);
+            --bg-dark-orange: linear-gradient(135deg, #000000, #3f1a00);
+            --card-dark: rgba(255, 255, 255, 0.1);
+            --text-dark: #f5f5f7;
+
+            --accent: #007aff;
+            --font-main: 'Inter', sans-serif;
         }
-        [data-theme="dark"] {
-            --bg-color: #000000; --card-bg: #1c1c1e; --text-main: #f5f5f7; --text-secondary: #8a8a8e;
-        }
-        body { 
-            font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            background: var(--bg-color); color: var(--text-main); margin: 0; transition: background-color 0.4s; 
-            -webkit-tap-highlight-color: transparent; overflow-x: hidden;
-        }
-        .app-container { max-width: 480px; margin: 0 auto; padding: 20px 20px 40px; }
+
+        /* Застосування тем */
+        [data-theme="light-pink"] { --bg-current: var(--bg-pink); --card-current: var(--card-pink); --text-current: var(--text-pink); }
+        [data-theme="light-blue"] { --bg-current: var(--bg-blue); --card-current: var(--card-blue); --text-current: var(--text-blue); }
+        [data-theme="light-green"] { --bg-current: var(--bg-green); --card-current: var(--card-green); --text-current: var(--text-green); }
+        [data-theme="light-yellow"] { --bg-current: var(--bg-yellow); --card-current: var(--card-yellow); --text-current: var(--text-yellow); }
         
-        /* Анімація Логотипу */
-        .logo-wrap { 
-            text-align: center; margin-top: 10px; margin-bottom: 20px; 
-            animation: applePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-        }
-        .app-logo { 
-            width: 110px; height: 110px; border-radius: 50%; object-fit: cover; 
-            border: 3px solid var(--card-bg); box-shadow: 0 12px 35px rgba(0,0,0,0.4); 
-            background: #2c2c2e; 
+        [data-theme="dark-blue"] { --bg-current: var(--bg-dark-blue); --card-current: var(--card-dark); --text-current: var(--text-dark); }
+        [data-theme="dark-red"] { --bg-current: var(--bg-dark-red); --card-current: var(--card-dark); --text-current: var(--text-dark); }
+        [data-theme="dark-green"] { --bg-current: var(--bg-dark-green); --card-current: var(--card-dark); --text-current: var(--text-dark); }
+        [data-theme="dark-orange"] { --bg-current: var(--bg-dark-orange); --card-current: var(--card-dark); --text-current: var(--text-dark); }
+
+        body {
+            font-family: var(--font-main); background: var(--bg-current); color: var(--text-current);
+            margin: 0; padding: 0; height: 100vh; overflow: hidden;
+            transition: background 0.5s ease, color 0.5s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Анімація Шапки */
-        header { 
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; 
-            animation: slideUpFade 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s both;
+        /* АРХІТЕКТУРА ЕКРАНІВ */
+        .screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; padding: 30px 20px; box-sizing: border-box;
+            opacity: 0; pointer-events: none; transform: scale(0.95);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        .names-title { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px; }
-        .theme-btn {
-            background: var(--card-bg); border: none; border-radius: 50%; 
-            width: 45px; height: 45px; font-size: 1.3rem; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.2s;
-        }
-        .theme-btn:active { transform: scale(0.9); }
+        .screen.active { opacity: 1; pointer-events: auto; transform: scale(1); z-index: 10; }
 
-        /* Картка Балансу */
-        .balance-card {
-            background: var(--card-bg); border-radius: 32px; padding: 35px 20px;
-            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.08); margin-bottom: 20px;
-            animation: slideUpFade 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s both;
-        }
-        .balance-amount { font-size: 3.5rem; font-weight: 800; margin: 5px 0; letter-spacing: -1.5px; }
-
-        /* Кнопки Дій */
-        .actions { 
-            display: flex; gap: 15px; margin-bottom: 15px; 
-            animation: slideUpFade 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both;
-        }
-        .btn { 
-            flex: 1; padding: 20px; border-radius: 24px; border: none; font-weight: 800; 
-            color: white; cursor: pointer; transition: transform 0.2s; font-size: 1.05rem; 
-        }
-        .btn:active { transform: scale(0.94); }
-        .btn-expense { background: var(--expense); box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3); }
-        .btn-income { background: var(--income); box-shadow: 0 8px 20px rgba(52, 199, 89, 0.3); }
-
-        /* Кнопка Камери */
-        .camera-wrap { animation: slideUpFade 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s both; }
-        .btn-scan { 
-            width: 100%; background: linear-gradient(135deg, #007aff, #0051af); 
-            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3); margin-bottom: 25px;
-        }
-
-        /* Звіт */
-        .report-section { 
-            background: var(--card-bg); border-radius: 32px; padding: 25px; 
-            animation: slideUpFade 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.7s both;
-        }
-        .chart { display: flex; align-items: flex-end; justify-content: space-between; height: 100px; margin-top: 30px; }
-        .bar { width: 12%; background: var(--expense); border-radius: 8px; position: relative; min-height: 5px; }
-        .bar span { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; font-weight: 700; color: var(--text-secondary); }
-        .day-label { position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 600; color: var(--text-secondary); }
-
-        /* Модальне вікно */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px);
-            display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: 0.3s ease; z-index: 1000;
-        }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content {
-            background: var(--card-bg); width: 100%; border-radius: 35px 35px 0 0; padding: 30px 25px 40px;
-            transform: translateY(100%); transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); box-sizing: border-box;
-        }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
+        /* Елементи Інтерфейсу */
+        h1 { font-weight: 900; font-size: 2.2rem; margin-bottom: 30px; letter-spacing: -1px; }
         
-        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 25px; }
-        .cat-btn { 
-            background: var(--bg-color); padding: 15px 5px; border-radius: 22px; text-align: center; 
-            font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; border: 2px solid transparent;
+        .menu-btn {
+            background: var(--card-current); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+            padding: 20px; margin-bottom: 15px; font-size: 1.2rem; font-weight: 800;
+            color: var(--text-current); cursor: pointer; text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.2s; display: flex; justify-content: space-between;
         }
-        .cat-btn.selected { border-color: var(--accent); background: rgba(0, 122, 255, 0.1); }
-        .cat-btn span { font-size: 1.8rem; display: block; margin-bottom: 5px; }
+        .menu-btn:active { transform: scale(0.95); }
 
-        @keyframes applePop {
-            0% { transform: scale(0.6); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes slideUpFade {
-            0% { transform: translateY(30px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
+        .back-btn { background: none; border: none; color: var(--text-current); font-size: 1.5rem; text-align: left; margin-bottom: 20px; padding: 0; cursor: pointer; }
+
+        /* СПЛЕШ ЕКРАН */
+        #screen-splash { justify-content: center; align-items: center; cursor: pointer; z-index: 100;}
+        .big-logo { width: 180px; height: 180px; border-radius: 50%; box-shadow: 0 15px 40px rgba(0,0,0,0.5); margin-bottom: 40px; animation: float 3s ease-in-out infinite; }
+        .tap-text { font-weight: 600; opacity: 0.7; animation: pulse 2s infinite; }
+
+        /* НАЛАШТУВАННЯ */
+        .setting-group { margin-bottom: 25px; background: var(--card-current); padding: 20px; border-radius: 20px; }
+        .setting-title { font-size: 0.9rem; font-weight: 800; opacity: 0.7; margin-bottom: 15px; text-transform: uppercase; }
+        
+        .theme-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .theme-dot { width: 100%; aspect-ratio: 1; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+        .theme-dot:active { transform: scale(0.8); }
+        .theme-dot.active { border-color: var(--text-current); transform: scale(1.1); }
+
+        .toggle-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 600; }
+        
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        
-        <div class="logo-wrap">
-            <img id="mainLogo" alt="Логотип" class="app-logo" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=">
-        </div>
 
-        <header>
-            <div class="names-title">НАСТЯ💞 & АНТОН💪</div>
-            <button class="theme-btn" onclick="toggleTheme()">🌗</button>
-        </header>
-
-        <div class="balance-card">
-            <div style="color: var(--text-secondary); font-size: 0.95rem; font-weight: 600; margin-bottom: 8px;">Спільний баланс</div>
-            <div class="balance-amount" id="balanceDisplay">0 ₴</div>
-        </div>
-
-        <div class="actions">
-            <button class="btn btn-expense" onclick="openModal('expense')">➖ Витрата</button>
-            <button class="btn btn-income" onclick="openModal('income')">➕ Дохід</button>
-        </div>
-        
-        <div class="camera-wrap">
-            <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" onchange="alert('Фото завантажено! Функція розпізнавання чеків у розробці.')">
-            <button class="btn btn-scan" onclick="document.getElementById('cameraInput').click()">📸 Сканувати чек</button>
-        </div>
-
-        <div class="report-section">
-            <div style="font-weight: 800; font-size: 1.1rem;">Щотижневий звіт</div>
-            <div style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">Аналітика за останні 7 днів</div>
-            <div class="chart">
-                <div class="bar" style="height: 40%;"><span>400</span><div class="day-label">Пн</div></div>
-                <div class="bar" style="height: 65%;"><span>750</span><div class="day-label">Вт</div></div>
-                <div class="bar" style="height: 30%;"><span>300</span><div class="day-label">Ср</div></div>
-                <div class="bar" style="height: 95%;"><span>1.2k</span><div class="day-label">Чт</div></div>
-                <div class="bar" style="height: 55%;"><span>550</span><div class="day-label">Пт</div></div>
-                <div class="bar" style="height: 80%;"><span>900</span><div class="day-label">Сб</div></div>
-                <div class="bar" style="height: 25%; background: var(--income);"><span>150</span><div class="day-label">Нд</div></div>
-            </div>
-        </div>
-
+    <div id="screen-splash" class="screen active" onclick="goToScreen('screen-main')">
+        <img src="IMG_9283.png" alt="Logo" class="big-logo" onerror="this.src='https://via.placeholder.com/180/2c2c2e/ffffff?text=LOGO'">
+        <div class="tap-text" id="lang-tap">Торкніться екрана</div>
     </div>
 
-    <div class="modal-overlay" id="modal">
-        <div class="modal-content">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 id="modalTitle" style="margin:0; font-weight: 800; font-size: 1.4rem;">Нова витрата</h2>
-                <button onclick="closeModal()" style="background:none; border:none; font-size:2rem; color:var(--text-secondary); padding: 0;">✕</button>
+    <div id="screen-main" class="screen">
+        <h1 id="lang-menu">Головне меню</h1>
+        <button class="menu-btn" onclick="startNewBudget()">
+            <span id="lang-new">➕ Новий спільний бюджет</span> <span>➔</span>
+        </button>
+        <button class="menu-btn" onclick="goToScreen('screen-projects')" id="btn-continue" style="display: none;">
+            <span id="lang-cont">📂 Продовжити бюджет</span> <span>➔</span>
+        </button>
+        <button class="menu-btn" onclick="goToScreen('screen-settings')">
+            <span id="lang-set">⚙️ Налаштування</span> <span>➔</span>
+        </button>
+    </div>
+
+    <div id="screen-role" class="screen">
+        <button class="back-btn" onclick="goToScreen('screen-main')">← Назад</button>
+        <h1>Хто ти?</h1>
+        <p style="opacity: 0.7; margin-top: -20px; margin-bottom: 30px;">Цей вибір збережеться на цьому телефоні назавжди.</p>
+        <button class="menu-btn" style="justify-content: center; font-size: 1.5rem;" onclick="setRole('АНТОН💪')">Я АНТОН 💪</button>
+        <button class="menu-btn" style="justify-content: center; font-size: 1.5rem;" onclick="setRole('НАСТЯ💞')">Я НАСТЯ 💞</button>
+    </div>
+
+    <div id="screen-projects" class="screen">
+        <button class="back-btn" onclick="goToScreen('screen-main')">← Назад</button>
+        <h1>Мої проекти</h1>
+        <div id="projects-list">
             </div>
-            
-            <input type="number" id="amountInput" placeholder="0" style="width:100%; border:none; background:none; font-size:4.5rem; font-weight:900; text-align:center; margin:25px 0; color:var(--text-main); outline:none;">
-            
-            <div id="catGrid" class="cat-grid">
-                <div class="cat-btn" onclick="selectCat(this)"><span>🍎</span>Їжа</div>
-                <div class="cat-btn" onclick="selectCat(this)"><span>🍿</span>Кіно</div>
-                <div class="cat-btn" onclick="selectCat(this)"><span>🏠</span>Дім</div>
-                <div class="cat-btn" onclick="selectCat(this)"><span>🚗</span>Авто</div>
+        <button class="menu-btn" style="border: 2px dashed rgba(255,255,255,0.3); background: transparent; justify-content: center;" onclick="createNewProject()">+ Створити ще один</button>
+    </div>
+
+    <div id="screen-settings" class="screen">
+        <button class="back-btn" onclick="goToScreen('screen-main')">← Назад</button>
+        <h1 id="lang-set-title">Налаштування</h1>
+        
+        <div class="setting-group">
+            <div class="setting-title">Загальні</div>
+            <div class="toggle-row">
+                <span id="lang-sound">Звуки інтерфейсу</span>
+                <input type="checkbox" id="soundToggle" checked onchange="toggleSound()" style="transform: scale(1.5);">
             </div>
-            
-            <button onclick="saveTransaction()" style="width:100%; background:var(--accent); color:white; border:none; padding:20px; border-radius:24px; font-weight:800; margin-top:25px; font-size:1.1rem; box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3);">ЗБЕРЕГТИ</button>
+            <div class="toggle-row">
+                <span id="lang-lang">Мова (Укр / Eng)</span>
+                <button onclick="toggleLang()" style="padding: 5px 15px; border-radius: 10px; border:none; font-weight:bold; cursor:pointer;" id="langBtn">УКР</button>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <div class="setting-title">Світлі теми</div>
+            <div class="theme-grid">
+                <div class="theme-dot" style="background: #ffe6f2;" onclick="setTheme('light-pink')"></div>
+                <div class="theme-dot" style="background: #e6f2ff;" onclick="setTheme('light-blue')"></div>
+                <div class="theme-dot" style="background: #e6ffe6;" onclick="setTheme('light-green')"></div>
+                <div class="theme-dot" style="background: #ffffe6;" onclick="setTheme('light-yellow')"></div>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <div class="setting-title">Темні градієнти</div>
+            <div class="theme-grid">
+                <div class="theme-dot active" style="background: linear-gradient(135deg, #000, #001f3f);" onclick="setTheme('dark-blue')"></div>
+                <div class="theme-dot" style="background: linear-gradient(135deg, #000, #3f0000);" onclick="setTheme('dark-red')"></div>
+                <div class="theme-dot" style="background: linear-gradient(135deg, #000, #002b0c);" onclick="setTheme('dark-green')"></div>
+                <div class="theme-dot" style="background: linear-gradient(135deg, #000, #3f1a00);" onclick="setTheme('dark-orange')"></div>
+            </div>
         </div>
     </div>
 
     <script>
-        // РОЗУМНИЙ ЗАВАНТАЖУВАЧ ЛОГОТИПА
-        (function loadLogo() {
-            const logoEl = document.getElementById('mainLogo');
-            const possiblePaths = [
-                'IMG_9283.png', 
-                'IMG_9283.PNG', 
-                'img_9283.png',
-                'https://raw.githubusercontent.com/dowakin1991-create/family-budget/main/IMG_9283.png',
-                'https://raw.githubusercontent.com/dowakin1991-create/family-budget/main/IMG_9283.PNG'
-            ];
-            let attempt = 0;
+        // 1. СТАН ДОДАТКУ
+        let appData = JSON.parse(localStorage.getItem('budgetAppData')) || {
+            userRole: null,
+            projects: [],
+            settings: { sound: true, lang: 'uk', theme: 'dark-blue' }
+        };
 
-            logoEl.onerror = function() {
-                attempt++;
-                if (attempt < possiblePaths.length) {
-                    logoEl.src = possiblePaths[attempt];
-                } else {
-                    // Якщо жоден варіант не спрацював, ставимо красиву заглушку
-                    logoEl.src = 'https://via.placeholder.com/110/2c2c2e/ffffff?text=LOGO';
-                }
-            };
+        // 2. ІНІЦІАЛІЗАЦІЯ
+        function initApp() {
+            setTheme(appData.settings.theme);
+            document.getElementById('soundToggle').checked = appData.settings.sound;
+            updateLangUI();
             
-            // Запускаємо першу спробу
-            logoEl.src = possiblePaths[0];
-        })();
-
-        // Локальне збереження балансу
-        let bal = localStorage.getItem('budget_total') ? parseFloat(localStorage.getItem('budget_total')) : 24500;
-        let currentMode = 'expense';
-
-        function updateUI() {
-            document.getElementById('balanceDisplay').innerText = bal.toLocaleString() + ' ₴';
-            localStorage.setItem('budget_total', bal);
-        }
-
-        function toggleTheme() {
-            const h = document.documentElement;
-            h.setAttribute('data-theme', h.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-        }
-
-        function openModal(mode) {
-            currentMode = mode;
-            document.getElementById('modalTitle').innerText = mode === 'income' ? 'Новий дохід' : 'Нова витрата';
-            document.getElementById('catGrid').style.display = mode === 'income' ? 'none' : 'grid';
-            
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
-            document.getElementById('amountInput').value = '';
-            
-            document.getElementById('modal').classList.add('active');
-            setTimeout(() => document.getElementById('amountInput').focus(), 300);
-        }
-
-        function closeModal() { document.getElementById('modal').classList.remove('active'); }
-
-        function selectCat(element) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
-            element.classList.add('selected');
-        }
-
-        function saveTransaction() {
-            const val = parseFloat(document.getElementById('amountInput').value);
-            if(val > 0) {
-                if(currentMode === 'expense') bal -= val;
-                else bal += val;
-                updateUI();
+            // Якщо є проекти, показуємо кнопку "Продовжити"
+            if(appData.projects.length > 0) {
+                document.getElementById('btn-continue').style.display = 'flex';
+                renderProjects();
             }
-            closeModal();
         }
 
-        document.getElementById('modal').addEventListener('click', function(e) {
-            if(e.target === this) closeModal();
-        });
+        // 3. ЗВУК (Генерація системного кліку)
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+        function playClick() {
+            if(!appData.settings.sound) return;
+            if(!audioCtx) audioCtx = new AudioContext();
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
 
-        updateUI();
+        // 4. МАРШРУТИЗАЦІЯ (Перемикання екранів)
+        function goToScreen(screenId) {
+            playClick();
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        // 5. ЛОГІКА РОЛЕЙ ТА ПРОЕКТІВ
+        function startNewBudget() {
+            if(!appData.userRole) {
+                goToScreen('screen-role'); // Якщо вперше
+            } else {
+                createNewProject(); // Якщо вже знаємо хто це
+            }
+        }
+
+        function setRole(role) {
+            appData.userRole = role;
+            saveData();
+            createNewProject();
+        }
+
+        function createNewProject() {
+            const projName = prompt("Введіть назву проекту (наприклад: 'Ремонт' або 'Квітень'):", "Новий бюджет");
+            if(projName) {
+                appData.projects.push({ id: Date.now(), name: projName, balance: 0 });
+                saveData();
+                renderProjects();
+                document.getElementById('btn-continue').style.display = 'flex';
+                goToScreen('screen-projects');
+            }
+        }
+
+        function renderProjects() {
+            const list = document.getElementById('projects-list');
+            list.innerHTML = '';
+            appData.projects.forEach(p => {
+                const btn = document.createElement('button');
+                btn.className = 'menu-btn';
+                btn.innerHTML = `<span>📁 ${p.name}</span> <span style="opacity:0.5; font-size:0.9rem;">Відкрити</span>`;
+                btn.onclick = () => { playClick(); alert(`Відкриваємо панель для "${p.name}". (Розробимо на наступному кроці!)`); };
+                list.appendChild(btn);
+            });
+        }
+
+        // 6. НАЛАШТУВАННЯ
+        function setTheme(themeName) {
+            playClick();
+            appData.settings.theme = themeName;
+            document.documentElement.setAttribute('data-theme', themeName);
+            
+            // Візуальне виділення активної теми
+            document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+            const activeDot = Array.from(document.querySelectorAll('.theme-dot')).find(d => d.getAttribute('onclick').includes(themeName));
+            if(activeDot) activeDot.classList.add('active');
+            saveData();
+        }
+
+        function toggleSound() {
+            appData.settings.sound = document.getElementById('soundToggle').checked;
+            playClick();
+            saveData();
+        }
+
+        function toggleLang() {
+            playClick();
+            appData.settings.lang = appData.settings.lang === 'uk' ? 'en' : 'uk';
+            updateLangUI();
+            saveData();
+        }
+
+        const dict = {
+            uk: { tap: "Торкніться екрана", menu: "Головне меню", new: "➕ Новий спільний бюджет", cont: "📂 Продовжити бюджет", set: "⚙️ Налаштування", setTitle: "Налаштування", sound: "Звуки інтерфейсу", lang: "Мова (Укр / Eng)" },
+            en: { tap: "Tap to start", menu: "Main Menu", new: "➕ New Shared Budget", cont: "📂 Continue Budget", set: "⚙️ Settings", setTitle: "Settings", sound: "UI Sounds", lang: "Language (Ukr / Eng)" }
+        };
+
+        function updateLangUI() {
+            const l = appData.settings.lang;
+            document.getElementById('langBtn').innerText = l.toUpperCase();
+            document.getElementById('lang-tap').innerText = dict[l].tap;
+            document.getElementById('lang-menu').innerText = dict[l].menu;
+            document.getElementById('lang-new').innerText = dict[l].new;
+            document.getElementById('lang-cont').innerText = dict[l].cont;
+            document.getElementById('lang-set').innerText = dict[l].set;
+            document.getElementById('lang-set-title').innerText = dict[l].setTitle;
+            document.getElementById('lang-sound').innerText = dict[l].sound;
+            document.getElementById('lang-lang').innerText = dict[l].lang;
+        }
+
+        function saveData() { localStorage.setItem('budgetAppData', JSON.stringify(appData)); }
+
+        // Запуск
+        initApp();
     </script>
 </body>
 </html>
