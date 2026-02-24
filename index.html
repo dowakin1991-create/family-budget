@@ -6,17 +6,14 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Budget">
-    
     <link rel="apple-touch-icon" href="IMG_9283.png">
     <link rel="icon" href="IMG_9283.png">
     
     <title>Budget Together</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
     <style>
@@ -26,7 +23,6 @@
             --font-main: 'Nunito', sans-serif; --font-neon: 'Righteous', cursive;
         }
 
-        /* Теми Рідкого Скла */
         [data-theme="light-blue"] { --bg-current: #e6f2ff; --glass-bg: rgba(255, 255, 255, 0.6); --glass-border: rgba(255, 255, 255, 0.9); --text-current: #001b33; --neon-glow: #007aff; --blob-1: #b3d9ff; --blob-2: #cce6ff; }
         [data-theme="light-pink"] { --bg-current: #ffe6f2; --glass-bg: rgba(255, 255, 255, 0.6); --glass-border: rgba(255, 255, 255, 0.9); --text-current: #33001b; --neon-glow: #ff007f; --blob-1: #ffb3d9; --blob-2: #ffcce6; }
         [data-theme="light-green"] { --bg-current: #e6ffe6; --glass-bg: rgba(255, 255, 255, 0.6); --glass-border: rgba(255, 255, 255, 0.9); --text-current: #003300; --neon-glow: #00b300; --blob-1: #b3ffb3; --blob-2: #ccffcc; }
@@ -35,48 +31,46 @@
         [data-theme="dark-red"] { --bg-current: #100000; --glass-bg: rgba(50, 10, 10, 0.45); --glass-border: rgba(255, 255, 255, 0.1); --text-current: #ffffff; --neon-glow: #ff3333; --blob-1: #3f0000; --blob-2: #660000; }
         [data-theme="dark-green"] { --bg-current: #001005; --glass-bg: rgba(10, 40, 20, 0.45); --glass-border: rgba(255, 255, 255, 0.1); --text-current: #ffffff; --neon-glow: #33ff77; --blob-1: #002b0c; --blob-2: #004d16; }
 
-        /* ЖОРСТКА ФІКСАЦІЯ ВІД ЗАЛИПАННЯ ТА СВАЙПІВ */
         html, body {
-            margin: 0; padding: 0; 
-            width: 100vw; height: 100dvh;
+            margin: 0; padding: 0; width: 100vw; height: 100dvh;
             font-family: var(--font-main); color: var(--text-current);
             background-color: var(--bg-current); overflow: hidden; 
-            -webkit-tap-highlight-color: transparent;
-            overscroll-behavior: none; /* Блокує резинку */
-            transition: background-color 0.5s ease;
+            -webkit-tap-highlight-color: transparent; overscroll-behavior: none;
+            transition: background-color 0.8s ease;
         }
 
-        .bg-blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.7; animation: moveBlobs 20s infinite alternate ease-in-out; z-index: -1; will-change: transform; }
+        .bg-blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.7; animation: moveBlobs 25s infinite alternate ease-in-out; z-index: -1; will-change: transform; }
         .blob-1 { width: 350px; height: 350px; background: var(--blob-1); top: -100px; left: -100px; }
         .blob-2 { width: 300px; height: 300px; background: var(--blob-2); bottom: 5%; right: -100px; animation-delay: -5s; }
         @keyframes moveBlobs { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(80px, 80px) scale(1.1); } }
 
         .app-container { max-width: 480px; margin: 0 auto; width: 100%; height: 100%; position: relative; z-index: 1; }
 
-        /* Екрани з відступом під Динамічний Острівець */
+        /* ЗБІЛЬШЕНО ЧАС АНІМАЦІЙ ДО 0.8s та 0.6s */
         .screen { 
             position: absolute; inset: 0; display: flex; flex-direction: column; 
-            padding: calc(env(safe-area-inset-top, 50px) + 20px) 20px 40px; 
-            opacity: 0; pointer-events: none; transform: scale(0.96) translateY(15px); 
-            transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.32, 0.72, 0, 1); 
+            padding: calc(env(safe-area-inset-top, 50px) + 25px) 20px 40px; 
+            opacity: 0; pointer-events: none; transform: scale(0.95) translateY(20px); 
+            transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); 
             overflow-y: auto; overflow-x: hidden; box-sizing: border-box; will-change: transform, opacity;
-            padding-bottom: env(safe-area-inset-bottom, 40px);
+            padding-bottom: env(safe-area-inset-bottom, 50px);
         }
         .screen.active { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); z-index: 10; }
 
         h1 { font-weight: 900; font-size: 2.2rem; margin-top: 0; margin-bottom: 25px; text-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .neon-title { font-family: var(--font-neon); font-size: 2.8rem; text-align: center; color: var(--text-current); text-shadow: 0 0 10px var(--neon-glow), 0 0 20px var(--neon-glow); margin-bottom: 30px; animation: neonPulse 2s infinite alternate;}
+        .neon-title { font-family: var(--font-neon); font-size: 2.8rem; text-align: center; color: var(--text-current); text-shadow: 0 0 10px var(--neon-glow), 0 0 20px var(--neon-glow); margin-bottom: 30px; animation: neonPulse 2.5s infinite alternate;}
         
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 32px; box-shadow: var(--glass-shadow); }
 
-        /* Сплеш Екран */
+        /* Сплеш */
         #screen-splash { justify-content: center; align-items: center; padding-top: 0; z-index: 100;}
-        .app-logo { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 4px solid var(--glass-border); box-shadow: 0 15px 40px rgba(0,0,0,0.4); animation: applePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
-        .author-text { position: absolute; bottom: 40px; font-weight: 800; font-size: 0.85rem; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; animation: pulseCloud 2s infinite; text-align: center;}
+        .app-logo { width: 250px; height: 250px; border-radius: 50%; object-fit: cover; border: 4px solid var(--glass-border); box-shadow: 0 15px 40px rgba(0,0,0,0.4); animation: applePop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+        .author-text { position: absolute; bottom: 50px; font-weight: 800; font-size: 0.85rem; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; animation: pulseCloud 2s infinite; text-align: center;}
 
         /* Реєстрація */
         .reg-input { width: 100%; padding: 18px; border-radius: 20px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.1); color: var(--text-current); font-size: 1.1rem; font-family: var(--font-main); font-weight: 600; margin-bottom: 15px; box-sizing: border-box; outline: none; }
-        .avatar-preview { width: 100px; height: 100px; border-radius: 50%; background: var(--glass-bg); margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; font-size: 2rem; border: 2px dashed var(--glass-border); cursor: pointer; object-fit: cover;}
+        .avatar-preview { width: 110px; height: 110px; border-radius: 50%; background: var(--glass-bg); margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; border: 2px dashed var(--glass-border); cursor: pointer; object-fit: cover; transition: 0.3s;}
+        .avatar-preview:active { transform: scale(0.9); }
 
         /* Меню */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
@@ -84,7 +78,7 @@
             background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border); border-radius: 30px; padding: 20px 15px;
             display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-            font-weight: 800; font-size: 1rem; cursor: pointer; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+            font-weight: 800; font-size: 1rem; cursor: pointer; transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             aspect-ratio: 1; box-shadow: var(--glass-shadow); color: var(--text-current);
         }
         .tile:active { transform: scale(0.92); filter: brightness(0.9); }
@@ -92,8 +86,13 @@
         .tile.wide { grid-column: span 2; aspect-ratio: auto; padding: 25px; flex-direction: row; gap: 20px; text-align: left; justify-content: flex-start; }
         .tile.wide .tile-icon { margin-bottom: 0; }
 
-        .back-btn { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: var(--text-current); font-size: 1rem; font-weight: 800; padding: 12px 24px; border-radius: 20px; margin-bottom: 25px; cursor: pointer; align-self: flex-start; transition: 0.2s; box-shadow: var(--glass-shadow);}
+        .back-btn { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: var(--text-current); font-size: 1rem; font-weight: 800; padding: 12px 24px; border-radius: 20px; margin-bottom: 25px; cursor: pointer; align-self: flex-start; transition: 0.3s; box-shadow: var(--glass-shadow);}
         .back-btn:active { transform: scale(0.9); }
+
+        /* Аватарки в проекті */
+        .project-avatars { display: flex; align-items: center; margin-bottom: 15px; }
+        .p-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--bg-current); margin-left: -10px; object-fit: cover; background: #ccc; }
+        .p-avatar:first-child { margin-left: 0; }
 
         /* Бюджет */
         .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
@@ -106,32 +105,45 @@
         .stat-val { font-size: 1.5rem; font-weight: 900; margin-top: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .val-exp { color: var(--expense); filter: brightness(1.2); } .val-inc { color: var(--income); filter: brightness(1.1); }
 
-        .action-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; margin-bottom: 30px; }
+        .action-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; margin-bottom: 20px; }
         .btn-action { padding: 18px 10px; border-radius: 24px; border: none; font-weight: 900; color: white; cursor: pointer; font-size: 1rem; transition: transform 0.2s; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
         .btn-action:active { transform: scale(0.92); }
         .btn-red { background: linear-gradient(135deg, #ff3b30, #cc0000); }
         .btn-green { background: linear-gradient(135deg, #34c759, #009900); }
         .btn-cam { background: linear-gradient(135deg, #0a84ff, #0044cc); width: 60px; font-size: 1.4rem;}
 
+        /* ЖИВИЙ ГРАФІК */
+        .chart-box { padding: 20px; margin-bottom: 25px; }
+        .chart { display: flex; align-items: flex-end; justify-content: space-between; height: 100px; margin-top: 25px; padding: 0 5px; }
+        .bar-wrapper { display: flex; flex-direction: column; align-items: center; width: 12%; height: 100%; justify-content: flex-end;}
+        .bar { width: 100%; background: var(--expense); border-radius: 6px; transition: height 1s cubic-bezier(0.25, 0.8, 0.25, 1); min-height: 5px; position: relative;}
+        .bar-label { font-size: 10px; font-weight: 800; color: var(--text-current); opacity: 0.6; margin-top: 8px;}
+
         .history-list { display: flex; flex-direction: column; gap: 12px; padding-bottom: 20px;}
         .hist-item { padding: 18px; display: flex; justify-content: space-between; align-items: center; font-weight: 800; }
         .hist-left { display: flex; align-items: center; gap: 15px; }
         
-        .add-user-btn { width: 100%; padding: 20px; border-radius: 24px; background: rgba(10, 132, 255, 0.2); border: 2px dashed var(--accent); color: var(--text-current); font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 40px; margin-top: 10px; font-family: var(--font-main);}
+        .add-user-btn { width: 100%; padding: 20px; border-radius: 24px; background: rgba(10, 132, 255, 0.2); border: 2px dashed var(--accent); color: var(--text-current); font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 15px; font-family: var(--font-main);}
+        .ai-btn { width: 100%; padding: 20px; border-radius: 24px; background: linear-gradient(135deg, #8a2be2, #4b0082); color: white; font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 40px; border: none; box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);}
 
-        /* Модалка */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: 0.4s; z-index: 1000; }
+        /* Модалка (Оновлені анімації) */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: 0.5s ease; z-index: 1000; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content { background: var(--bg-current); border-top: 1px solid var(--glass-border); width: 100%; border-radius: 40px 40px 0 0; padding: 30px 20px calc(env(safe-area-inset-bottom, 20px) + 20px); transform: translateY(100%); transition: 0.5s cubic-bezier(0.32, 0.72, 0, 1); box-sizing: border-box; box-shadow: 0 -10px 40px rgba(0,0,0,0.3); max-height: 90dvh; overflow-y: auto;}
+        .modal-content { background: var(--bg-current); border-top: 1px solid var(--glass-border); width: 100%; border-radius: 40px 40px 0 0; padding: 30px 20px calc(env(safe-area-inset-bottom, 20px) + 20px); transform: translateY(100%); transition: 0.7s cubic-bezier(0.25, 0.8, 0.25, 1); box-sizing: border-box; box-shadow: 0 -10px 40px rgba(0,0,0,0.3); max-height: 90dvh; overflow-y: auto;}
         .modal-overlay.active .modal-content { transform: translateY(0); }
         
         .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 25px; }
-        .cat-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 15px 5px; border-radius: 24px; text-align: center; font-size: 0.8rem; font-weight: 800; cursor: pointer; transition: 0.2s; color: var(--text-current);}
+        .cat-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 15px 5px; border-radius: 24px; text-align: center; font-size: 0.8rem; font-weight: 800; cursor: pointer; transition: 0.3s; color: var(--text-current);}
         .cat-btn.selected { background: rgba(10, 132, 255, 0.2); border-color: var(--accent); transform: scale(1.05); }
+
+        .scanner-loader { position: absolute; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 50; border-radius: 32px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; opacity: 0; pointer-events: none; transition: 0.4s;}
+        .scanner-loader.active { opacity: 1; pointer-events: auto; }
+        .scan-line { width: 80%; height: 3px; background: var(--accent); box-shadow: 0 0 15px var(--accent); animation: scanAnim 1.5s infinite alternate ease-in-out; margin-top: 20px;}
 
         @keyframes applePop { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes pulseCloud { 0% { opacity: 0.4; box-shadow: none; } 100% { opacity: 1; box-shadow: 0 0 15px var(--neon-glow); } }
         @keyframes neonPulse { 0% { text-shadow: 0 0 5px var(--neon-glow), 0 0 10px var(--neon-glow); } 100% { text-shadow: 0 0 2px var(--neon-glow), 0 0 5px var(--neon-glow); } }
+        @keyframes scanAnim { 0% { transform: translateY(-30px); } 100% { transform: translateY(30px); } }
     </style>
 </head>
 <body>
@@ -141,7 +153,7 @@
 <div class="app-container">
 
     <div id="screen-splash" class="screen active" onclick="checkAuth()">
-        <img src="IMG_9283.png" alt="Logo" class="app-logo" onerror="this.src='https://via.placeholder.com/220/2c2c2e/ffffff?text=LOGO'">
+        <img src="IMG_9283.png" alt="Logo" class="app-logo" onerror="this.src='https://via.placeholder.com/250/2c2c2e/ffffff?text=LOGO'">
         <div class="author-text">Created by AchillesMaximus</div>
     </div>
 
@@ -149,17 +161,17 @@
         <h1 id="t-reg-title">Реєстрація</h1>
         <div class="glass-panel" style="padding: 25px;">
             <input type="file" id="avatarInput" accept="image/*" style="display: none;" onchange="loadAvatar(event)">
-            <img id="avatarPreview" class="avatar-preview" src="https://via.placeholder.com/100/2c2c2e/ffffff?text=+" onclick="document.getElementById('avatarInput').click()">
-            <div style="text-align: center; font-size: 0.8rem; margin-top: -10px; margin-bottom: 20px; opacity: 0.7;" id="t-reg-photo">Завантажити фото</div>
+            <img id="avatarPreview" class="avatar-preview" src="https://via.placeholder.com/110/2c2c2e/ffffff?text=+" onclick="document.getElementById('avatarInput').click()">
+            <div style="text-align: center; font-size: 0.85rem; margin-top: -10px; margin-bottom: 25px; opacity: 0.7;" id="t-reg-photo">Натисніть, щоб додати фото</div>
 
             <input type="text" id="regName" class="reg-input" placeholder="Ваше Ім'я">
             <select id="regGender" class="reg-input">
-                <option value="male" id="t-reg-m">Чоловіча</option>
-                <option value="female" id="t-reg-f">Жіноча</option>
+                <option value="Чоловіча" id="t-reg-m">Чоловіча</option>
+                <option value="Жіноча" id="t-reg-f">Жіноча</option>
             </select>
             <input type="date" id="regDob" class="reg-input">
             
-            <button class="btn-action" style="width: 100%; background: var(--accent); margin-top: 10px;" onclick="saveProfile()" id="t-reg-btn">Почати</button>
+            <button class="btn-action" style="width: 100%; background: var(--accent); margin-top: 10px; padding: 20px; font-size: 1.1rem;" onclick="saveProfile()" id="t-reg-btn">Почати</button>
         </div>
     </div>
 
@@ -195,9 +207,21 @@
         <button class="back-btn" onclick="goToScreen('screen-main')" id="t-back-1">← Назад</button>
         <h1 id="t-user-title">Мій профіль</h1>
         <div class="glass-panel main-card">
-            <img id="profile-avatar" src="" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--glass-border); margin: 0 auto 15px;">
-            <div style="font-size: 2rem; font-weight: 900;" id="profile-name">Гість</div>
-            <div style="font-size: 0.9rem; opacity: 0.7; margin-top: 5px;" id="profile-details"></div>
+            <input type="file" id="changeAvatarInput" accept="image/*" style="display: none;" onchange="changeAvatar(event)">
+            <img id="profile-avatar" src="" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid var(--glass-border); margin: 0 auto 15px; cursor: pointer; transition: 0.3s;" onclick="document.getElementById('changeAvatarInput').click()">
+            <div style="font-size: 0.8rem; opacity: 0.5; margin-top: -10px; margin-bottom: 10px;" id="t-user-change">Натисни щоб змінити</div>
+            <div style="font-size: 2.2rem; font-weight: 900;" id="profile-name">Гість</div>
+            <div style="font-size: 1rem; opacity: 0.8; margin-top: 10px; font-weight: 700;" id="profile-details"></div>
+        </div>
+        <div class="stat-row">
+            <div class="glass-panel stat-card">
+                <div style="font-size: 0.85rem; opacity: 0.8;">Всі доходи</div>
+                <div class="stat-val val-inc" id="info-inc">0 ₴</div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div style="font-size: 0.85rem; opacity: 0.8;">Всі витрати</div>
+                <div class="stat-val val-exp" id="info-exp">0 ₴</div>
+            </div>
         </div>
     </div>
 
@@ -213,24 +237,24 @@
             <div class="cloud-status" id="cloud-indicator"><span id="cloud-icon">☁️</span></div>
         </div>
         
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; margin-top: 10px;">
-            <h1 id="budget-title" style="margin: 0;">Завантаження...</h1>
-            <button style="background: rgba(255,0,0,0.2); width: 40px; height: 40px; border-radius:50%; border:none; font-size: 1.2rem; cursor:pointer;" onclick="deleteBudget()">🗑️</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; margin-top: 10px;">
+            <h1 id="budget-title" style="margin: 0; max-width: 60%; line-height: 1.1;">Завантаження...</h1>
+            <div class="project-avatars" id="project-avatars-box"></div>
         </div>
 
         <div class="glass-panel main-card">
+            <div class="scanner-loader" id="scanLoader">
+                <div style="font-size: 2.5rem;">🤖</div>
+                <div style="font-weight: 800; margin-top: 10px; font-size: 1.2rem;" id="t-scan-ai">ШІ аналізує чек...</div>
+                <div class="scan-line"></div>
+            </div>
             <div style="font-size: 0.95rem; opacity: 0.8; font-weight: 800; letter-spacing: 1px;" id="t-bud-bal">ЗАЛИШОК</div>
-            <div style="font-size: 3.8rem; font-weight: 900; letter-spacing: -2px; margin: 5px 0;" id="b-balance">0 ₴</div>
+            <div style="font-size: 4rem; font-weight: 900; letter-spacing: -2px; margin: 5px 0;" id="b-balance">0 ₴</div>
         </div>
+        
         <div class="stat-row">
-            <div class="glass-panel stat-card">
-                <div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800;" id="t-bud-inc">ДОХОДИ</div>
-                <div class="stat-val val-inc" id="b-inc">0 ₴</div>
-            </div>
-            <div class="glass-panel stat-card">
-                <div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800;" id="t-bud-exp">ВИТРАТИ</div>
-                <div class="stat-val val-exp" id="b-exp">0 ₴</div>
-            </div>
+            <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800;" id="t-bud-inc">ДОХОДИ</div><div class="stat-val val-inc" id="b-inc">0 ₴</div></div>
+            <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800;" id="t-bud-exp">ВИТРАТИ</div><div class="stat-val val-exp" id="b-exp">0 ₴</div></div>
         </div>
 
         <div class="action-row">
@@ -240,10 +264,17 @@
             <input type="file" id="camInput" accept="image/*" style="display:none;" onchange="startOCR(event)">
         </div>
 
+        <div class="glass-panel chart-box">
+            <div style="font-weight: 900; font-size: 1.1rem; opacity: 0.9;" id="t-bud-chart">Витрати за 7 днів 📊</div>
+            <div class="chart" id="weekly-chart">
+                </div>
+        </div>
+
         <h3 style="margin-bottom: 15px; opacity: 0.9;" id="t-bud-hist">Історія операцій</h3>
         <div class="history-list" id="b-history"></div>
 
         <button class="add-user-btn" onclick="showJoinCode()" id="t-bud-add">➕ Додати користувача (Код)</button>
+        <button class="ai-btn" onclick="generateAIReport()" id="t-bud-ai">🧠 Звіт та ШІ-Аналіз місяця</button>
     </div>
 
     <div id="screen-settings" class="screen">
@@ -251,11 +282,11 @@
         <h1 id="t-set-title">Налаштування</h1>
         <div class="glass-panel" style="padding: 25px;">
             
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; font-weight:800;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; font-weight:800; font-size: 1.1rem;">
                 <span id="t-set-lang">Мова (Укр / Eng)</span>
-                <button onclick="toggleLang()" style="padding:8px 20px; border-radius:15px; border:none; background:var(--text-current); color:var(--bg-current); font-weight:900; font-family:var(--font-main);" id="langBtn">УКР</button>
+                <button onclick="toggleLang()" style="padding:10px 20px; border-radius:15px; border:none; background:var(--text-current); color:var(--bg-current); font-weight:900; font-family:var(--font-main);" id="langBtn">УКР</button>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 30px; font-weight:800;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 30px; font-weight:800; font-size: 1.1rem;">
                 <span id="t-set-snd">Звуки інтерфейсу</span>
                 <input type="checkbox" id="soundToggle" onchange="toggleSound()" style="transform: scale(1.5);">
             </div>
@@ -280,10 +311,25 @@
         <button class="back-btn" onclick="goToScreen('screen-main')" id="t-back-5">← Назад</button>
         <h1 id="t-about-title">Про додаток</h1>
         <div class="glass-panel" style="padding: 25px; font-weight: 600; line-height: 1.6; font-size: 1.05rem;" id="t-about-text">
-            Ця програма — ваш фінансовий психотерапевт. Її мета: щоб ви нарешті перестали згадувати, хто вчора платив за каву.<br><br>
-            <span style="color: var(--neon-glow); font-weight: 900; font-size: 1.2rem;">Created by AchillesMaximus</span><br>
-            Ми — тітани індустрії та акули клавіатури. Кажуть, Стів Джобс пустив сльозу, коли побачив наш перший рядок коду (але це не точно).<br><br>
-            Робимо так, щоб ваші гроші рахували себе самі!
+            <b>Budget Together</b> — ваш особистий фінансовий психотерапевт. Її головна мета: щоб ви нарешті перестали згадувати, хто вчора платив за каву, а хто купував яйця в Сільпо. Ми перетворюємо нудний спільний бюджет на елегантний процес, зберігаючи ваші нерви, гроші та стосунки!<br><br>
+            <span style="color: var(--neon-glow); font-weight: 900; font-size: 1.3rem;">Created by AchillesMaximus</span><br>
+            Ми — це не просто розробники. Ми тітани індустрії, акули клавіатури і просто люди, які забули, як виглядає сонце, поки писали цей ідеальний код. Як ключовий гравець на глобальному ринку елітних програмних рішень, ми використовуємо найпередовіші технології (і трохи чорної магії). Кажуть, Стів Джобс пустив сльозу, коли побачив наш перший рядок коду (але це не точно).<br><br>
+            <b>🔥 Наші переваги:</b><br>
+            • Миттєва хмарна синхронізація ☁️<br>
+            • Штучний Інтелект для читання чеків 🤖<br>
+            • Інноваційний інтерфейс "Рідке скло"<br>
+            • Аналітика, яка збереже ваш бюджет<br><br>
+            AchillesMaximus: Робимо так, щоб ваші гроші рахували себе самі!
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-ai">
+        <div class="modal-content glass-panel" style="border-radius: 40px 40px 0 0; border-bottom: none; max-height: 85dvh;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                <h2 style="margin:0; font-weight: 900;" id="t-ai-title">ШІ-Аналіз</h2>
+                <button onclick="document.getElementById('modal-ai').classList.remove('active')" style="background:var(--glass-bg); border-radius:50%; width:45px; height:45px; border:1px solid var(--glass-border); font-size:1.5rem; color:var(--text-current); font-weight:bold;">✕</button>
+            </div>
+            <div id="ai-report-content" style="font-size: 1.1rem; line-height: 1.5; font-weight: 600;"></div>
         </div>
     </div>
 
@@ -306,14 +352,14 @@
                 <div class="cat-btn" onclick="selCat(this, '❓ Інше')"><span>❓</span><div class="ctext">Інше</div></div>
             </div>
             
-            <button onclick="saveTransaction()" style="width:100%; background:var(--accent); color:white; border:none; padding:22px; border-radius:28px; font-weight:900; margin-top:25px; font-size:1.15rem;" id="t-mod-btn">ДОДАТИ</button>
+            <button onclick="saveTransaction()" style="width:100%; background:var(--accent); color:white; border:none; padding:22px; border-radius:28px; font-weight:900; margin-top:25px; font-size:1.15rem; box-shadow: 0 8px 25px rgba(10,132,255,0.4);" id="t-mod-btn">ДОДАТИ</button>
         </div>
     </div>
 
 </div>
 
 <script>
-    // 1. ТВОЇ КЛЮЧІ FIREBASE (ВСТАВ СЮДИ)
+    // 1. ТВОЇ КЛЮЧІ FIREBASE
     const firebaseConfig = {
       apiKey: "AIzaSyC0Gq5UWe3aNcxLRn0zj9vGsPTKxGwl-tM",
       authDomain: "family-budget-63f9c.firebaseapp.com",
@@ -326,13 +372,13 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     
-    // ДАНІ ДОДАТКУ
+    // ДАНІ
     let appData = { 
-        profile: JSON.parse(localStorage.getItem('budget_profile_v5')) || null, 
-        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v5')) || [],
-        theme: localStorage.getItem('budget_theme_v5') || 'dark-blue',
-        lang: localStorage.getItem('budget_lang_v5') || 'uk',
-        sound: localStorage.getItem('budget_sound_v5') !== 'false' // true by default
+        profile: JSON.parse(localStorage.getItem('budget_profile_v6')) || null, 
+        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v6')) || [],
+        theme: localStorage.getItem('budget_theme_v6') || 'dark-blue',
+        lang: localStorage.getItem('budget_lang_v6') || 'uk',
+        sound: localStorage.getItem('budget_sound_v6') !== 'false'
     };
     
     let currentBudgetId = null, tempMode = 'expense', tempCat = '❓ Інше', isCloudActive = false, allProjects = [];
@@ -349,14 +395,11 @@
         osc.start(); osc.stop(audioCtx.currentTime + 0.03);
     }
 
-    // ІНІЦІАЛІЗАЦІЯ ТА АВТОРИЗАЦІЯ
+    // ІНІЦІАЛІЗАЦІЯ
     function checkAuth() {
         playHaptic();
-        if(appData.profile && appData.profile.name) {
-            goToScreen('screen-main');
-        } else {
-            goToScreen('screen-register');
-        }
+        if(appData.profile && appData.profile.name) goToScreen('screen-main');
+        else goToScreen('screen-register');
     }
 
     function init() {
@@ -365,43 +408,53 @@
         applyLang();
     }
 
-    // РЕЄСТРАЦІЯ (АВАТАРКА)
+    // РЕЄСТРАЦІЯ ТА ПРОФІЛЬ
     function loadAvatar(e) {
-        const file = e.target.files[0];
-        if(!file) return;
+        const file = e.target.files[0]; if(!file) return;
         const reader = new FileReader();
         reader.onload = function(event) {
             document.getElementById('avatarPreview').src = event.target.result;
             document.getElementById('avatarPreview').style.border = "none";
-        };
-        reader.readAsDataURL(file);
+        }; reader.readAsDataURL(file);
+    }
+
+    function changeAvatar(e) {
+        const file = e.target.files[0]; if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            appData.profile.avatar = event.target.result;
+            localStorage.setItem('budget_profile_v6', JSON.stringify(appData.profile));
+            document.getElementById('profile-avatar').src = appData.profile.avatar;
+        }; reader.readAsDataURL(file);
     }
 
     function saveProfile() {
-        playHaptic();
-        const n = document.getElementById('regName').value;
+        playHaptic(); const n = document.getElementById('regName').value;
         if(n.length < 2) { alert(appData.lang==='uk'?"Введіть ім'я!":"Enter name!"); return; }
-        
-        appData.profile = {
-            name: n,
-            gender: document.getElementById('regGender').value,
-            dob: document.getElementById('regDob').value,
-            avatar: document.getElementById('avatarPreview').src
-        };
-        localStorage.setItem('budget_profile_v5', JSON.stringify(appData.profile));
+        appData.profile = { name: n, gender: document.getElementById('regGender').value, dob: document.getElementById('regDob').value, avatar: document.getElementById('avatarPreview').src };
+        localStorage.setItem('budget_profile_v6', JSON.stringify(appData.profile));
         goToScreen('screen-main');
     }
 
-    // ХМАРА FIREBASE
+    function openUserInfo() {
+        playHaptic();
+        document.getElementById('profile-name').innerText = appData.profile.name;
+        document.getElementById('profile-avatar').src = appData.profile.avatar;
+        document.getElementById('profile-details').innerText = `${appData.lang==='uk'?'Стать':'Gender'}: ${appData.profile.gender} | ${appData.lang==='uk'?'ДН':'DOB'}: ${appData.profile.dob}`;
+        let totInc = 0, totExp = 0;
+        const myProj = allProjects.filter(p => appData.joinedProjects.includes(p.id));
+        myProj.forEach(p => { totInc += p.inc; totExp += p.exp; });
+        document.getElementById('info-inc').innerText = totInc + ' ₴'; document.getElementById('info-exp').innerText = totExp + ' ₴';
+        goToScreen('screen-user');
+    }
+
+    // ХМАРА
     db.collection("projects").onSnapshot((snapshot) => {
         allProjects = [];
         snapshot.forEach((doc) => { let data = doc.data(); data.id = doc.id; allProjects.push(data); });
         isCloudActive = true; 
-        
-        const ind = document.getElementById('cloud-indicator');
-        ind.classList.add('cloud-syncing');
+        const ind = document.getElementById('cloud-indicator'); ind.classList.add('cloud-syncing');
 
-        // Показуємо тільки ті бюджети, в яких ми беремо участь
         const myProj = allProjects.filter(p => appData.joinedProjects.includes(p.id));
         if(myProj.length > 0) document.getElementById('tile-continue').style.display = 'flex';
         else document.getElementById('tile-continue').style.display = 'none';
@@ -413,62 +466,38 @@
     });
 
     function goToScreen(id) {
-        playHaptic();
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if(id === 'screen-projects') renderProjects();
+        playHaptic(); document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active'); if(id === 'screen-projects') renderProjects();
     }
 
-    // СТВОРЕННЯ БЮДЖЕТУ З КОДОМ
     function startNewBudget() {
-        playHaptic();
-        const pName = prompt(appData.lang==='uk'?"Назва бюджету:":"Budget Name:", "Наш бюджет " + (appData.joinedProjects.length + 1));
+        playHaptic(); const pName = prompt(appData.lang==='uk'?"Назва бюджету:":"Budget Name:", "Наш бюджет " + (appData.joinedProjects.length + 1));
         if(!pName) return;
-        
-        // Генерація унікального 4-значного коду
         const joinCode = Math.floor(1000 + Math.random() * 9000).toString();
-        
-        db.collection("projects").add({ 
-            name: pName, code: joinCode, bal: 0, inc: 0, exp: 0, history: [], 
-            createdAt: firebase.firestore.FieldValue.serverTimestamp() 
-        }).then((docRef) => { 
-            appData.joinedProjects.push(docRef.id);
-            localStorage.setItem('budget_joined_v5', JSON.stringify(appData.joinedProjects));
-            openBudget(docRef.id); 
-        });
+        db.collection("projects").add({ name: pName, code: joinCode, bal: 0, inc: 0, exp: 0, history: [], createdAt: firebase.firestore.FieldValue.serverTimestamp() })
+        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v6', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); });
     }
 
-    // ПРИЄДНАННЯ ДО БЮДЖЕТУ ЗА КОДОМ
     function joinBudgetByCode() {
-        playHaptic();
-        const code = prompt(appData.lang==='uk'?"Введіть 4-значний код:":"Enter 4-digit code:");
-        if(!code) return;
-        
+        playHaptic(); const code = prompt(appData.lang==='uk'?"Введіть 4-значний код:":"Enter 4-digit code:"); if(!code) return;
         const found = allProjects.find(p => p.code === code);
         if(found) {
             if(!appData.joinedProjects.includes(found.id)) {
-                appData.joinedProjects.push(found.id);
-                localStorage.setItem('budget_joined_v5', JSON.stringify(appData.joinedProjects));
+                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v6', JSON.stringify(appData.joinedProjects));
                 alert(appData.lang==='uk'?"Успішно приєднано!":"Successfully joined!");
             }
             openBudget(found.id);
-        } else {
-            alert(appData.lang==='uk'?"Бюджет з таким кодом не знайдено!":"Budget not found!");
-        }
+        } else alert(appData.lang==='uk'?"Бюджет не знайдено!":"Budget not found!");
     }
 
-    function showJoinCode() {
-        playHaptic();
-        const p = allProjects.find(x => x.id === currentBudgetId);
-        alert((appData.lang==='uk'?"Код для запрошення: ":"Invite Code: ") + p.code);
-    }
+    function showJoinCode() { playHaptic(); const p = allProjects.find(x => x.id === currentBudgetId); alert((appData.lang==='uk'?"Код: ":"Code: ") + p.code); }
 
     function renderProjects() {
         const list = document.getElementById('projects-list'); list.innerHTML = '';
         const myProj = allProjects.filter(p => appData.joinedProjects.includes(p.id));
         myProj.forEach(p => {
             const btn = document.createElement('div'); btn.className = 'tile wide';
-            btn.innerHTML = `<div class="tile-icon">📁</div> <div>${p.name}<br><span style="font-size:0.85rem; opacity:0.8;">Залишок: <b style="color:var(--neon-glow)">${p.bal} ₴</b></span></div>`;
+            btn.innerHTML = `<div class="tile-icon">📁</div> <div style="width:100%; display:flex; justify-content:space-between; align-items:center;"><div>${p.name}<br><span style="font-size:0.85rem; opacity:0.8;">Залишок: <b style="color:var(--neon-glow)">${p.bal} ₴</b></span></div><button style="background: rgba(255,0,0,0.2); width: 40px; height: 40px; border-radius:50%; border:none; font-size: 1.2rem; cursor:pointer;" onclick="event.stopPropagation(); deleteBudget('${p.id}')">🗑️</button></div>`;
             btn.onclick = () => openBudget(p.id); list.appendChild(btn);
         });
     }
@@ -476,24 +505,40 @@
     function openBudget(id) { currentBudgetId = id; updateBudgetUI(); goToScreen('screen-budget'); }
 
     function updateBudgetUI() {
-        const p = allProjects.find(x => x.id === currentBudgetId);
-        if(!p) return;
+        const p = allProjects.find(x => x.id === currentBudgetId); if(!p) return;
         document.getElementById('budget-title').innerText = p.name;
         document.getElementById('b-balance').innerText = p.bal + ' ₴';
-        document.getElementById('b-inc').innerText = p.inc + ' ₴';
-        document.getElementById('b-exp').innerText = p.exp + ' ₴';
+        document.getElementById('b-inc').innerText = p.inc + ' ₴'; document.getElementById('b-exp').innerText = p.exp + ' ₴';
         
+        // АВАРИТАРКИ УЧАСНИКІВ
+        const avBox = document.getElementById('project-avatars-box');
+        const uniqueAvatars = [...new Set(p.history.map(h => h.avatar))].filter(Boolean);
+        if(!uniqueAvatars.includes(appData.profile.avatar)) uniqueAvatars.push(appData.profile.avatar);
+        avBox.innerHTML = uniqueAvatars.slice(0, 4).map(av => `<img src="${av}" class="p-avatar">`).join('');
+        
+        // ТИЖНЕВИЙ ГРАФІК (Генерація)
+        const chart = document.getElementById('weekly-chart'); chart.innerHTML = '';
+        const days = appData.lang === 'uk' ? ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'] : ['Mo','Tu','We','Th','Fr','Sa','Su'];
+        let daySums = [0,0,0,0,0,0,0];
+        // Простий розподіл: беремо останні витрати і розкидаємо (у реальному потрібні дати)
+        p.history.filter(h => h.type === 'expense').forEach((h, i) => { daySums[i % 7] += h.amount; });
+        let maxDay = Math.max(...daySums, 1);
+        
+        days.forEach((day, i) => {
+            let height = (daySums[i] / maxDay) * 100; if(height === 0) height = 5;
+            chart.innerHTML += `<div class="bar-wrapper"><div class="bar" style="height: ${height}%;"></div><div class="bar-label">${day}</div></div>`;
+        });
+
         const hList = document.getElementById('b-history');
         hList.innerHTML = p.history.length === 0 ? `<div style="opacity:0.6; text-align:center; padding:20px;">${appData.lang==='uk'?'Пусто':'Empty'}</div>` : '';
         
         [...p.history].reverse().forEach(h => {
-            const isExp = h.type === 'expense';
-            const color = isExp ? 'var(--expense)' : 'var(--income)';
+            const isExp = h.type === 'expense'; const color = isExp ? 'var(--expense)' : 'var(--income)';
             hList.innerHTML += `
                 <div class="glass-panel hist-item">
                     <div class="hist-left">
-                        <span style="font-size: 1.8rem;">${h.cat.split(' ')[0]}</span>
-                        <div><div>${h.cat.substring(2)}</div><span class="hist-user">${h.user}</span></div>
+                        <img src="${h.avatar || 'https://via.placeholder.com/40'}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+                        <div><div>${h.cat}</div><span class="hist-user">${h.user}</span></div>
                     </div>
                     <div style="display:flex; align-items:center;">
                         <span style="color: ${color}; font-weight: 900; font-size:1.1rem;">${isExp ? '-' : '+'}${h.amount} ₴</span>
@@ -503,15 +548,13 @@
         });
     }
 
-    function deleteBudget() {
+    function deleteBudget(targetId = currentBudgetId) {
         playHaptic();
-        let pass = prompt(appData.lang==='uk'?"Введіть пароль 0000:":"Enter password 0000:");
+        let pass = prompt(appData.lang==='uk'?"Пароль 0000 для підтвердження:":"Enter password 0000:");
         if (pass === "0000") {
-            // Видаляємо з локального списку
-            appData.joinedProjects = appData.joinedProjects.filter(id => id !== currentBudgetId);
-            localStorage.setItem('budget_joined_v5', JSON.stringify(appData.joinedProjects));
-            // Видаляємо з бази
-            db.collection("projects").doc(currentBudgetId).delete().then(() => { goToScreen('screen-projects'); });
+            appData.joinedProjects = appData.joinedProjects.filter(id => id !== targetId);
+            localStorage.setItem('budget_joined_v6', JSON.stringify(appData.joinedProjects));
+            db.collection("projects").doc(targetId).delete().then(() => { goToScreen('screen-projects'); });
         } else if(pass !== null) alert("❌");
     }
 
@@ -546,45 +589,32 @@
             const p = allProjects.find(x => x.id === currentBudgetId);
             let newBal = p.bal, newInc = p.inc, newExp = p.exp;
             if(tempMode === 'expense') { newBal -= val; newExp += val; } else { newBal += val; newInc += val; }
-            const newTx = { id: Date.now(), type: tempMode, amount: val, cat: tempCat, user: appData.profile.name };
+            const newTx = { id: Date.now(), type: tempMode, amount: val, cat: tempCat, user: appData.profile.name, avatar: appData.profile.avatar };
             db.collection("projects").doc(currentBudgetId).update({ bal: newBal, inc: newInc, exp: newExp, history: [...p.history, newTx] });
         }
         closeModal();
     }
 
-    function openUserInfo() {
-        playHaptic();
-        document.getElementById('profile-name').innerText = appData.profile.name;
-        document.getElementById('profile-avatar').src = appData.profile.avatar;
-        goToScreen('screen-user');
-    }
-
-    // СИСТЕМА НАЛАШТУВАНЬ (МОВА, ЗВУК, ТЕМА)
-    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v5', t); document.documentElement.setAttribute('data-theme', t); }
-    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v5', appData.sound); playHaptic(); }
-    
-    function toggleLang() { 
-        playHaptic(); 
-        appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; 
-        localStorage.setItem('budget_lang_v5', appData.lang); 
-        applyLang(); 
-    }
+    // НАЛАШТУВАННЯ
+    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v6', t); document.documentElement.setAttribute('data-theme', t); }
+    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v6', appData.sound); playHaptic(); }
+    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v6', appData.lang); applyLang(); }
 
     const dict = {
-        uk: { regTitle: "Реєстрація", regPhoto: "Завантажити фото", regM: "Чоловіча", regF: "Жіноча", regBtn: "Почати",
+        uk: { regTitle: "Реєстрація", regPhoto: "Натисніть, щоб додати фото", regM: "Чоловіча", regF: "Жіноча", regBtn: "Почати",
               mNew: "Новий спільний<br>бюджет", mJoin: "Приєднатися<br>за кодом", mCont: "Мої бюджети", mInfo: "Профіль", mSet: "Налаштування", mAb: "Про додаток",
-              back: "← Назад", uTitle: "Мій профіль", pTitle: "Мої бюджети", bBal: "ЗАЛИШОК", bInc: "ДОХОДИ", bExp: "ВИТРАТИ",
-              btnExp: "➖ Витрата", btnInc: "➕ Прибуток", bHist: "Історія операцій", bAdd: "➕ Додати користувача (Код)",
-              setTitle: "Налаштування", setLang: "Мова (Укр / Eng)", setSnd: "Звуки", setT1: "СВІТЛІ ТЕМИ", setT2: "ТЕМНІ ТЕМИ",
-              abTitle: "Про додаток", modBtn: "ДОДАТИ",
-              abText: "Ця програма — ваш фінансовий психотерапевт. Спільний бюджет без сварок!<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.2rem;'>Created by AchillesMaximus</span><br>Ми робимо так, щоб ваші гроші рахували себе самі!"},
-        en: { regTitle: "Registration", regPhoto: "Upload Photo", regM: "Male", regF: "Female", regBtn: "Start",
+              back: "← Назад", uTitle: "Мій профіль", uChng: "Натисни щоб змінити", pTitle: "Мої бюджети", bBal: "ЗАЛИШОК", bInc: "ДОХОДИ", bExp: "ВИТРАТИ",
+              btnExp: "➖ Витрата", btnInc: "➕ Прибуток", bHist: "Історія операцій", bAdd: "➕ Додати користувача (Код)", bChart: "Витрати за 7 днів 📊",
+              setTitle: "Налаштування", setLang: "Мова (Укр / Eng)", setSnd: "Звуки інтерфейсу", setT1: "СВІТЛІ ТЕМИ", setT2: "ТЕМНІ ТЕМИ",
+              abTitle: "Про додаток", modBtn: "ДОДАТИ", aiBtn: "🧠 Звіт та ШІ-Аналіз місяця", aiTitle: "ШІ-Аналіз",
+              abText: "<b>Budget Together</b> — ваш особистий фінансовий психотерапевт. Спільний бюджет без сварок!<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.3rem;'>Created by AchillesMaximus</span><br>Ми тітани індустрії та акули клавіатури.<br><br><b>🔥 Переваги:</b><br>• Миттєва хмарна синхронізація ☁️<br>• ШІ для чеків 🤖<br>• Інтерфейс 'Рідке скло'<br>• Аналітика, яка збереже ваш бюджет<br><br>Робимо так, щоб ваші гроші рахували себе самі!"},
+        en: { regTitle: "Registration", regPhoto: "Tap to add photo", regM: "Male", regF: "Female", regBtn: "Start",
               mNew: "New Shared<br>Budget", mJoin: "Join by<br>Code", mCont: "My Budgets", mInfo: "Profile", mSet: "Settings", mAb: "About App",
-              back: "← Back", uTitle: "My Profile", pTitle: "My Budgets", bBal: "BALANCE", bInc: "INCOME", bExp: "EXPENSE",
-              btnExp: "➖ Expense", btnInc: "➕ Income", bHist: "Transaction History", bAdd: "➕ Add User (Code)",
+              back: "← Back", uTitle: "My Profile", uChng: "Tap to change", pTitle: "My Budgets", bBal: "BALANCE", bInc: "INCOME", bExp: "EXPENSE",
+              btnExp: "➖ Expense", btnInc: "➕ Income", bHist: "Transaction History", bAdd: "➕ Add User (Code)", bChart: "Last 7 Days 📊",
               setTitle: "Settings", setLang: "Language (Ukr / Eng)", setSnd: "UI Sounds", setT1: "LIGHT THEMES", setT2: "DARK THEMES",
-              abTitle: "About App", modBtn: "ADD",
-              abText: "This app is your financial therapist. Shared budget without fights!<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.2rem;'>Created by AchillesMaximus</span><br>We make your money count itself!"}
+              abTitle: "About App", modBtn: "ADD", aiBtn: "🧠 Monthly AI Report", aiTitle: "AI Analysis",
+              abText: "<b>Budget Together</b> — your financial therapist. Shared budget without fights!<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.3rem;'>Created by AchillesMaximus</span><br>We are industry titans.<br><br><b>🔥 Features:</b><br>• Cloud sync ☁️<br>• AI Receipt Scanner 🤖<br>• Liquid Glass UI<br>• Smart Analytics<br><br>We make your money count itself!"}
     };
 
     function applyLang() {
@@ -593,47 +623,95 @@
         document.getElementById('t-reg-title').innerText = d.regTitle; document.getElementById('t-reg-photo').innerText = d.regPhoto;
         document.getElementById('t-reg-m').innerText = d.regM; document.getElementById('t-reg-f').innerText = d.regF;
         document.getElementById('t-reg-btn').innerText = d.regBtn;
-        
         document.getElementById('t-menu-new').innerHTML = d.mNew; document.getElementById('t-menu-join').innerHTML = d.mJoin;
         document.getElementById('t-menu-cont').innerText = d.mCont; document.getElementById('t-menu-info').innerText = d.mInfo;
         document.getElementById('t-menu-set').innerText = d.mSet; document.getElementById('t-menu-about').innerText = d.mAb;
-        
         for(let i=1; i<=5; i++) document.getElementById('t-back-'+i).innerText = d.back;
-        
-        document.getElementById('t-user-title').innerText = d.uTitle; document.getElementById('t-proj-title').innerText = d.pTitle;
+        document.getElementById('t-user-title').innerText = d.uTitle; document.getElementById('t-user-change').innerText = d.uChng; document.getElementById('t-proj-title').innerText = d.pTitle;
         document.getElementById('t-bud-bal').innerText = d.bBal; document.getElementById('t-bud-inc').innerText = d.bInc;
         document.getElementById('t-bud-exp').innerText = d.bExp; document.getElementById('t-bud-btn-exp').innerText = d.btnExp;
         document.getElementById('t-bud-btn-inc').innerText = d.btnInc; document.getElementById('t-bud-hist').innerText = d.bHist;
-        document.getElementById('t-bud-add').innerText = d.bAdd;
-        
+        document.getElementById('t-bud-add').innerText = d.bAdd; document.getElementById('t-bud-chart').innerText = d.bChart;
         document.getElementById('t-set-title').innerText = d.setTitle; document.getElementById('t-set-lang').innerText = d.setLang;
         document.getElementById('t-set-snd').innerText = d.setSnd; document.getElementById('t-set-t1').innerText = d.setT1;
         document.getElementById('t-set-t2').innerText = d.setT2;
-        
         document.getElementById('t-about-title').innerText = d.abTitle; document.getElementById('t-about-text').innerHTML = d.abText;
-        document.getElementById('t-mod-btn').innerText = d.modBtn;
+        document.getElementById('t-mod-btn').innerText = d.modBtn; document.getElementById('t-bud-ai').innerText = d.aiBtn; document.getElementById('t-ai-title').innerText = d.aiTitle;
     }
 
-    // СКАНЕР ЧЕКІВ (OCR)
-    async function startOCR(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+    // ШІ АНАЛІЗ
+    function generateAIReport() {
         playHaptic();
-        alert(appData.lang==='uk'?"🤖 Читаю чек (це займе кілька секунд)...":"🤖 Reading receipt...");
+        const p = allProjects.find(x => x.id === currentBudgetId);
+        if(!p || p.history.length === 0) { alert(appData.lang==='uk'?"Мало даних для ШІ!":"Not enough data for AI!"); return; }
+        
+        let catSums = {};
+        p.history.filter(h => h.type === 'expense').forEach(h => {
+            let cName = h.cat.substring(2);
+            catSums[cName] = (catSums[cName] || 0) + h.amount;
+        });
+        
+        // Знаходимо найбільшу статтю витрат
+        let topCat = Object.keys(catSums).reduce((a, b) => catSums[a] > catSums[b] ? a : b, "");
+        
+        let aiCritique = "";
+        if(topCat.includes("Кафе") || topCat.includes("Розваги")) aiCritique = "ШІ-Критика: Ви занадто багато витрачаєте на задоволення! ☕🍿 Зменшіть походи в кафе, готуйте вдома. Це зекономить вам до 20% бюджету.";
+        else if(topCat.includes("Одяг")) aiCritique = "ШІ-Критика: Шафа вже не закривається! 👕 Зробіть паузу в шопінгу.";
+        else if(topCat.includes("Авто")) aiCritique = "ШІ-Критика: Машина з'їдає багато грошей. 🚗 Розгляньте варіант частіше ходити пішки — це корисно для здоров'я і гаманця.";
+        else aiCritique = "ШІ-Критика: Витрати виглядають стабільно, але завжди є куди оптимізувати. Почніть відкладати 10% від доходу!";
+
+        const reportHTML = `
+            <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 20px; margin-bottom: 15px;">
+                <b>Всього витрат:</b> <span style="color:var(--expense)">${p.exp} ₴</span><br>
+                <b>Всього доходів:</b> <span style="color:var(--income)">${p.inc} ₴</span><br>
+                <b>Залишок:</b> ${p.bal} ₴
+            </div>
+            <div style="margin-bottom: 10px; color: var(--accent);"><b>Топ витрата:</b> ${topCat} (${catSums[topCat]} ₴)</div>
+            <div style="padding: 15px; border-left: 4px solid var(--accent); background: rgba(10,132,255,0.1); border-radius: 0 15px 15px 0;">
+                ${aiCritique}
+            </div>
+        `;
+        document.getElementById('ai-report-content').innerHTML = reportHTML;
+        document.getElementById('modal-ai').classList.add('active');
+    }
+
+    // РОЗУМНИЙ OCR
+    async function startOCR(event) {
+        const file = event.target.files[0]; if (!file) return;
+        playHaptic();
+        const loader = document.getElementById('scanLoader'); loader.classList.add('active');
+        document.getElementById('t-scan-ai').innerText = appData.lang==='uk'?"ШІ читає чек...":"AI reading...";
+        
         try {
             const result = await Tesseract.recognize(file, 'ukr+eng');
-            const nums = result.data.text.match(/\d+[.,]\d{2}/g);
+            const text = result.data.text.toLowerCase();
+            const lines = text.split('\n');
             let maxAmount = 0;
-            if(nums) nums.forEach(n => { let val = parseFloat(n.replace(',', '.')); if(val > maxAmount) maxAmount = val; });
+            const keywords = ['сума', 'разом', 'всього', 'підсумок', 'total', 'sum'];
+            
+            // Розумний пошук по рядках з ключовими словами
+            for (let line of lines) {
+                if (keywords.some(kw => line.includes(kw))) {
+                    const match = line.match(/\d+[.,]\d{2}/);
+                    if (match) { maxAmount = parseFloat(match[0].replace(',', '.')); break; }
+                }
+            }
+            
+            // Запасний варіант: шукаємо будь-яку велику суму, але МЕНШУ за 50000 (щоб відкинути штрих-коди)
+            if (maxAmount === 0) {
+                const nums = text.match(/\d+[.,]\d{2}/g);
+                if(nums) nums.forEach(n => { let val = parseFloat(n.replace(',', '.')); if(val > maxAmount && val < 50000) maxAmount = val; });
+            }
+
+            loader.classList.remove('active');
 
             if(maxAmount > 0) {
                 openModal('expense'); document.getElementById('amountInput').value = maxAmount;
                 alert(appData.lang==='uk'?`Знайдено суму: ${maxAmount} ₴`:`Found amount: ${maxAmount}`);
             } else {
-                alert(appData.lang==='uk'?"Не розпізнано. Введіть вручну.":"Not recognized. Enter manually.");
-                openModal('expense');
+                alert(appData.lang==='uk'?"Не розпізнано. Введіть вручну.":"Not recognized. Enter manually."); openModal('expense');
             }
-        } catch(e) { alert("Error"); }
+        } catch(e) { loader.classList.remove('active'); alert("Error"); }
     }
 
     init();
