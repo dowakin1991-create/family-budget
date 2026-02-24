@@ -48,7 +48,7 @@
 
         .screen { 
             position: absolute; inset: 0; display: flex; flex-direction: column; 
-            padding: calc(env(safe-area-inset-top, 50px) + 25px) 20px 40px; 
+            padding: calc(env(safe-area-inset-top, 50px) + 20px) 20px 40px; 
             opacity: 0; pointer-events: none; transform: scale(0.95) translateY(20px); 
             transition: opacity 0.6s ease, transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); 
             overflow-y: auto; overflow-x: hidden; box-sizing: border-box; will-change: transform, opacity;
@@ -66,7 +66,7 @@
         .app-logo { width: 250px; height: 250px; border-radius: 50%; object-fit: cover; border: 4px solid var(--glass-border); box-shadow: 0 15px 40px rgba(0,0,0,0.4); animation: applePop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
         .author-text { position: absolute; bottom: 50px; font-weight: 800; font-size: 0.85rem; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; animation: pulseCloud 2s infinite; text-align: center;}
 
-        /* Реєстрація (Оновлена, преміальна) */
+        /* Реєстрація */
         .reg-card { padding: 40px 25px; text-align: center; display: flex; flex-direction: column; align-items: center;}
         .reg-input { width: 100%; padding: 20px; border-radius: 24px; border: 2px solid transparent; background: rgba(0,0,0,0.1); color: var(--text-current); font-size: 1.2rem; font-family: var(--font-main); font-weight: 800; margin-bottom: 20px; box-sizing: border-box; outline: none; text-align: center; transition: 0.3s;}
         .reg-input:focus { border-color: var(--accent); background: rgba(0,0,0,0.2); }
@@ -91,7 +91,7 @@
         .back-btn:active { transform: scale(0.9); }
 
         .project-avatars { display: flex; align-items: center; margin-bottom: 15px; }
-        .p-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--bg-current); margin-left: -10px; object-fit: cover; background: #ccc; }
+        .p-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--bg-current); margin-left: -10px; object-fit: cover; background: var(--glass-bg); }
         .p-avatar:first-child { margin-left: 0; }
 
         /* Бюджет */
@@ -123,8 +123,10 @@
         .hist-left { display: flex; align-items: center; gap: 15px; }
         
         .add-user-btn { width: 100%; padding: 20px; border-radius: 24px; background: rgba(10, 132, 255, 0.2); border: 2px dashed var(--accent); color: var(--text-current); font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 15px; font-family: var(--font-main);}
-        .ai-btn { width: 100%; padding: 20px; border-radius: 24px; background: linear-gradient(135deg, #8a2be2, #4b0082); color: white; font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 40px; border: none; box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);}
+        .ai-btn { width: 100%; padding: 20px; border-radius: 24px; background: linear-gradient(135deg, #8a2be2, #4b0082); color: white; font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 10px; border: none; box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);}
+        .share-btn { width: 100%; padding: 20px; border-radius: 24px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-current); font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 40px; font-family: var(--font-main); display: flex; justify-content: center; align-items: center; gap: 10px;}
 
+        /* Модалка */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: 0.5s ease; z-index: 1000; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content { background: var(--bg-current); border-top: 1px solid var(--glass-border); width: 100%; border-radius: 40px 40px 0 0; padding: 30px 20px calc(env(safe-area-inset-bottom, 20px) + 20px); transform: translateY(100%); transition: 0.7s cubic-bezier(0.25, 0.8, 0.25, 1); box-sizing: border-box; box-shadow: 0 -10px 40px rgba(0,0,0,0.3); max-height: 90dvh; overflow-y: auto;}
@@ -142,6 +144,11 @@
         @keyframes pulseCloud { 0% { opacity: 0.4; box-shadow: none; } 100% { opacity: 1; box-shadow: 0 0 15px var(--neon-glow); } }
         @keyframes neonPulse { 0% { text-shadow: 0 0 5px var(--neon-glow), 0 0 10px var(--neon-glow); } 100% { text-shadow: 0 0 2px var(--neon-glow), 0 0 5px var(--neon-glow); } }
         @keyframes scanAnim { 0% { transform: translateY(-30px); } 100% { transform: translateY(30px); } }
+
+        /* Оптимізована сітка налаштувань */
+        .theme-grid-opt { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; }
+        .theme-tile { padding: 15px 5px; border-radius: 20px; text-align: center; font-weight: 800; font-size: 0.85rem; cursor: pointer; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); transition: 0.2s;}
+        .theme-tile:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -162,7 +169,7 @@
             <img id="avatarPreview" class="avatar-preview" src="https://via.placeholder.com/130/2c2c2e/ffffff?text=+" onclick="document.getElementById('avatarInput').click()">
             <div style="font-size: 0.9rem; margin-bottom: 30px; opacity: 0.6; font-weight: 800; text-transform: uppercase;" id="t-reg-photo">Додати фото</div>
 
-            <input type="text" id="regName" class="reg-input" placeholder="Ваше Ім'я (Антон, Настя...)">
+            <input type="text" id="regName" class="reg-input" placeholder="Ваше Ім'я">
             <select id="regGender" class="reg-input">
                 <option value="Чоловік" id="t-reg-m">Чоловік</option>
                 <option value="Жінка" id="t-reg-f">Жінка</option>
@@ -174,23 +181,19 @@
 
     <div id="screen-main" class="screen">
         <div class="neon-title">Budget Together</div>
-
         <div class="menu-grid">
             <div class="tile wide" onclick="startNewBudget()" style="background: linear-gradient(135deg, rgba(10,132,255,0.2), rgba(255,255,255,0.05));">
                 <div class="tile-icon">➕</div>
                 <div style="font-size: 1.3rem;" id="t-menu-new">Новий спільний<br>бюджет</div>
             </div>
-
             <div class="tile wide" onclick="joinBudgetByCode()" style="background: linear-gradient(135deg, rgba(52, 199, 89, 0.2), rgba(255,255,255,0.05));">
                 <div class="tile-icon">🔗</div>
                 <div style="font-size: 1.3rem;" id="t-menu-join">Приєднатися<br>за кодом</div>
             </div>
-            
             <div class="tile wide" onclick="goToScreen('screen-projects')" id="tile-continue" style="display: none;">
                 <div class="tile-icon">📂</div>
                 <div style="font-size: 1.3rem;" id="t-menu-cont">Мої бюджети</div>
             </div>
-            
             <div class="tile" onclick="openUserInfo()"><div class="tile-icon">👤</div><span id="t-menu-info">Профіль</span></div>
             <div class="tile" onclick="goToScreen('screen-settings')"><div class="tile-icon">⚙️</div><span id="t-menu-set">Налаштування</span></div>
             <div class="tile wide" onclick="goToScreen('screen-about')" style="flex-direction: column; align-items: center; gap: 5px; padding: 15px;">
@@ -211,14 +214,8 @@
             <div style="font-size: 1.1rem; opacity: 0.8; margin-top: 10px; font-weight: 700;" id="profile-details"></div>
         </div>
         <div class="stat-row">
-            <div class="glass-panel stat-card">
-                <div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800; margin-bottom: 5px;">ВСІ ДОХОДИ</div>
-                <div class="stat-val val-inc" id="info-inc">0 ₴</div>
-            </div>
-            <div class="glass-panel stat-card">
-                <div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800; margin-bottom: 5px;">ВСІ ВИТРАТИ</div>
-                <div class="stat-val val-exp" id="info-exp">0 ₴</div>
-            </div>
+            <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800; margin-bottom: 5px;">ВСІ ДОХОДИ</div><div class="stat-val val-inc" id="info-inc">0 ₴</div></div>
+            <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800; margin-bottom: 5px;">ВСІ ВИТРАТИ</div><div class="stat-val val-exp" id="info-exp">0 ₴</div></div>
         </div>
     </div>
 
@@ -240,11 +237,7 @@
         </div>
 
         <div class="glass-panel main-card">
-            <div class="scanner-loader" id="scanLoader">
-                <div style="font-size: 3rem;">🤖</div>
-                <div style="font-weight: 900; margin-top: 15px; font-size: 1.3rem;" id="t-scan-ai">ШІ аналізує чек...</div>
-                <div class="scan-line"></div>
-            </div>
+            <div class="scanner-loader" id="scanLoader"><div style="font-size: 3rem;">🤖</div><div style="font-weight: 900; margin-top: 15px; font-size: 1.3rem;" id="t-scan-ai">ШІ аналізує чек...</div><div class="scan-line"></div></div>
             <div style="font-size: 0.95rem; opacity: 0.8; font-weight: 900; letter-spacing: 2px;" id="t-bud-bal">ЗАЛИШОК</div>
             <div style="font-size: 4.2rem; font-weight: 900; letter-spacing: -2px; margin: 5px 0;" id="b-balance">0 ₴</div>
         </div>
@@ -271,6 +264,7 @@
 
         <button class="add-user-btn" onclick="showJoinCode()" id="t-bud-add">➕ Додати користувача (Код)</button>
         <button class="ai-btn" onclick="generateAIReport()" id="t-bud-ai">🧠 Звіт та ШІ-Аналіз місяця</button>
+        <button class="share-btn" onclick="shareReport()" id="t-bud-share">📤 Поділитися підсумком</button>
     </div>
 
     <div id="screen-settings" class="screen">
@@ -287,17 +281,17 @@
             </div>
 
             <div style="font-weight: 900; margin-bottom: 15px; font-size: 0.9rem; opacity: 0.8;" id="t-set-t1">СВІТЛІ ТЕМИ</div>
-            <div class="menu-grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px;">
-                <div class="tile" style="padding:15px; background:#e6f2ff; color:#001b33; min-height:80px;" onclick="setTheme('light-blue')">Синя</div>
-                <div class="tile" style="padding:15px; background:#ffe6f2; color:#33001b; min-height:80px;" onclick="setTheme('light-pink')">Рожева</div>
-                <div class="tile" style="padding:15px; background:#e6ffe6; color:#003300; min-height:80px;" onclick="setTheme('light-green')">Зелена</div>
+            <div class="theme-grid-opt" style="margin-bottom: 30px;">
+                <div class="theme-tile" style="background:#e6f2ff; color:#001b33;" onclick="setTheme('light-blue')">Синє<br>Скло</div>
+                <div class="theme-tile" style="background:#ffe6f2; color:#33001b;" onclick="setTheme('light-pink')">Рожеве<br>Скло</div>
+                <div class="theme-tile" style="background:#e6ffe6; color:#003300;" onclick="setTheme('light-green')">Зелене<br>Скло</div>
             </div>
 
             <div style="font-weight: 900; margin-bottom: 15px; font-size: 0.9rem; opacity: 0.8;" id="t-set-t2">ТЕМНІ ТЕМИ</div>
-            <div class="menu-grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                <div class="tile" style="padding:15px; background:#000510; color:white; min-height:80px; border-color:#00aaff;" onclick="setTheme('dark-blue')">Неон 1</div>
-                <div class="tile" style="padding:15px; background:#100000; color:white; min-height:80px; border-color:#ff3333;" onclick="setTheme('dark-red')">Неон 2</div>
-                <div class="tile" style="padding:15px; background:#001005; color:white; min-height:80px; border-color:#33ff77;" onclick="setTheme('dark-green')">Неон 3</div>
+            <div class="theme-grid-opt">
+                <div class="theme-tile" style="background:#000510; color:white; border-color:#00aaff;" onclick="setTheme('dark-blue')">Неон<br>Синій</div>
+                <div class="theme-tile" style="background:#100000; color:white; border-color:#ff3333;" onclick="setTheme('dark-red')">Неон<br>Червоний</div>
+                <div class="theme-tile" style="background:#001005; color:white; border-color:#33ff77;" onclick="setTheme('dark-green')">Неон<br>Зелений</div>
             </div>
         </div>
     </div>
@@ -305,7 +299,7 @@
     <div id="screen-about" class="screen">
         <button class="back-btn" onclick="goToScreen('screen-main')" id="t-back-5">← Назад</button>
         <h1 id="t-about-title">Про додаток</h1>
-        <div class="glass-panel" style="padding: 25px; font-weight: 600; line-height: 1.6; font-size: 1.05rem;" id="t-about-text"></div>
+        <div class="glass-panel" style="padding: 25px; line-height: 1.7; font-size: 1.05rem;" id="t-about-text"></div>
     </div>
 
     <div class="modal-overlay" id="modal-ai">
@@ -344,7 +338,7 @@
 </div>
 
 <script>
-    // 1. FIREBASE INITIALIZATION (ТВОЇ КЛЮЧІ ВШИТО)
+    // 1. FIREBASE INITIALIZATION
     const firebaseConfig = {
       apiKey: "AIzaSyC0Gq5UWe3aNcxLRn0zj9vGsPTKxGwl-tM",
       authDomain: "family-budget-63f9c.firebaseapp.com",
@@ -353,27 +347,21 @@
       messagingSenderId: "231497554229",
       appId: "1:231497554229:web:cb0b68015a54f64ac6547c"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // ЗАХИСТ ВІД СКИДАННЯ (ОФЛАЙН ПАМ'ЯТЬ)
-    db.enablePersistence().catch(function(err) {
-        console.error("Firebase Persistence Error:", err.code);
-    });
+    db.enablePersistence().catch(function(err) { console.error("Firebase Persistence Error:", err.code); });
     
-    // ДАНІ
     let appData = { 
-        profile: JSON.parse(localStorage.getItem('budget_profile_v7')) || null, 
-        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v7')) || [],
-        theme: localStorage.getItem('budget_theme_v7') || 'dark-blue',
-        lang: localStorage.getItem('budget_lang_v7') || 'uk',
-        sound: localStorage.getItem('budget_sound_v7') !== 'false'
+        profile: JSON.parse(localStorage.getItem('budget_profile_v8')) || null, 
+        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v8')) || [],
+        theme: localStorage.getItem('budget_theme_v8') || 'dark-blue',
+        lang: localStorage.getItem('budget_lang_v8') || 'uk',
+        sound: localStorage.getItem('budget_sound_v8') !== 'false'
     };
     
     let currentBudgetId = null, tempMode = 'expense', tempCat = '❓ Інше', isCloudActive = false, allProjects = [];
 
-    // ЗВУК
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playHaptic() {
         if(!appData.sound) return;
@@ -385,43 +373,56 @@
         osc.start(); osc.stop(audioCtx.currentTime + 0.03);
     }
 
-    function checkAuth() {
-        playHaptic();
-        if(appData.profile && appData.profile.name) goToScreen('screen-main');
-        else goToScreen('screen-register');
+    function checkAuth() { playHaptic(); if(appData.profile && appData.profile.name) goToScreen('screen-main'); else goToScreen('screen-register'); }
+    function init() { setTheme(appData.theme); document.getElementById('soundToggle').checked = appData.sound; applyLang(); }
+
+    // АЛГОРИТМ СТИСНЕННЯ ФОТО (ВИРІШУЄ БАГ З АВАТАРКАМИ)
+    function resizeAndCompressImage(file, callback) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const MAX_SIZE = 200; // Пікселів
+                let width = img.width, height = img.height;
+                if (width > height) { if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; } } 
+                else { if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; } }
+                canvas.width = width; canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                // Стискаємо в JPEG з якістю 70% (перетворює 5МБ в 10КБ)
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+                callback(dataUrl);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
     }
 
-    function init() {
-        setTheme(appData.theme);
-        document.getElementById('soundToggle').checked = appData.sound;
-        applyLang();
-    }
-
-    // РЕЄСТРАЦІЯ
     function loadAvatar(e) {
         const file = e.target.files[0]; if(!file) return;
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            document.getElementById('avatarPreview').src = event.target.result;
+        resizeAndCompressImage(file, function(compressedDataUrl) {
+            document.getElementById('avatarPreview').src = compressedDataUrl;
             document.getElementById('avatarPreview').style.border = "none";
-        }; reader.readAsDataURL(file);
+        });
     }
 
     function changeAvatar(e) {
         const file = e.target.files[0]; if(!file) return;
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            appData.profile.avatar = event.target.result;
-            localStorage.setItem('budget_profile_v7', JSON.stringify(appData.profile));
+        resizeAndCompressImage(file, function(compressedDataUrl) {
+            appData.profile.avatar = compressedDataUrl;
+            localStorage.setItem('budget_profile_v8', JSON.stringify(appData.profile));
             document.getElementById('profile-avatar').src = appData.profile.avatar;
-        }; reader.readAsDataURL(file);
+            // Оновлюємо аватарки у відкритому проекті, якщо там є наші операції
+            if(currentBudgetId) updateBudgetUI();
+        });
     }
 
     function saveProfile() {
         playHaptic(); const n = document.getElementById('regName').value;
         if(n.length < 2) { alert(appData.lang==='uk'?"Введіть ім'я!":"Enter name!"); return; }
         appData.profile = { name: n, gender: document.getElementById('regGender').value, avatar: document.getElementById('avatarPreview').src };
-        localStorage.setItem('budget_profile_v7', JSON.stringify(appData.profile));
+        localStorage.setItem('budget_profile_v8', JSON.stringify(appData.profile));
         goToScreen('screen-main');
     }
 
@@ -437,7 +438,7 @@
         goToScreen('screen-user');
     }
 
-    // ХМАРА (Підписка на зміни)
+    // ХМАРА
     db.collection("projects").onSnapshot((snapshot) => {
         allProjects = [];
         snapshot.forEach((doc) => { let data = doc.data(); data.id = doc.id; allProjects.push(data); });
@@ -464,8 +465,8 @@
         if(!pName) return;
         const joinCode = Math.floor(1000 + Math.random() * 9000).toString();
         db.collection("projects").add({ name: pName, code: joinCode, bal: 0, inc: 0, exp: 0, history: [], createdAt: firebase.firestore.FieldValue.serverTimestamp() })
-        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v7', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); })
-        .catch((e) => { alert("Помилка створення. Перевірте Firebase правила!"); console.error(e); });
+        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v8', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); })
+        .catch((e) => { alert("Помилка створення."); });
     }
 
     function joinBudgetByCode() {
@@ -473,7 +474,7 @@
         const found = allProjects.find(p => p.code === code);
         if(found) {
             if(!appData.joinedProjects.includes(found.id)) {
-                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v7', JSON.stringify(appData.joinedProjects));
+                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v8', JSON.stringify(appData.joinedProjects));
                 alert(appData.lang==='uk'?"Успішно приєднано!":"Successfully joined!");
             }
             openBudget(found.id);
@@ -501,13 +502,11 @@
         document.getElementById('b-inc').innerText = p.inc + ' ₴';
         document.getElementById('b-exp').innerText = p.exp + ' ₴';
         
-        // Аватарки учасників
         const avBox = document.getElementById('project-avatars-box');
         const uniqueAvatars = [...new Set(p.history.map(h => h.avatar))].filter(Boolean);
         if(!uniqueAvatars.includes(appData.profile.avatar)) uniqueAvatars.push(appData.profile.avatar);
         avBox.innerHTML = uniqueAvatars.slice(0, 4).map(av => `<img src="${av}" class="p-avatar">`).join('');
         
-        // Графік
         const chart = document.getElementById('weekly-chart'); chart.innerHTML = '';
         const days = appData.lang === 'uk' ? ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'] : ['Mo','Tu','We','Th','Fr','Sa','Su'];
         let daySums = [0,0,0,0,0,0,0];
@@ -538,11 +537,10 @@
     }
 
     function deleteBudget(targetId = currentBudgetId) {
-        playHaptic();
-        let pass = prompt(appData.lang==='uk'?"Пароль 0000 для підтвердження:":"Enter password 0000:");
+        playHaptic(); let pass = prompt(appData.lang==='uk'?"Пароль 0000 для підтвердження:":"Enter password 0000:");
         if (pass === "0000") {
             appData.joinedProjects = appData.joinedProjects.filter(id => id !== targetId);
-            localStorage.setItem('budget_joined_v7', JSON.stringify(appData.joinedProjects));
+            localStorage.setItem('budget_joined_v8', JSON.stringify(appData.joinedProjects));
             db.collection("projects").doc(targetId).delete().then(() => { goToScreen('screen-projects'); });
         } else if(pass !== null) alert("❌");
     }
@@ -572,7 +570,6 @@
     function closeModal() { document.getElementById('modal').classList.remove('active'); }
     function selCat(el, catName) { playHaptic(); tempCat = catName; document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
 
-    // ЗБЕРЕЖЕННЯ В ХМАРУ
     function saveTransaction() {
         const val = parseFloat(document.getElementById('amountInput').value);
         if(val > 0) {
@@ -580,17 +577,32 @@
             let newBal = p.bal, newInc = p.inc, newExp = p.exp;
             if(tempMode === 'expense') { newBal -= val; newExp += val; } else { newBal += val; newInc += val; }
             const newTx = { id: Date.now(), type: tempMode, amount: val, cat: tempCat, user: appData.profile.name, avatar: appData.profile.avatar };
-            
-            db.collection("projects").doc(currentBudgetId).update({ bal: newBal, inc: newInc, exp: newExp, history: [...p.history, newTx] })
-            .catch(e => { alert("Не вдалося зберегти в хмару! Перевірте інтернет."); });
+            db.collection("projects").doc(currentBudgetId).update({ bal: newBal, inc: newInc, exp: newExp, history: [...p.history, newTx] });
         }
         closeModal();
     }
 
-    // НАЛАШТУВАННЯ
-    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v7', t); document.documentElement.setAttribute('data-theme', t); }
-    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v7', appData.sound); playHaptic(); }
-    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v7', appData.lang); applyLang(); }
+    // НОВА ФІЧА: ШЕРІНГ ЗВІТУ
+    function shareReport() {
+        playHaptic();
+        const p = allProjects.find(x => x.id === currentBudgetId);
+        if(!p) return;
+        const text = appData.lang==='uk' 
+            ? `📊 Звіт: ${p.name}\n💰 Залишок: ${p.bal} ₴\n📈 Доходи: ${p.inc} ₴\n📉 Витрати: ${p.exp} ₴\n\nСтворено в Budget Together від AchillesMaximus`
+            : `📊 Report: ${p.name}\n💰 Balance: ${p.bal} ₴\n📈 Income: ${p.inc} ₴\n📉 Expense: ${p.exp} ₴\n\nCreated with Budget Together by AchillesMaximus`;
+        
+        if (navigator.share) {
+            navigator.share({ title: p.name, text: text }).catch(console.error);
+        } else {
+            navigator.clipboard.writeText(text);
+            alert(appData.lang==='uk'?"Звіт скопійовано! Можете вставити його в месенджер.":"Report copied to clipboard!");
+        }
+    }
+
+    // НАЛАШТУВАННЯ ТА ЛОКАЛІЗАЦІЯ
+    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v8', t); document.documentElement.setAttribute('data-theme', t); }
+    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v8', appData.sound); playHaptic(); }
+    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v8', appData.lang); applyLang(); }
 
     const dict = {
         uk: { regTitle: "Профіль", regPhoto: "Додати фото", regM: "Чоловік", regF: "Жінка", regBtn: "Зберегти та Почати",
@@ -598,15 +610,15 @@
               back: "← Назад", uTitle: "Мій профіль", uChng: "Натисни щоб змінити", pTitle: "Мої бюджети", bBal: "ЗАЛИШОК", bInc: "ДОХОДИ", bExp: "ВИТРАТИ",
               btnExp: "➖ Витрата", btnInc: "➕ Прибуток", bHist: "Історія операцій", bAdd: "➕ Додати користувача (Код)", bChart: "Витрати за 7 днів 📊",
               setTitle: "Налаштування", setLang: "Мова (Укр / Eng)", setSnd: "Звуки інтерфейсу", setT1: "СВІТЛІ ТЕМИ", setT2: "ТЕМНІ ТЕМИ",
-              abTitle: "Про додаток", modBtn: "ДОДАТИ", aiBtn: "🧠 Звіт та ШІ-Аналіз місяця", aiTitle: "ШІ-Аналіз",
-              abText: "<b>Budget Together</b> — ваш особистий фінансовий психотерапевт. Її головна мета: щоб ви нарешті перестали згадувати, хто вчора платив за каву.<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.3rem;'>Created by AchillesMaximus</span><br>Ми — тітани індустрії. Кажуть, Стів Джобс пустив сльозу, коли побачив наш перший рядок коду (але це не точно).<br><br><b>🔥 Переваги:</b><br>• Миттєва хмарна синхронізація ☁️<br>• ШІ для чеків 🤖<br>• Інтерфейс 'Рідке скло'<br>• Аналітика, яка збереже ваш бюджет<br><br>Робимо так, щоб ваші гроші рахували себе самі!"},
+              abTitle: "Про додаток", modBtn: "ДОДАТИ", aiBtn: "🧠 Звіт та ШІ-Аналіз", aiTitle: "ШІ-Аналіз", shareBtn: "📤 Поділитися звітом",
+              abText: "<b style='font-size: 1.2rem;'>Візія AchillesMaximus</b><br>Ми — архітектори цифрового майбутнього. Budget Together був створений з єдиною місією: назавжди знищити побутові сварки через гроші. Ми перетворюємо нудну фінансову рутину на елегантний процес.<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.4rem; font-family: var(--font-neon);'>AchillesMaximus</span><br><i>«Робимо так, щоб ваші гроші рахували себе самі!»</i><br><br><b>🧠 Глибока ШІ-Аналітика</b><br>Наш вбудований штучний інтелект не просто зводить цифри — він розуміє ваші звички. Він аналізує категорії витрат і надає безкомпромісну критику, яка вбереже ваш бюджет від емоційних покупок.<br><br><b>☁️ Безпека та Хмарні Технології</b><br>Ваші дані синхронізуються за мілісекунди завдяки інфраструктурі Firebase від Google. Навіть без інтернету додаток збереже транзакції та відправить їх у хмару при першому ж підключенні.<br><br><b>🔮 Майбутні оновлення:</b><br>• Мультивалютність<br>• Експорт в Excel<br>• ШІ-розпізнавання чеків з усіх супермаркетів світу!"},
         en: { regTitle: "Profile", regPhoto: "Add Photo", regM: "Male", regF: "Female", regBtn: "Save & Start",
               mNew: "New Shared<br>Budget", mJoin: "Join by<br>Code", mCont: "My Budgets", mInfo: "Profile", mSet: "Settings", mAb: "About App",
               back: "← Back", uTitle: "My Profile", uChng: "Tap to change", pTitle: "My Budgets", bBal: "BALANCE", bInc: "INCOME", bExp: "EXPENSE",
               btnExp: "➖ Expense", btnInc: "➕ Income", bHist: "Transaction History", bAdd: "➕ Add User (Code)", bChart: "Last 7 Days 📊",
               setTitle: "Settings", setLang: "Language (Ukr / Eng)", setSnd: "UI Sounds", setT1: "LIGHT THEMES", setT2: "DARK THEMES",
-              abTitle: "About App", modBtn: "ADD", aiBtn: "🧠 Monthly AI Report", aiTitle: "AI Analysis",
-              abText: "<b>Budget Together</b> — your financial therapist. Shared budget without fights!<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.3rem;'>Created by AchillesMaximus</span><br>We are industry titans.<br><br><b>🔥 Features:</b><br>• Cloud sync ☁️<br>• AI Receipt Scanner 🤖<br>• Liquid Glass UI<br>• Smart Analytics<br><br>We make your money count itself!"}
+              abTitle: "About App", modBtn: "ADD", aiBtn: "🧠 AI Monthly Report", aiTitle: "AI Analysis", shareBtn: "📤 Share Report",
+              abText: "<b style='font-size: 1.2rem;'>The AchillesMaximus Vision</b><br>We are architects of the digital future. Budget Together was created with a single mission: to destroy domestic arguments over money forever. We turn boring financial routines into an elegant process.<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.4rem; font-family: var(--font-neon);'>AchillesMaximus</span><br><i>«We make your money count itself!»</i><br><br><b>🧠 Deep AI Analytics</b><br>Our built-in AI doesn't just calculate numbers—it understands your habits. It analyzes spending categories and provides uncompromising critique to save your budget from emotional purchases.<br><br><b>☁️ Security & Cloud</b><br>Your data syncs in milliseconds thanks to Google's Firebase infrastructure. Even offline, the app saves transactions and sends them to the cloud upon connection.<br><br><b>🔮 Future Updates:</b><br>• Multi-currency<br>• Excel Export<br>• Global AI receipt scanning!"}
     };
 
     function applyLang() {
@@ -621,14 +633,13 @@
         document.getElementById('t-user-title').innerText = d.uTitle; document.getElementById('t-user-change').innerText = d.uChng; document.getElementById('t-proj-title').innerText = d.pTitle;
         document.getElementById('t-bud-bal').innerText = d.bBal; document.getElementById('t-bud-inc').innerText = d.bInc; document.getElementById('t-bud-exp').innerText = d.bExp; 
         document.getElementById('t-bud-btn-exp').innerText = d.btnExp; document.getElementById('t-bud-btn-inc').innerText = d.btnInc; document.getElementById('t-bud-hist').innerText = d.bHist;
-        document.getElementById('t-bud-add').innerText = d.bAdd; document.getElementById('t-bud-chart').innerText = d.bChart;
+        document.getElementById('t-bud-add').innerText = d.bAdd; document.getElementById('t-bud-chart').innerText = d.bChart; document.getElementById('t-bud-share').innerText = d.shareBtn;
         document.getElementById('t-set-title').innerText = d.setTitle; document.getElementById('t-set-lang').innerText = d.setLang; document.getElementById('t-set-snd').innerText = d.setSnd; 
         document.getElementById('t-set-t1').innerText = d.setT1; document.getElementById('t-set-t2').innerText = d.setT2;
         document.getElementById('t-about-title').innerText = d.abTitle; document.getElementById('t-about-text').innerHTML = d.abText;
         document.getElementById('t-mod-btn').innerText = d.modBtn; document.getElementById('t-bud-ai').innerText = d.aiBtn; document.getElementById('t-ai-title').innerText = d.aiTitle;
     }
 
-    // ШІ АНАЛІЗ
     function generateAIReport() {
         playHaptic(); const p = allProjects.find(x => x.id === currentBudgetId);
         if(!p || p.history.length === 0) { alert(appData.lang==='uk'?"Мало даних для ШІ!":"Not enough data for AI!"); return; }
@@ -652,7 +663,6 @@
         document.getElementById('modal-ai').classList.add('active');
     }
 
-    // РОЗУМНИЙ OCR З ЗАХИСТОМ ВІД ШТРИХ-КОДІВ
     async function startOCR(event) {
         const file = event.target.files[0]; if (!file) return;
         playHaptic(); const loader = document.getElementById('scanLoader'); loader.classList.add('active');
@@ -662,8 +672,6 @@
             const result = await Tesseract.recognize(file, 'ukr+eng');
             const text = result.data.text.toLowerCase();
             let maxAmount = 0;
-            
-            // 1. Шукаємо ключові слова
             const keywords = ['сума', 'разом', 'всього', 'підсумок', 'total', 'sum', 'до сплати'];
             const lines = text.split('\n');
             for (let line of lines) {
@@ -672,16 +680,10 @@
                     if (match) { maxAmount = parseFloat(match[0].replace(',', '.')); break; }
                 }
             }
-            
-            // 2. Якщо слів немає, шукаємо найбільшу логічну цифру (з крапкою і 2 нулями, < 50000)
             if (maxAmount === 0) {
                 const nums = text.match(/\d+[.,]\d{2}/g);
-                if(nums) nums.forEach(n => { 
-                    let val = parseFloat(n.replace(',', '.')); 
-                    if(val > maxAmount && val < 50000) maxAmount = val; 
-                });
+                if(nums) nums.forEach(n => { let val = parseFloat(n.replace(',', '.')); if(val > maxAmount && val < 50000) maxAmount = val; });
             }
-
             loader.classList.remove('active');
             if(maxAmount > 0) {
                 openModal('expense'); document.getElementById('amountInput').value = maxAmount;
