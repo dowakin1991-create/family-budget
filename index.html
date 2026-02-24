@@ -1,114 +1,158 @@
 <!DOCTYPE html>
-<html lang="uk" data-theme="dark-glass">
+<html lang="uk" data-theme="dark-blue">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    
     <title>Budget Together</title>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
     <style>
         :root {
-            --glass-bg: rgba(255, 255, 255, 0.08); --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); --text-main: #ffffff;
+            /* Базові змінні */
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             --expense: #ff3b30; --income: #34c759; --accent: #0a84ff;
             --font-main: 'Inter', sans-serif; --font-neon: 'Righteous', cursive;
         }
 
+        /* 3 СВІТЛІ ТЕМИ РІДКОГО СКЛА */
+        [data-theme="light-blue"] { --bg-current: #e6f2ff; --glass-bg: rgba(255, 255, 255, 0.55); --glass-border: rgba(255, 255, 255, 0.8); --text-current: #001b33; --neon-glow: #007aff; --blob-1: #b3d9ff; --blob-2: #cce6ff; }
+        [data-theme="light-pink"] { --bg-current: #ffe6f2; --glass-bg: rgba(255, 255, 255, 0.55); --glass-border: rgba(255, 255, 255, 0.8); --text-current: #33001b; --neon-glow: #ff007f; --blob-1: #ffb3d9; --blob-2: #ffcce6; }
+        [data-theme="light-green"] { --bg-current: #e6ffe6; --glass-bg: rgba(255, 255, 255, 0.55); --glass-border: rgba(255, 255, 255, 0.8); --text-current: #003300; --neon-glow: #00b300; --blob-1: #b3ffb3; --blob-2: #ccffcc; }
+        
+        /* 3 ТЕМНІ ТЕМИ РІДКОГО СКЛА */
+        [data-theme="dark-blue"] { --bg-current: #000510; --glass-bg: rgba(20, 30, 50, 0.45); --glass-border: rgba(255, 255, 255, 0.1); --text-current: #ffffff; --neon-glow: #00aaff; --blob-1: #001f3f; --blob-2: #003366; }
+        [data-theme="dark-red"] { --bg-current: #100000; --glass-bg: rgba(50, 10, 10, 0.45); --glass-border: rgba(255, 255, 255, 0.1); --text-current: #ffffff; --neon-glow: #ff3333; --blob-1: #3f0000; --blob-2: #660000; }
+        [data-theme="dark-green"] { --bg-current: #001005; --glass-bg: rgba(10, 40, 20, 0.45); --glass-border: rgba(255, 255, 255, 0.1); --text-current: #ffffff; --neon-glow: #33ff77; --blob-1: #002b0c; --blob-2: #004d16; }
+
+        /* Оптимізація під повноекранний режим */
         body {
-            margin: 0; height: 100vh; font-family: var(--font-main); color: var(--text-main);
-            background-color: #000; overflow: hidden; -webkit-tap-highlight-color: transparent; position: relative;
+            margin: 0; padding: 0; 
+            height: 100dvh; /* Магія: 100dvh адаптується під панель Safari */
+            font-family: var(--font-main); color: var(--text-current);
+            background-color: var(--bg-current); overflow: hidden; 
+            -webkit-tap-highlight-color: transparent; position: relative;
+            overscroll-behavior-y: none; /* Блокує резинку та оновлення сторінки */
+            transition: background-color 0.5s ease;
         }
 
-        .bg-blob {
-            position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.6;
-            animation: moveBlobs 15s infinite alternate ease-in-out; z-index: -1; will-change: transform;
-        }
-        .blob-1 { width: 300px; height: 300px; background: #001f3f; top: -50px; left: -50px; }
-        .blob-2 { width: 250px; height: 250px; background: #3f002d; bottom: 10%; right: -50px; animation-delay: -5s; }
-        .blob-3 { width: 200px; height: 200px; background: #002b1c; top: 40%; left: 30%; animation-duration: 20s; }
+        /* Анімовані сфери */
+        .bg-blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.7; animation: moveBlobs 20s infinite alternate ease-in-out; z-index: -1; will-change: transform; }
+        .blob-1 { width: 350px; height: 350px; background: var(--blob-1); top: -100px; left: -100px; }
+        .blob-2 { width: 300px; height: 300px; background: var(--blob-2); bottom: 5%; right: -100px; animation-delay: -5s; }
 
-        @keyframes moveBlobs { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(50px, 50px) scale(1.1); } }
+        @keyframes moveBlobs { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(80px, 80px) scale(1.1); } }
 
-        .app-container { max-width: 480px; margin: 0 auto; height: 100%; position: relative; z-index: 1; }
+        .app-container { max-width: 480px; margin: 0 auto; height: 100dvh; position: relative; z-index: 1; }
 
+        /* Екрани */
         .screen { 
             position: absolute; inset: 0; display: flex; flex-direction: column; padding: 40px 20px 40px; 
-            opacity: 0; pointer-events: none; transform: scale(0.96) translateY(10px); 
+            opacity: 0; pointer-events: none; transform: scale(0.96) translateY(15px); 
             transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.32, 0.72, 0, 1); 
             overflow-y: auto; box-sizing: border-box; will-change: transform, opacity;
+            padding-bottom: env(safe-area-inset-bottom, 40px);
         }
         .screen.active { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); z-index: 10; }
 
-        h1 { font-weight: 900; font-size: 2.2rem; margin-bottom: 25px; letter-spacing: -1px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-        .neon-title { font-family: var(--font-neon); font-size: 2.8rem; text-align: center; color: #fff; text-shadow: 0 0 10px rgba(10,132,255,0.8), 0 0 20px rgba(10,132,255,0.4); margin-bottom: 30px; }
+        h1 { font-weight: 900; font-size: 2.2rem; margin-bottom: 25px; letter-spacing: -1px; text-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .neon-title { font-family: var(--font-neon); font-size: 2.8rem; text-align: center; color: var(--text-current); text-shadow: 0 0 10px var(--neon-glow), 0 0 20px var(--neon-glow); margin-bottom: 30px; animation: neonPulse 2s infinite alternate;}
         
+        /* Рідке скло */
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 32px; box-shadow: var(--glass-shadow); }
 
+        /* Логотип та Сплеш */
+        .logo-wrap { text-align: center; margin-bottom: 30px; margin-top: 20vh; animation: applePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+        .app-logo { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 3px solid var(--glass-border); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
+
+        /* Меню Плитки */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .tile {
             background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border); border-radius: 30px; padding: 20px 15px;
             display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-            font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), background 0.2s;
-            aspect-ratio: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.1); will-change: transform;
+            font-weight: 800; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+            aspect-ratio: 1; box-shadow: var(--glass-shadow); color: var(--text-current);
         }
-        .tile:active { transform: scale(0.92); background: rgba(255,255,255,0.15); }
-        .tile-icon { font-size: 2.5rem; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+        .tile:active { transform: scale(0.92); background: rgba(128,128,128,0.2); }
+        .tile-icon { font-size: 2.5rem; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
         .tile.wide { grid-column: span 2; aspect-ratio: auto; padding: 25px; flex-direction: row; gap: 20px; text-align: left; justify-content: flex-start; }
         .tile.wide .tile-icon { margin-bottom: 0; }
 
-        .back-btn { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: #fff; font-size: 1rem; font-weight: 700; padding: 10px 20px; border-radius: 20px; margin-bottom: 25px; cursor: pointer; align-self: flex-start; transition: 0.2s; }
+        .back-btn { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: var(--text-current); font-size: 1rem; font-weight: 800; padding: 12px 24px; border-radius: 20px; margin-bottom: 25px; cursor: pointer; align-self: flex-start; transition: 0.2s; box-shadow: var(--glass-shadow);}
         .back-btn:active { transform: scale(0.9); }
 
-        .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .cloud-status { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 800; padding: 8px 15px; border-radius: 20px; background: var(--glass-bg); border: 1px solid var(--glass-border); transition: 0.3s;}
-        .cloud-syncing { color: var(--accent); animation: pulseCloud 1.5s infinite alternate; border-color: rgba(10,132,255,0.5);}
+        /* Екран Бюджету */
+        .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .cloud-status { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 900; padding: 8px 15px; border-radius: 20px; background: var(--glass-bg); border: 1px solid var(--glass-border); transition: 0.3s;}
+        .cloud-syncing { color: var(--neon-glow); animation: pulseCloud 1.5s infinite alternate; border-color: var(--neon-glow);}
         .cloud-offline { color: #ff9f0a; }
 
         .summary-cards { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 25px; }
-        .main-card { padding: 30px 20px; text-align: center; }
+        .main-card { padding: 30px 20px; text-align: center; position: relative;}
         .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .stat-card { padding: 20px 15px; text-align: center; }
-        .stat-val { font-size: 1.5rem; font-weight: 900; margin-top: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
-        .val-exp { color: var(--expense); } .val-inc { color: var(--income); }
+        .stat-val { font-size: 1.5rem; font-weight: 900; margin-top: 5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .val-exp { color: var(--expense); filter: brightness(1.2); } .val-inc { color: var(--income); filter: brightness(1.1); }
 
         .action-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; margin-bottom: 30px; }
-        .btn-action { padding: 18px 10px; border-radius: 24px; border: none; font-weight: 800; color: white; cursor: pointer; font-size: 1rem; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .btn-action { padding: 18px 10px; border-radius: 24px; border: none; font-weight: 900; color: white; cursor: pointer; font-size: 1rem; transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
         .btn-action:active { transform: scale(0.92); }
         .btn-red { background: linear-gradient(135deg, #ff3b30, #cc0000); }
         .btn-green { background: linear-gradient(135deg, #34c759, #009900); }
-        .btn-cam { background: linear-gradient(135deg, #0a84ff, #0044cc); width: 60px; font-size: 1.4rem; }
+        .btn-cam { background: linear-gradient(135deg, #0a84ff, #0044cc); width: 60px; font-size: 1.4rem; position: relative;}
 
-        .history-list { display: flex; flex-direction: column; gap: 12px; }
-        .hist-item { padding: 18px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+        .history-list { display: flex; flex-direction: column; gap: 12px; padding-bottom: 40px;}
+        .hist-item { padding: 18px; display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
         .hist-left { display: flex; align-items: center; gap: 15px; }
-        .hist-user { font-size: 0.8rem; opacity: 0.6; display: block; margin-top: 4px; font-weight: 500;}
-        .delete-btn { background: rgba(255, 59, 48, 0.2); border: none; border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; font-size: 1rem; cursor: pointer; transition: 0.2s; margin-left: 10px; color: white;}
-        .delete-btn:active { transform: scale(0.8); background: var(--expense); }
+        .hist-user { font-size: 0.8rem; opacity: 0.7; display: block; margin-top: 4px; font-weight: 600;}
+        .delete-btn { background: rgba(255, 59, 48, 0.15); border: 1px solid rgba(255, 59, 48, 0.3); border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center; font-size: 1rem; cursor: pointer; transition: 0.2s; margin-left: 10px; color: var(--expense);}
+        .delete-btn:active { transform: scale(0.8); background: var(--expense); color: white;}
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; z-index: 1000; }
+        /* Модалка */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; z-index: 1000; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content { background: rgba(30, 30, 30, 0.65); border-top: 1px solid rgba(255,255,255,0.2); width: 100%; border-radius: 40px 40px 0 0; padding: 30px 20px 50px; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1); box-sizing: border-box; box-shadow: 0 -10px 40px rgba(0,0,0,0.3); }
+        .modal-content { background: var(--bg-current); border-top: 1px solid var(--glass-border); width: 100%; border-radius: 40px 40px 0 0; padding: 30px 20px 50px; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1); box-sizing: border-box; box-shadow: 0 -10px 40px rgba(0,0,0,0.3); }
         .modal-overlay.active .modal-content { transform: translateY(0); }
         
         .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 25px; }
-        .cat-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px 5px; border-radius: 24px; text-align: center; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s; color: white;}
-        .cat-btn.selected { background: rgba(10, 132, 255, 0.3); border-color: var(--accent); transform: scale(1.05); }
-        .cat-btn span { font-size: 1.8rem; display: block; margin-bottom: 5px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));}
+        .cat-btn { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 15px 5px; border-radius: 24px; text-align: center; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.2s; color: var(--text-current);}
+        .cat-btn.selected { background: rgba(10, 132, 255, 0.2); border-color: var(--accent); transform: scale(1.05); }
+        .cat-btn span { font-size: 1.8rem; display: block; margin-bottom: 5px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));}
 
-        @keyframes pulseCloud { 0% { opacity: 0.5; box-shadow: none; } 100% { opacity: 1; box-shadow: 0 0 15px rgba(10,132,255,0.5); } }
+        /* Сканер (Loader) */
+        .scanner-loader { position: absolute; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 50; border-radius: 32px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; opacity: 0; pointer-events: none; transition: 0.3s;}
+        .scanner-loader.active { opacity: 1; pointer-events: auto; }
+        .scan-line { width: 80%; height: 3px; background: var(--accent); box-shadow: 0 0 15px var(--accent); animation: scanAnim 1.5s infinite alternate ease-in-out; margin-top: 20px;}
+
+        @keyframes applePop { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes pulseCloud { 0% { opacity: 0.6; box-shadow: none; } 100% { opacity: 1; box-shadow: 0 0 15px var(--neon-glow); } }
+        @keyframes scanAnim { 0% { transform: translateY(-30px); } 100% { transform: translateY(30px); } }
+        @keyframes neonPulse { 0% { text-shadow: 0 0 5px var(--neon-glow), 0 0 10px var(--neon-glow); } 100% { text-shadow: 0 0 2px var(--neon-glow), 0 0 5px var(--neon-glow); } }
     </style>
 </head>
 <body>
 
-<div class="bg-blob blob-1"></div><div class="bg-blob blob-2"></div><div class="bg-blob blob-3"></div>
+<div class="bg-blob blob-1"></div><div class="bg-blob blob-2"></div>
 
 <div class="app-container">
 
-    <div id="screen-main" class="screen active">
+    <div id="screen-splash" class="screen active" onclick="goToScreen('screen-main')">
+        <div class="logo-wrap">
+            <img src="IMG_9283.png" alt="Logo" class="app-logo" onerror="this.src='https://via.placeholder.com/140/2c2c2e/ffffff?text=LOGO'">
+        </div>
+        <div style="font-weight: 800; font-size: 1.2rem; opacity: 0.8; text-align: center; animation: pulseCloud 2s infinite;">ТОРКНІТЬСЯ ЕКРАНА</div>
+    </div>
+
+    <div id="screen-main" class="screen">
         <div class="neon-title">Budget Together</div>
 
         <div class="menu-grid">
@@ -117,7 +161,7 @@
                 <div style="font-size: 1.3rem;">Новий спільний<br>бюджет</div>
             </div>
             
-            <div class="tile wide" onclick="goToScreen('screen-projects')" id="tile-continue" style="display: none; background: linear-gradient(135deg, rgba(10,132,255,0.2), rgba(255,255,255,0.05));">
+            <div class="tile wide" onclick="goToScreen('screen-projects')" id="tile-continue" style="display: none; background: linear-gradient(135deg, rgba(10,132,255,0.15), rgba(255,255,255,0.05));">
                 <div class="tile-icon">📂</div>
                 <div style="font-size: 1.3rem;">Продовжити<br>бюджет</div>
             </div>
@@ -126,8 +170,13 @@
                 <div class="tile-icon">👤</div>Інфо про нас
             </div>
 
-            <div class="tile" onclick="alert('Усі теми вже ідеально адаптовані під стиль рідкого скла! 🪄')">
+            <div class="tile" onclick="goToScreen('screen-settings')">
                 <div class="tile-icon">⚙️</div>Налаштування
+            </div>
+
+            <div class="tile wide" onclick="goToScreen('screen-about')" style="flex-direction: column; align-items: center; gap: 5px; padding: 15px;">
+                <div class="tile-icon" style="font-size: 1.8rem;">ℹ️</div>
+                <div style="font-size: 1rem;">Про додаток</div>
             </div>
         </div>
     </div>
@@ -145,16 +194,16 @@
         <button class="back-btn" onclick="goToScreen('screen-main')">← Назад</button>
         <h1>Інформація</h1>
         <div class="glass-panel main-card" style="margin-bottom: 20px;">
-            <div style="font-size: 3.5rem; margin-bottom: 10px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));">👤</div>
-            <div style="font-size: 1.8rem; font-weight: 900;" id="info-name">Гість</div>
+            <div style="font-size: 3.5rem; margin-bottom: 10px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));">👤</div>
+            <div style="font-size: 2rem; font-weight: 900;" id="info-name">Гість</div>
         </div>
         <div class="stat-row">
             <div class="glass-panel stat-card">
-                <div style="font-size: 0.85rem; opacity: 0.7;">Всі доходи</div>
+                <div style="font-size: 0.85rem; opacity: 0.8;">Всі доходи</div>
                 <div class="stat-val val-inc" id="info-inc">0 ₴</div>
             </div>
             <div class="glass-panel stat-card">
-                <div style="font-size: 0.85rem; opacity: 0.7;">Всі витрати</div>
+                <div style="font-size: 0.85rem; opacity: 0.8;">Всі витрати</div>
                 <div class="stat-val val-exp" id="info-exp">0 ₴</div>
             </div>
         </div>
@@ -173,20 +222,30 @@
                 <span id="cloud-icon">☁️</span> <span id="cloud-text">Підключення...</span>
             </div>
         </div>
-        <h1 id="budget-title" style="margin-top: 0;">Завантаження...</h1>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; margin-top: 10px;">
+            <h1 id="budget-title" style="margin: 0;">Завантаження...</h1>
+            <button class="delete-btn" style="background: rgba(255,0,0,0.2); width: 45px; height: 45px; font-size: 1.2rem;" onclick="deleteBudget()">🗑️</button>
+        </div>
 
         <div class="summary-cards">
             <div class="glass-panel main-card">
-                <div style="font-size: 0.95rem; opacity: 0.7; font-weight: 800; letter-spacing: 1px;">ЗАЛИШОК</div>
-                <div style="font-size: 3.8rem; font-weight: 900; letter-spacing: -2px; margin: 5px 0; text-shadow: 0 4px 15px rgba(0,0,0,0.4);" id="b-balance">0 ₴</div>
+                <div class="scanner-loader" id="scanLoader">
+                    <div style="font-size: 2rem;">🤖</div>
+                    <div style="font-weight: 800; margin-top: 10px;">ШІ читає чек...</div>
+                    <div class="scan-line"></div>
+                </div>
+
+                <div style="font-size: 0.95rem; opacity: 0.8; font-weight: 800; letter-spacing: 1px;">ЗАЛИШОК</div>
+                <div style="font-size: 3.8rem; font-weight: 900; letter-spacing: -2px; margin: 5px 0; text-shadow: 0 4px 15px rgba(0,0,0,0.3);" id="b-balance">0 ₴</div>
             </div>
             <div class="stat-row">
                 <div class="glass-panel stat-card">
-                    <div style="font-size: 0.85rem; opacity: 0.7; font-weight: 700;">ДОХОДИ</div>
+                    <div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800;">ДОХОДИ</div>
                     <div class="stat-val val-inc" id="b-inc">0 ₴</div>
                 </div>
                 <div class="glass-panel stat-card">
-                    <div style="font-size: 0.85rem; opacity: 0.7; font-weight: 700;">ВИТРАТИ</div>
+                    <div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800;">ВИТРАТИ</div>
                     <div class="stat-val val-exp" id="b-exp">0 ₴</div>
                 </div>
             </div>
@@ -195,20 +254,52 @@
         <div class="action-row">
             <button class="btn-action btn-red" onclick="openModal('expense')">➖ Витрата</button>
             <button class="btn-action btn-green" onclick="openModal('income')">➕ Прибуток</button>
-            <button class="btn-action btn-cam" onclick="alert('Сканування чеку AI готується! 📷')">📷</button>
+            
+            <button class="btn-action btn-cam" onclick="document.getElementById('camInput').click()">📷</button>
+            <input type="file" id="camInput" accept="image/*" capture="environment" style="display:none;" onchange="startOCR(event)">
         </div>
 
         <h3 style="margin-bottom: 15px; opacity: 0.9;">Історія операцій</h3>
         <div class="history-list" id="b-history"></div>
     </div>
 
-    <div class="modal-overlay" id="modal">
-        <div class="modal-content glass-panel" style="border-radius: 40px 40px 0 0; border-bottom: none;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h2 id="modalTitle" style="margin:0; font-weight: 900; text-shadow: 0 2px 10px rgba(0,0,0,0.5);">Сума</h2>
-                <button onclick="closeModal()" style="background:rgba(255,255,255,0.1); border-radius:50%; width:40px; height:40px; border:none; font-size:1.5rem; color:#fff;">✕</button>
+    <div id="screen-settings" class="screen">
+        <button class="back-btn" onclick="goToScreen('screen-main')">← Назад</button>
+        <h1>Налаштування</h1>
+        <div class="glass-panel" style="padding: 25px;">
+            <div style="font-weight: 900; margin-bottom: 15px; font-size: 0.9rem; opacity: 0.8;">СВІТЛІ ТЕМИ (РІДКЕ СКЛО)</div>
+            <div class="menu-grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 30px;">
+                <div class="tile" style="padding: 15px; background: #e6f2ff; color: #001b33; min-height: 80px;" onclick="setTheme('light-blue')">Блакитна</div>
+                <div class="tile" style="padding: 15px; background: #ffe6f2; color: #33001b; min-height: 80px;" onclick="setTheme('light-pink')">Рожева</div>
+                <div class="tile" style="padding: 15px; background: #e6ffe6; color: #003300; min-height: 80px;" onclick="setTheme('light-green')">Зелена</div>
             </div>
-            <input type="number" id="amountInput" placeholder="0" style="width:100%; border:none; background:none; font-size:4.5rem; font-weight:900; text-align:center; margin:25px 0; color:#fff; outline:none; text-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+
+            <div style="font-weight: 900; margin-bottom: 15px; font-size: 0.9rem; opacity: 0.8;">ТЕМНІ ТЕМИ (РІДКЕ СКЛО)</div>
+            <div class="menu-grid" style="grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                <div class="tile" style="padding: 15px; background: #000510; color: white; min-height: 80px; border-color: #00aaff;" onclick="setTheme('dark-blue')">Неон Синій</div>
+                <div class="tile" style="padding: 15px; background: #100000; color: white; min-height: 80px; border-color: #ff3333;" onclick="setTheme('dark-red')">Неон Черв.</div>
+                <div class="tile" style="padding: 15px; background: #001005; color: white; min-height: 80px; border-color: #33ff77;" onclick="setTheme('dark-green')">Неон Зел.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-about" class="screen">
+        <button class="back-btn" onclick="goToScreen('screen-main')">← Назад</button>
+        <h1>Про додаток</h1>
+        <div class="glass-panel" style="padding: 25px; font-weight: 600; line-height: 1.6; font-size: 1.05rem;">
+            Ця програма — ваш фінансовий психотерапевт. Її мета: щоб ви нарешті перестали згадувати, хто вчора платив за каву. Ми перетворюємо спільний бюджет на елегантний процес!<br><br>
+            <span style="color: var(--neon-glow); font-weight: 900; font-size: 1.2rem;">AchillesMaximus</span> — це не просто розробники. Ми тітани індустрії та акули клавіатури. Кажуть, Стів Джобс пустив сльозу, коли побачив наш перший рядок коду (але це не точно). <br><br>
+            Робимо так, щоб ваші гроші рахували себе самі!
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2 id="modalTitle" style="margin:0; font-weight: 900;">Сума</h2>
+                <button onclick="closeModal()" style="background:var(--glass-bg); border-radius:50%; width:45px; height:45px; border:1px solid var(--glass-border); font-size:1.5rem; color:var(--text-current); font-weight:bold;">✕</button>
+            </div>
+            <input type="number" id="amountInput" placeholder="0" style="width:100%; border:none; background:none; font-size:4.5rem; font-weight:900; text-align:center; margin:25px 0; color:var(--text-current); outline:none;">
             
             <div id="catGrid" class="cat-grid">
                 <div class="cat-btn" onclick="selCat(this, '🍎 Їжа')"><span>🍎</span>Їжа</div>
@@ -221,14 +312,14 @@
                 <div class="cat-btn" onclick="selCat(this, '❓ Інше')"><span>❓</span>Інше</div>
             </div>
             
-            <button onclick="saveTransaction()" style="width:100%; background:var(--accent); color:white; border:none; padding:22px; border-radius:28px; font-weight:900; margin-top:25px; font-size:1.15rem; box-shadow: 0 8px 25px rgba(10,132,255,0.4); transition: 0.2s;">ДОДАТИ</button>
+            <button onclick="saveTransaction()" style="width:100%; background:var(--accent); color:white; border:none; padding:22px; border-radius:28px; font-weight:900; margin-top:25px; font-size:1.15rem; box-shadow: 0 8px 25px rgba(10,132,255,0.4);">ДОДАТИ</button>
         </div>
     </div>
 
 </div>
 
 <script>
-    // 1. ТВОЇ КЛЮЧІ FIREBASE
+    // 1. ТВОЇ КЛЮЧІ FIREBASE (ТУТ!)
     const firebaseConfig = {
       apiKey: "AIzaSyC0Gq5UWe3aNcxLRn0zj9vGsPTKxGwl-tM",
       authDomain: "family-budget-63f9c.firebaseapp.com",
@@ -238,74 +329,49 @@
       appId: "1:231497554229:web:cb0b68015a54f64ac6547c"
     };
 
-    // 2. ІНІЦІАЛІЗАЦІЯ ХМАРИ
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     
-    // 3. ЛОКАЛЬНІ ДАНІ КОРИСТУВАЧА
-    let appData = {
-        userRole: localStorage.getItem('budget_role_v3') || null,
-        projects: [] // Тепер бюджети живуть у хмарі
-    };
-    
-    let currentBudgetId = null;
-    let tempMode = 'expense';
-    let tempCat = '❓ Інше';
-    let isCloudActive = false;
+    let appData = { userRole: localStorage.getItem('budget_role_v4') || null, projects: [], theme: localStorage.getItem('budget_theme_v4') || 'dark-blue' };
+    let currentBudgetId = null, tempMode = 'expense', tempCat = '❓ Інше', isCloudActive = false;
 
-    // Звуки
+    // М'який звук 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playHaptic() {
         if(audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+        const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
         osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.type = 'sine'; osc.frequency.setValueAtTime(300, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.03);
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+        osc.type = 'sine'; osc.frequency.setValueAtTime(300, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.03);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
         osc.start(); osc.stop(audioCtx.currentTime + 0.03);
     }
 
-    // 4. СЛУХАЧ ХМАРИ (РЕАЛЬНИЙ ЧАС)
+    // ІНІЦІАЛІЗАЦІЯ
+    function init() {
+        setTheme(appData.theme);
+        checkCloudStatus();
+    }
+
     db.collection("projects").onSnapshot((snapshot) => {
         appData.projects = [];
-        snapshot.forEach((doc) => {
-            let data = doc.data();
-            data.id = doc.id; // Зберігаємо ID з бази даних
-            appData.projects.push(data);
-        });
-        
-        // Сортуємо бюджети за часом створення
+        snapshot.forEach((doc) => { let data = doc.data(); data.id = doc.id; appData.projects.push(data); });
         appData.projects.sort((a, b) => a.createdAt - b.createdAt);
-
-        isCloudActive = true;
-        checkCloudStatus();
+        isCloudActive = true; checkCloudStatus();
         
         if(appData.projects.length > 0) document.getElementById('tile-continue').style.display = 'flex';
-        
-        // Оновлюємо екрани, якщо користувач на них
+        else document.getElementById('tile-continue').style.display = 'none';
+
         if(document.getElementById('screen-projects').classList.contains('active')) renderProjects();
         if(document.getElementById('screen-budget').classList.contains('active') && currentBudgetId) {
             const stillExists = appData.projects.find(p => p.id === currentBudgetId);
-            if(stillExists) updateBudgetUI();
-            else goToScreen('screen-projects');
+            if(stillExists) updateBudgetUI(); else goToScreen('screen-projects');
         }
-    }, (error) => {
-        console.error("Помилка підключення до бази:", error);
-        isCloudActive = false;
-        checkCloudStatus();
     });
 
     function checkCloudStatus() {
         const ind = document.getElementById('cloud-indicator');
-        if(isCloudActive) {
-            ind.classList.add('cloud-syncing'); ind.classList.remove('cloud-offline');
-            document.getElementById('cloud-text').innerText = "Синхронізовано";
-        } else {
-            ind.classList.add('cloud-offline'); ind.classList.remove('cloud-syncing');
-            document.getElementById('cloud-text').innerText = "Офлайн";
-        }
+        if(isCloudActive) { ind.classList.add('cloud-syncing'); ind.classList.remove('cloud-offline'); document.getElementById('cloud-text').innerText = "Синхронізовано"; } 
+        else { ind.classList.add('cloud-offline'); ind.classList.remove('cloud-syncing'); document.getElementById('cloud-text').innerText = "Офлайн"; }
     }
 
     function goToScreen(id) {
@@ -315,33 +381,26 @@
         if(id === 'screen-projects') renderProjects();
     }
 
-    function startNewBudget() {
-        if(!appData.userRole) goToScreen('screen-role');
-        else createNewProject();
+    function setTheme(t) {
+        playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v4', t);
+        document.documentElement.setAttribute('data-theme', t);
     }
 
-    function setRole(role) { 
-        appData.userRole = role; 
-        localStorage.setItem('budget_role_v3', role); 
-        createNewProject(); 
-    }
+    function startNewBudget() { if(!appData.userRole) goToScreen('screen-role'); else createNewProject(); }
+    function setRole(role) { appData.userRole = role; localStorage.setItem('budget_role_v4', role); createNewProject(); }
 
-    // 5. ДОДАВАННЯ ДАНИХ У ХМАРУ
     function createNewProject() {
-        const pName = "Наш бюджет " + (appData.projects.length + 1);
-        db.collection("projects").add({
-            name: pName, bal: 0, inc: 0, exp: 0, history: [], 
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        }).then((docRef) => {
-            openBudget(docRef.id);
-        });
+        const pName = prompt("Назва бюджету (наприклад: На авто, Травень):", "Наш бюджет " + (appData.projects.length + 1));
+        if(!pName) return;
+        db.collection("projects").add({ name: pName, bal: 0, inc: 0, exp: 0, history: [], createdAt: firebase.firestore.FieldValue.serverTimestamp() })
+        .then((docRef) => { openBudget(docRef.id); });
     }
 
     function renderProjects() {
         const list = document.getElementById('projects-list'); list.innerHTML = '';
         appData.projects.forEach(p => {
             const btn = document.createElement('div'); btn.className = 'tile wide';
-            btn.innerHTML = `<div class="tile-icon">📁</div> <div>${p.name}<br><span style="font-size:0.85rem; opacity:0.7; font-weight:500;">Залишок: ${p.bal} ₴</span></div>`;
+            btn.innerHTML = `<div class="tile-icon">📁</div> <div>${p.name}<br><span style="font-size:0.85rem; opacity:0.8;">Залишок: <b style="color:var(--neon-glow)">${p.bal} ₴</b></span></div>`;
             btn.onclick = () => openBudget(p.id); list.appendChild(btn);
         });
     }
@@ -357,97 +416,128 @@
         document.getElementById('b-exp').innerText = p.exp + ' ₴';
         
         const hList = document.getElementById('b-history');
-        hList.innerHTML = p.history.length === 0 ? '<div style="opacity:0.5; text-align:center; padding:20px;">Операцій ще немає</div>' : '';
+        hList.innerHTML = p.history.length === 0 ? '<div style="opacity:0.6; text-align:center; padding:20px; font-weight:bold;">Витрат ще немає</div>' : '';
         
         [...p.history].reverse().forEach(h => {
             const isExp = h.type === 'expense';
             const color = isExp ? 'var(--expense)' : 'var(--income)';
-            const sign = isExp ? '-' : '+';
             hList.innerHTML += `
                 <div class="glass-panel hist-item">
                     <div class="hist-left">
                         <span style="font-size: 1.8rem;">${h.cat.split(' ')[0]}</span>
-                        <div>
-                            <div>${h.cat.substring(2)}</div>
-                            <span class="hist-user">${h.user}</span>
-                        </div>
+                        <div><div>${h.cat.substring(2)}</div><span class="hist-user">${h.user}</span></div>
                     </div>
                     <div style="display:flex; align-items:center;">
-                        <span style="color: ${color}; font-weight: 900; font-size:1.1rem;">${sign}${h.amount} ₴</span>
+                        <span style="color: ${color}; font-weight: 900; font-size:1.1rem;">${isExp ? '-' : '+'}${h.amount} ₴</span>
                         <button class="delete-btn" onclick="deleteTx(${h.id})">✕</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         });
     }
 
-    // ВИДАЛЕННЯ ОПЕРАЦІЇ В ХМАРІ
+    // НОВА ФІЧА: ВИДАЛЕННЯ БЮДЖЕТУ З ПАРОЛЕМ 0000
+    function deleteBudget() {
+        playHaptic();
+        let pass = prompt("🗑️ Обережно! Видалити бюджет назавжди?\nВведіть пароль для підтвердження:");
+        if (pass === "0000") {
+            db.collection("projects").doc(currentBudgetId).delete().then(() => {
+                goToScreen('screen-projects');
+            });
+        } else if(pass !== null) {
+            alert("❌ Невірний пароль!");
+        }
+    }
+
     function deleteTx(txId) {
         playHaptic();
-        if(confirm("Видалити цю операцію?")) {
+        if(confirm("Скасувати цю операцію?")) {
             const p = appData.projects.find(x => x.id === currentBudgetId);
             const txIndex = p.history.findIndex(x => x.id === txId);
             if(txIndex > -1) {
                 const tx = p.history[txIndex];
                 let newBal = p.bal, newInc = p.inc, newExp = p.exp;
-                
-                if(tx.type === 'expense') { newBal += tx.amount; newExp -= tx.amount; }
-                else { newBal -= tx.amount; newInc -= tx.amount; }
-                
-                const updatedHistory = p.history.filter(x => x.id !== txId);
-                
-                // Оновлюємо документ в базі
-                db.collection("projects").doc(currentBudgetId).update({
-                    bal: newBal, inc: newInc, exp: newExp, history: updatedHistory
-                });
+                if(tx.type === 'expense') { newBal += tx.amount; newExp -= tx.amount; } else { newBal -= tx.amount; newInc -= tx.amount; }
+                const updHistory = p.history.filter(x => x.id !== txId);
+                db.collection("projects").doc(currentBudgetId).update({ bal: newBal, inc: newInc, exp: newExp, history: updHistory });
             }
         }
     }
 
     function openModal(mode) {
-        playHaptic(); tempMode = mode;
-        tempCat = mode === 'income' ? '💰 Дохід' : '❓ Інше';
+        playHaptic(); tempMode = mode; tempCat = mode === 'income' ? '💰 Дохід' : '❓ Інше';
         document.getElementById('modalTitle').innerText = mode === 'income' ? 'Новий дохід' : 'Нова витрата';
         document.getElementById('catGrid').style.display = mode === 'income' ? 'none' : 'grid';
         document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
-        document.getElementById('amountInput').value = '';
-        document.getElementById('modal').classList.add('active');
+        document.getElementById('amountInput').value = ''; document.getElementById('modal').classList.add('active');
         setTimeout(() => document.getElementById('amountInput').focus(), 300);
     }
-
     function closeModal() { document.getElementById('modal').classList.remove('active'); }
     function selCat(el, catName) { playHaptic(); tempCat = catName; document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
 
-    // ЗБЕРЕЖЕННЯ ОПЕРАЦІЇ В ХМАРУ
     function saveTransaction() {
         const val = parseFloat(document.getElementById('amountInput').value);
         if(val > 0) {
             const p = appData.projects.find(x => x.id === currentBudgetId);
             let newBal = p.bal, newInc = p.inc, newExp = p.exp;
-
-            if(tempMode === 'expense') { newBal -= val; newExp += val; } 
-            else { newBal += val; newInc += val; }
-            
+            if(tempMode === 'expense') { newBal -= val; newExp += val; } else { newBal += val; newInc += val; }
             const newTx = { id: Date.now(), type: tempMode, amount: val, cat: tempCat, user: appData.userRole };
-            const updatedHistory = [...p.history, newTx];
-            
-            // Відправляємо в базу
-            db.collection("projects").doc(currentBudgetId).update({
-                bal: newBal, inc: newInc, exp: newExp, history: updatedHistory
-            });
+            db.collection("projects").doc(currentBudgetId).update({ bal: newBal, inc: newInc, exp: newExp, history: [...p.history, newTx] });
         }
         closeModal();
     }
 
     function openUserInfo() {
         document.getElementById('info-name').innerText = appData.userRole || "Гість";
-        let totInc = 0, totExp = 0;
-        appData.projects.forEach(p => { totInc += p.inc; totExp += p.exp; });
-        document.getElementById('info-inc').innerText = totInc + ' ₴';
-        document.getElementById('info-exp').innerText = totExp + ' ₴';
+        let totInc = 0, totExp = 0; appData.projects.forEach(p => { totInc += p.inc; totExp += p.exp; });
+        document.getElementById('info-inc').innerText = totInc + ' ₴'; document.getElementById('info-exp').innerText = totExp + ' ₴';
         goToScreen('screen-user');
     }
 
+    // --- РОЗУМНИЙ СКАНЕР ЧЕКІВ (OCR) ---
+    async function startOCR(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        playHaptic();
+        const loader = document.getElementById('scanLoader');
+        loader.classList.add('active'); // Вмикаємо анімацію сканування
+
+        try {
+            // Tesseract.js підтягне українську та англійську
+            const result = await Tesseract.recognize(file, 'ukr+eng');
+            const text = result.data.text.toLowerCase();
+            console.log("Розпізнаний текст:", text);
+
+            // Шукаємо всі числа, схожі на ціни (наприклад, 145.50 або 145,50)
+            const nums = text.match(/\d+[.,]\d{2}/g);
+            let maxAmount = 0;
+            
+            if(nums) {
+                nums.forEach(n => {
+                    let val = parseFloat(n.replace(',', '.'));
+                    // Розумний алгоритм бере найбільшу цифру (зазвичай це "Разом/Total")
+                    if(val > maxAmount) maxAmount = val; 
+                });
+            }
+
+            loader.classList.remove('active'); // Вимикаємо лоадер
+
+            if(maxAmount > 0) {
+                openModal('expense');
+                document.getElementById('amountInput').value = maxAmount;
+                alert(`Знайдено найбільшу суму: ${maxAmount} ₴.\nПеревірте та виберіть категорію.`);
+            } else {
+                alert("Не вдалося точно розпізнати суму. Чек розмитий або зім'ятий.\nВведіть вручну.");
+                openModal('expense');
+            }
+        } catch(e) {
+            console.error(e);
+            loader.classList.remove('active');
+            alert("Помилка сканування. Спробуйте ще раз.");
+        }
+    }
+
+    init();
 </script>
 </body>
 </html>
