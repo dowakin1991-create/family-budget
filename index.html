@@ -46,7 +46,6 @@
 
         .app-container { max-width: 480px; margin: 0 auto; width: 100%; height: 100%; position: relative; z-index: 1; }
 
-        /* ЗБІЛЬШЕНО ЧАС АНІМАЦІЙ ДО 0.8s та 0.6s */
         .screen { 
             position: absolute; inset: 0; display: flex; flex-direction: column; 
             padding: calc(env(safe-area-inset-top, 50px) + 25px) 20px 40px; 
@@ -67,9 +66,11 @@
         .app-logo { width: 250px; height: 250px; border-radius: 50%; object-fit: cover; border: 4px solid var(--glass-border); box-shadow: 0 15px 40px rgba(0,0,0,0.4); animation: applePop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
         .author-text { position: absolute; bottom: 50px; font-weight: 800; font-size: 0.85rem; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; animation: pulseCloud 2s infinite; text-align: center;}
 
-        /* Реєстрація */
-        .reg-input { width: 100%; padding: 18px; border-radius: 20px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.1); color: var(--text-current); font-size: 1.1rem; font-family: var(--font-main); font-weight: 600; margin-bottom: 15px; box-sizing: border-box; outline: none; }
-        .avatar-preview { width: 110px; height: 110px; border-radius: 50%; background: var(--glass-bg); margin: 0 auto 20px; display: flex; justify-content: center; align-items: center; font-size: 2.5rem; border: 2px dashed var(--glass-border); cursor: pointer; object-fit: cover; transition: 0.3s;}
+        /* Реєстрація (Оновлена, преміальна) */
+        .reg-card { padding: 40px 25px; text-align: center; display: flex; flex-direction: column; align-items: center;}
+        .reg-input { width: 100%; padding: 20px; border-radius: 24px; border: 2px solid transparent; background: rgba(0,0,0,0.1); color: var(--text-current); font-size: 1.2rem; font-family: var(--font-main); font-weight: 800; margin-bottom: 20px; box-sizing: border-box; outline: none; text-align: center; transition: 0.3s;}
+        .reg-input:focus { border-color: var(--accent); background: rgba(0,0,0,0.2); }
+        .avatar-preview { width: 130px; height: 130px; border-radius: 50%; background: var(--glass-bg); margin: 0 auto 15px; display: flex; justify-content: center; align-items: center; font-size: 3rem; border: 3px dashed var(--glass-border); cursor: pointer; object-fit: cover; transition: 0.3s;}
         .avatar-preview:active { transform: scale(0.9); }
 
         /* Меню */
@@ -89,7 +90,6 @@
         .back-btn { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: var(--text-current); font-size: 1rem; font-weight: 800; padding: 12px 24px; border-radius: 20px; margin-bottom: 25px; cursor: pointer; align-self: flex-start; transition: 0.3s; box-shadow: var(--glass-shadow);}
         .back-btn:active { transform: scale(0.9); }
 
-        /* Аватарки в проекті */
         .project-avatars { display: flex; align-items: center; margin-bottom: 15px; }
         .p-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--bg-current); margin-left: -10px; object-fit: cover; background: #ccc; }
         .p-avatar:first-child { margin-left: 0; }
@@ -106,13 +106,12 @@
         .val-exp { color: var(--expense); filter: brightness(1.2); } .val-inc { color: var(--income); filter: brightness(1.1); }
 
         .action-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; margin-bottom: 20px; }
-        .btn-action { padding: 18px 10px; border-radius: 24px; border: none; font-weight: 900; color: white; cursor: pointer; font-size: 1rem; transition: transform 0.2s; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .btn-action { padding: 18px 10px; border-radius: 24px; border: none; font-weight: 900; color: white; cursor: pointer; font-size: 1.1rem; transition: transform 0.2s; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
         .btn-action:active { transform: scale(0.92); }
         .btn-red { background: linear-gradient(135deg, #ff3b30, #cc0000); }
         .btn-green { background: linear-gradient(135deg, #34c759, #009900); }
         .btn-cam { background: linear-gradient(135deg, #0a84ff, #0044cc); width: 60px; font-size: 1.4rem;}
 
-        /* ЖИВИЙ ГРАФІК */
         .chart-box { padding: 20px; margin-bottom: 25px; }
         .chart { display: flex; align-items: flex-end; justify-content: space-between; height: 100px; margin-top: 25px; padding: 0 5px; }
         .bar-wrapper { display: flex; flex-direction: column; align-items: center; width: 12%; height: 100%; justify-content: flex-end;}
@@ -126,7 +125,6 @@
         .add-user-btn { width: 100%; padding: 20px; border-radius: 24px; background: rgba(10, 132, 255, 0.2); border: 2px dashed var(--accent); color: var(--text-current); font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 15px; font-family: var(--font-main);}
         .ai-btn { width: 100%; padding: 20px; border-radius: 24px; background: linear-gradient(135deg, #8a2be2, #4b0082); color: white; font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 40px; border: none; box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);}
 
-        /* Модалка (Оновлені анімації) */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: 0.5s ease; z-index: 1000; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content { background: var(--bg-current); border-top: 1px solid var(--glass-border); width: 100%; border-radius: 40px 40px 0 0; padding: 30px 20px calc(env(safe-area-inset-bottom, 20px) + 20px); transform: translateY(100%); transition: 0.7s cubic-bezier(0.25, 0.8, 0.25, 1); box-sizing: border-box; box-shadow: 0 -10px 40px rgba(0,0,0,0.3); max-height: 90dvh; overflow-y: auto;}
@@ -158,20 +156,19 @@
     </div>
 
     <div id="screen-register" class="screen">
-        <h1 id="t-reg-title">Реєстрація</h1>
-        <div class="glass-panel" style="padding: 25px;">
+        <h1 id="t-reg-title" style="text-align: center; margin-bottom: 40px; font-size: 2.8rem;">Профіль</h1>
+        <div class="glass-panel reg-card">
             <input type="file" id="avatarInput" accept="image/*" style="display: none;" onchange="loadAvatar(event)">
-            <img id="avatarPreview" class="avatar-preview" src="https://via.placeholder.com/110/2c2c2e/ffffff?text=+" onclick="document.getElementById('avatarInput').click()">
-            <div style="text-align: center; font-size: 0.85rem; margin-top: -10px; margin-bottom: 25px; opacity: 0.7;" id="t-reg-photo">Натисніть, щоб додати фото</div>
+            <img id="avatarPreview" class="avatar-preview" src="https://via.placeholder.com/130/2c2c2e/ffffff?text=+" onclick="document.getElementById('avatarInput').click()">
+            <div style="font-size: 0.9rem; margin-bottom: 30px; opacity: 0.6; font-weight: 800; text-transform: uppercase;" id="t-reg-photo">Додати фото</div>
 
-            <input type="text" id="regName" class="reg-input" placeholder="Ваше Ім'я">
+            <input type="text" id="regName" class="reg-input" placeholder="Ваше Ім'я (Антон, Настя...)">
             <select id="regGender" class="reg-input">
-                <option value="Чоловіча" id="t-reg-m">Чоловіча</option>
-                <option value="Жіноча" id="t-reg-f">Жіноча</option>
+                <option value="Чоловік" id="t-reg-m">Чоловік</option>
+                <option value="Жінка" id="t-reg-f">Жінка</option>
             </select>
-            <input type="date" id="regDob" class="reg-input">
             
-            <button class="btn-action" style="width: 100%; background: var(--accent); margin-top: 10px; padding: 20px; font-size: 1.1rem;" onclick="saveProfile()" id="t-reg-btn">Почати</button>
+            <button class="btn-action" style="width: 100%; background: var(--accent); margin-top: 20px; padding: 22px; font-size: 1.2rem; border-radius: 24px;" onclick="saveProfile()" id="t-reg-btn">Зберегти та Почати</button>
         </div>
     </div>
 
@@ -208,18 +205,18 @@
         <h1 id="t-user-title">Мій профіль</h1>
         <div class="glass-panel main-card">
             <input type="file" id="changeAvatarInput" accept="image/*" style="display: none;" onchange="changeAvatar(event)">
-            <img id="profile-avatar" src="" style="width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid var(--glass-border); margin: 0 auto 15px; cursor: pointer; transition: 0.3s;" onclick="document.getElementById('changeAvatarInput').click()">
-            <div style="font-size: 0.8rem; opacity: 0.5; margin-top: -10px; margin-bottom: 10px;" id="t-user-change">Натисни щоб змінити</div>
-            <div style="font-size: 2.2rem; font-weight: 900;" id="profile-name">Гість</div>
-            <div style="font-size: 1rem; opacity: 0.8; margin-top: 10px; font-weight: 700;" id="profile-details"></div>
+            <img id="profile-avatar" src="" style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 4px solid var(--glass-border); margin: 0 auto 15px; cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3);" onclick="document.getElementById('changeAvatarInput').click()">
+            <div style="font-size: 0.85rem; opacity: 0.5; margin-top: -10px; margin-bottom: 10px; text-transform: uppercase; font-weight: 800;" id="t-user-change">Натисни щоб змінити</div>
+            <div style="font-size: 2.4rem; font-weight: 900;" id="profile-name">Гість</div>
+            <div style="font-size: 1.1rem; opacity: 0.8; margin-top: 10px; font-weight: 700;" id="profile-details"></div>
         </div>
         <div class="stat-row">
             <div class="glass-panel stat-card">
-                <div style="font-size: 0.85rem; opacity: 0.8;">Всі доходи</div>
+                <div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800; margin-bottom: 5px;">ВСІ ДОХОДИ</div>
                 <div class="stat-val val-inc" id="info-inc">0 ₴</div>
             </div>
             <div class="glass-panel stat-card">
-                <div style="font-size: 0.85rem; opacity: 0.8;">Всі витрати</div>
+                <div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800; margin-bottom: 5px;">ВСІ ВИТРАТИ</div>
                 <div class="stat-val val-exp" id="info-exp">0 ₴</div>
             </div>
         </div>
@@ -244,17 +241,17 @@
 
         <div class="glass-panel main-card">
             <div class="scanner-loader" id="scanLoader">
-                <div style="font-size: 2.5rem;">🤖</div>
-                <div style="font-weight: 800; margin-top: 10px; font-size: 1.2rem;" id="t-scan-ai">ШІ аналізує чек...</div>
+                <div style="font-size: 3rem;">🤖</div>
+                <div style="font-weight: 900; margin-top: 15px; font-size: 1.3rem;" id="t-scan-ai">ШІ аналізує чек...</div>
                 <div class="scan-line"></div>
             </div>
-            <div style="font-size: 0.95rem; opacity: 0.8; font-weight: 800; letter-spacing: 1px;" id="t-bud-bal">ЗАЛИШОК</div>
-            <div style="font-size: 4rem; font-weight: 900; letter-spacing: -2px; margin: 5px 0;" id="b-balance">0 ₴</div>
+            <div style="font-size: 0.95rem; opacity: 0.8; font-weight: 900; letter-spacing: 2px;" id="t-bud-bal">ЗАЛИШОК</div>
+            <div style="font-size: 4.2rem; font-weight: 900; letter-spacing: -2px; margin: 5px 0;" id="b-balance">0 ₴</div>
         </div>
         
         <div class="stat-row">
-            <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800;" id="t-bud-inc">ДОХОДИ</div><div class="stat-val val-inc" id="b-inc">0 ₴</div></div>
             <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800;" id="t-bud-exp">ВИТРАТИ</div><div class="stat-val val-exp" id="b-exp">0 ₴</div></div>
+            <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800;" id="t-bud-inc">ДОХОДИ</div><div class="stat-val val-inc" id="b-inc">0 ₴</div></div>
         </div>
 
         <div class="action-row">
@@ -265,12 +262,11 @@
         </div>
 
         <div class="glass-panel chart-box">
-            <div style="font-weight: 900; font-size: 1.1rem; opacity: 0.9;" id="t-bud-chart">Витрати за 7 днів 📊</div>
-            <div class="chart" id="weekly-chart">
-                </div>
+            <div style="font-weight: 900; font-size: 1.2rem; opacity: 0.9;" id="t-bud-chart">Витрати за 7 днів 📊</div>
+            <div class="chart" id="weekly-chart"></div>
         </div>
 
-        <h3 style="margin-bottom: 15px; opacity: 0.9;" id="t-bud-hist">Історія операцій</h3>
+        <h3 style="margin-bottom: 15px; opacity: 0.9; font-weight: 900; font-size: 1.3rem;" id="t-bud-hist">Історія операцій</h3>
         <div class="history-list" id="b-history"></div>
 
         <button class="add-user-btn" onclick="showJoinCode()" id="t-bud-add">➕ Додати користувача (Код)</button>
@@ -281,7 +277,6 @@
         <button class="back-btn" onclick="goToScreen('screen-main')" id="t-back-4">← Назад</button>
         <h1 id="t-set-title">Налаштування</h1>
         <div class="glass-panel" style="padding: 25px;">
-            
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px; font-weight:800; font-size: 1.1rem;">
                 <span id="t-set-lang">Мова (Укр / Eng)</span>
                 <button onclick="toggleLang()" style="padding:10px 20px; border-radius:15px; border:none; background:var(--text-current); color:var(--bg-current); font-weight:900; font-family:var(--font-main);" id="langBtn">УКР</button>
@@ -310,17 +305,7 @@
     <div id="screen-about" class="screen">
         <button class="back-btn" onclick="goToScreen('screen-main')" id="t-back-5">← Назад</button>
         <h1 id="t-about-title">Про додаток</h1>
-        <div class="glass-panel" style="padding: 25px; font-weight: 600; line-height: 1.6; font-size: 1.05rem;" id="t-about-text">
-            <b>Budget Together</b> — ваш особистий фінансовий психотерапевт. Її головна мета: щоб ви нарешті перестали згадувати, хто вчора платив за каву, а хто купував яйця в Сільпо. Ми перетворюємо нудний спільний бюджет на елегантний процес, зберігаючи ваші нерви, гроші та стосунки!<br><br>
-            <span style="color: var(--neon-glow); font-weight: 900; font-size: 1.3rem;">Created by AchillesMaximus</span><br>
-            Ми — це не просто розробники. Ми тітани індустрії, акули клавіатури і просто люди, які забули, як виглядає сонце, поки писали цей ідеальний код. Як ключовий гравець на глобальному ринку елітних програмних рішень, ми використовуємо найпередовіші технології (і трохи чорної магії). Кажуть, Стів Джобс пустив сльозу, коли побачив наш перший рядок коду (але це не точно).<br><br>
-            <b>🔥 Наші переваги:</b><br>
-            • Миттєва хмарна синхронізація ☁️<br>
-            • Штучний Інтелект для читання чеків 🤖<br>
-            • Інноваційний інтерфейс "Рідке скло"<br>
-            • Аналітика, яка збереже ваш бюджет<br><br>
-            AchillesMaximus: Робимо так, щоб ваші гроші рахували себе самі!
-        </div>
+        <div class="glass-panel" style="padding: 25px; font-weight: 600; line-height: 1.6; font-size: 1.05rem;" id="t-about-text"></div>
     </div>
 
     <div class="modal-overlay" id="modal-ai">
@@ -359,7 +344,7 @@
 </div>
 
 <script>
-    // 1. ТВОЇ КЛЮЧІ FIREBASE
+    // 1. FIREBASE INITIALIZATION (ТВОЇ КЛЮЧІ ВШИТО)
     const firebaseConfig = {
       apiKey: "AIzaSyC0Gq5UWe3aNcxLRn0zj9vGsPTKxGwl-tM",
       authDomain: "family-budget-63f9c.firebaseapp.com",
@@ -371,14 +356,19 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+
+    // ЗАХИСТ ВІД СКИДАННЯ (ОФЛАЙН ПАМ'ЯТЬ)
+    db.enablePersistence().catch(function(err) {
+        console.error("Firebase Persistence Error:", err.code);
+    });
     
     // ДАНІ
     let appData = { 
-        profile: JSON.parse(localStorage.getItem('budget_profile_v6')) || null, 
-        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v6')) || [],
-        theme: localStorage.getItem('budget_theme_v6') || 'dark-blue',
-        lang: localStorage.getItem('budget_lang_v6') || 'uk',
-        sound: localStorage.getItem('budget_sound_v6') !== 'false'
+        profile: JSON.parse(localStorage.getItem('budget_profile_v7')) || null, 
+        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v7')) || [],
+        theme: localStorage.getItem('budget_theme_v7') || 'dark-blue',
+        lang: localStorage.getItem('budget_lang_v7') || 'uk',
+        sound: localStorage.getItem('budget_sound_v7') !== 'false'
     };
     
     let currentBudgetId = null, tempMode = 'expense', tempCat = '❓ Інше', isCloudActive = false, allProjects = [];
@@ -395,7 +385,6 @@
         osc.start(); osc.stop(audioCtx.currentTime + 0.03);
     }
 
-    // ІНІЦІАЛІЗАЦІЯ
     function checkAuth() {
         playHaptic();
         if(appData.profile && appData.profile.name) goToScreen('screen-main');
@@ -408,7 +397,7 @@
         applyLang();
     }
 
-    // РЕЄСТРАЦІЯ ТА ПРОФІЛЬ
+    // РЕЄСТРАЦІЯ
     function loadAvatar(e) {
         const file = e.target.files[0]; if(!file) return;
         const reader = new FileReader();
@@ -423,7 +412,7 @@
         const reader = new FileReader();
         reader.onload = function(event) {
             appData.profile.avatar = event.target.result;
-            localStorage.setItem('budget_profile_v6', JSON.stringify(appData.profile));
+            localStorage.setItem('budget_profile_v7', JSON.stringify(appData.profile));
             document.getElementById('profile-avatar').src = appData.profile.avatar;
         }; reader.readAsDataURL(file);
     }
@@ -431,8 +420,8 @@
     function saveProfile() {
         playHaptic(); const n = document.getElementById('regName').value;
         if(n.length < 2) { alert(appData.lang==='uk'?"Введіть ім'я!":"Enter name!"); return; }
-        appData.profile = { name: n, gender: document.getElementById('regGender').value, dob: document.getElementById('regDob').value, avatar: document.getElementById('avatarPreview').src };
-        localStorage.setItem('budget_profile_v6', JSON.stringify(appData.profile));
+        appData.profile = { name: n, gender: document.getElementById('regGender').value, avatar: document.getElementById('avatarPreview').src };
+        localStorage.setItem('budget_profile_v7', JSON.stringify(appData.profile));
         goToScreen('screen-main');
     }
 
@@ -440,7 +429,7 @@
         playHaptic();
         document.getElementById('profile-name').innerText = appData.profile.name;
         document.getElementById('profile-avatar').src = appData.profile.avatar;
-        document.getElementById('profile-details').innerText = `${appData.lang==='uk'?'Стать':'Gender'}: ${appData.profile.gender} | ${appData.lang==='uk'?'ДН':'DOB'}: ${appData.profile.dob}`;
+        document.getElementById('profile-details').innerText = `${appData.lang==='uk'?'Стать':'Gender'}: ${appData.profile.gender}`;
         let totInc = 0, totExp = 0;
         const myProj = allProjects.filter(p => appData.joinedProjects.includes(p.id));
         myProj.forEach(p => { totInc += p.inc; totExp += p.exp; });
@@ -448,7 +437,7 @@
         goToScreen('screen-user');
     }
 
-    // ХМАРА
+    // ХМАРА (Підписка на зміни)
     db.collection("projects").onSnapshot((snapshot) => {
         allProjects = [];
         snapshot.forEach((doc) => { let data = doc.data(); data.id = doc.id; allProjects.push(data); });
@@ -475,7 +464,8 @@
         if(!pName) return;
         const joinCode = Math.floor(1000 + Math.random() * 9000).toString();
         db.collection("projects").add({ name: pName, code: joinCode, bal: 0, inc: 0, exp: 0, history: [], createdAt: firebase.firestore.FieldValue.serverTimestamp() })
-        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v6', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); });
+        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v7', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); })
+        .catch((e) => { alert("Помилка створення. Перевірте Firebase правила!"); console.error(e); });
     }
 
     function joinBudgetByCode() {
@@ -483,7 +473,7 @@
         const found = allProjects.find(p => p.code === code);
         if(found) {
             if(!appData.joinedProjects.includes(found.id)) {
-                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v6', JSON.stringify(appData.joinedProjects));
+                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v7', JSON.stringify(appData.joinedProjects));
                 alert(appData.lang==='uk'?"Успішно приєднано!":"Successfully joined!");
             }
             openBudget(found.id);
@@ -497,7 +487,7 @@
         const myProj = allProjects.filter(p => appData.joinedProjects.includes(p.id));
         myProj.forEach(p => {
             const btn = document.createElement('div'); btn.className = 'tile wide';
-            btn.innerHTML = `<div class="tile-icon">📁</div> <div style="width:100%; display:flex; justify-content:space-between; align-items:center;"><div>${p.name}<br><span style="font-size:0.85rem; opacity:0.8;">Залишок: <b style="color:var(--neon-glow)">${p.bal} ₴</b></span></div><button style="background: rgba(255,0,0,0.2); width: 40px; height: 40px; border-radius:50%; border:none; font-size: 1.2rem; cursor:pointer;" onclick="event.stopPropagation(); deleteBudget('${p.id}')">🗑️</button></div>`;
+            btn.innerHTML = `<div class="tile-icon">📁</div> <div style="width:100%; display:flex; justify-content:space-between; align-items:center;"><div>${p.name}<br><span style="font-size:0.85rem; opacity:0.8;">Залишок: <b style="color:var(--neon-glow)">${p.bal} ₴</b></span></div><button style="background: rgba(255,0,0,0.2); width: 45px; height: 45px; border-radius:50%; border:none; font-size: 1.2rem; cursor:pointer;" onclick="event.stopPropagation(); deleteBudget('${p.id}')">🗑️</button></div>`;
             btn.onclick = () => openBudget(p.id); list.appendChild(btn);
         });
     }
@@ -508,22 +498,21 @@
         const p = allProjects.find(x => x.id === currentBudgetId); if(!p) return;
         document.getElementById('budget-title').innerText = p.name;
         document.getElementById('b-balance').innerText = p.bal + ' ₴';
-        document.getElementById('b-inc').innerText = p.inc + ' ₴'; document.getElementById('b-exp').innerText = p.exp + ' ₴';
+        document.getElementById('b-inc').innerText = p.inc + ' ₴';
+        document.getElementById('b-exp').innerText = p.exp + ' ₴';
         
-        // АВАРИТАРКИ УЧАСНИКІВ
+        // Аватарки учасників
         const avBox = document.getElementById('project-avatars-box');
         const uniqueAvatars = [...new Set(p.history.map(h => h.avatar))].filter(Boolean);
         if(!uniqueAvatars.includes(appData.profile.avatar)) uniqueAvatars.push(appData.profile.avatar);
         avBox.innerHTML = uniqueAvatars.slice(0, 4).map(av => `<img src="${av}" class="p-avatar">`).join('');
         
-        // ТИЖНЕВИЙ ГРАФІК (Генерація)
+        // Графік
         const chart = document.getElementById('weekly-chart'); chart.innerHTML = '';
         const days = appData.lang === 'uk' ? ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'] : ['Mo','Tu','We','Th','Fr','Sa','Su'];
         let daySums = [0,0,0,0,0,0,0];
-        // Простий розподіл: беремо останні витрати і розкидаємо (у реальному потрібні дати)
         p.history.filter(h => h.type === 'expense').forEach((h, i) => { daySums[i % 7] += h.amount; });
         let maxDay = Math.max(...daySums, 1);
-        
         days.forEach((day, i) => {
             let height = (daySums[i] / maxDay) * 100; if(height === 0) height = 5;
             chart.innerHTML += `<div class="bar-wrapper"><div class="bar" style="height: ${height}%;"></div><div class="bar-label">${day}</div></div>`;
@@ -537,12 +526,12 @@
             hList.innerHTML += `
                 <div class="glass-panel hist-item">
                     <div class="hist-left">
-                        <img src="${h.avatar || 'https://via.placeholder.com/40'}" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
+                        <img src="${h.avatar || 'https://via.placeholder.com/40'}" style="width:45px; height:45px; border-radius:50%; object-fit:cover; border:2px solid var(--glass-border);">
                         <div><div>${h.cat}</div><span class="hist-user">${h.user}</span></div>
                     </div>
                     <div style="display:flex; align-items:center;">
-                        <span style="color: ${color}; font-weight: 900; font-size:1.1rem;">${isExp ? '-' : '+'}${h.amount} ₴</span>
-                        <button class="delete-btn" style="border:none; border-radius:50%; width:30px; height:30px; background:rgba(255,0,0,0.2); color:var(--expense); margin-left:10px;" onclick="deleteTx(${h.id})">✕</button>
+                        <span style="color: ${color}; font-weight: 900; font-size:1.15rem;">${isExp ? '-' : '+'}${h.amount} ₴</span>
+                        <button class="delete-btn" style="border:none; border-radius:50%; width:35px; height:35px; background:rgba(255,0,0,0.2); color:var(--expense); margin-left:12px; font-size:1.1rem;" onclick="deleteTx(${h.id})">✕</button>
                     </div>
                 </div>`;
         });
@@ -553,7 +542,7 @@
         let pass = prompt(appData.lang==='uk'?"Пароль 0000 для підтвердження:":"Enter password 0000:");
         if (pass === "0000") {
             appData.joinedProjects = appData.joinedProjects.filter(id => id !== targetId);
-            localStorage.setItem('budget_joined_v6', JSON.stringify(appData.joinedProjects));
+            localStorage.setItem('budget_joined_v7', JSON.stringify(appData.joinedProjects));
             db.collection("projects").doc(targetId).delete().then(() => { goToScreen('screen-projects'); });
         } else if(pass !== null) alert("❌");
     }
@@ -583,6 +572,7 @@
     function closeModal() { document.getElementById('modal').classList.remove('active'); }
     function selCat(el, catName) { playHaptic(); tempCat = catName; document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
 
+    // ЗБЕРЕЖЕННЯ В ХМАРУ
     function saveTransaction() {
         const val = parseFloat(document.getElementById('amountInput').value);
         if(val > 0) {
@@ -590,25 +580,27 @@
             let newBal = p.bal, newInc = p.inc, newExp = p.exp;
             if(tempMode === 'expense') { newBal -= val; newExp += val; } else { newBal += val; newInc += val; }
             const newTx = { id: Date.now(), type: tempMode, amount: val, cat: tempCat, user: appData.profile.name, avatar: appData.profile.avatar };
-            db.collection("projects").doc(currentBudgetId).update({ bal: newBal, inc: newInc, exp: newExp, history: [...p.history, newTx] });
+            
+            db.collection("projects").doc(currentBudgetId).update({ bal: newBal, inc: newInc, exp: newExp, history: [...p.history, newTx] })
+            .catch(e => { alert("Не вдалося зберегти в хмару! Перевірте інтернет."); });
         }
         closeModal();
     }
 
     // НАЛАШТУВАННЯ
-    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v6', t); document.documentElement.setAttribute('data-theme', t); }
-    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v6', appData.sound); playHaptic(); }
-    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v6', appData.lang); applyLang(); }
+    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v7', t); document.documentElement.setAttribute('data-theme', t); }
+    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v7', appData.sound); playHaptic(); }
+    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v7', appData.lang); applyLang(); }
 
     const dict = {
-        uk: { regTitle: "Реєстрація", regPhoto: "Натисніть, щоб додати фото", regM: "Чоловіча", regF: "Жіноча", regBtn: "Почати",
+        uk: { regTitle: "Профіль", regPhoto: "Додати фото", regM: "Чоловік", regF: "Жінка", regBtn: "Зберегти та Почати",
               mNew: "Новий спільний<br>бюджет", mJoin: "Приєднатися<br>за кодом", mCont: "Мої бюджети", mInfo: "Профіль", mSet: "Налаштування", mAb: "Про додаток",
               back: "← Назад", uTitle: "Мій профіль", uChng: "Натисни щоб змінити", pTitle: "Мої бюджети", bBal: "ЗАЛИШОК", bInc: "ДОХОДИ", bExp: "ВИТРАТИ",
               btnExp: "➖ Витрата", btnInc: "➕ Прибуток", bHist: "Історія операцій", bAdd: "➕ Додати користувача (Код)", bChart: "Витрати за 7 днів 📊",
               setTitle: "Налаштування", setLang: "Мова (Укр / Eng)", setSnd: "Звуки інтерфейсу", setT1: "СВІТЛІ ТЕМИ", setT2: "ТЕМНІ ТЕМИ",
               abTitle: "Про додаток", modBtn: "ДОДАТИ", aiBtn: "🧠 Звіт та ШІ-Аналіз місяця", aiTitle: "ШІ-Аналіз",
-              abText: "<b>Budget Together</b> — ваш особистий фінансовий психотерапевт. Спільний бюджет без сварок!<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.3rem;'>Created by AchillesMaximus</span><br>Ми тітани індустрії та акули клавіатури.<br><br><b>🔥 Переваги:</b><br>• Миттєва хмарна синхронізація ☁️<br>• ШІ для чеків 🤖<br>• Інтерфейс 'Рідке скло'<br>• Аналітика, яка збереже ваш бюджет<br><br>Робимо так, щоб ваші гроші рахували себе самі!"},
-        en: { regTitle: "Registration", regPhoto: "Tap to add photo", regM: "Male", regF: "Female", regBtn: "Start",
+              abText: "<b>Budget Together</b> — ваш особистий фінансовий психотерапевт. Її головна мета: щоб ви нарешті перестали згадувати, хто вчора платив за каву.<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.3rem;'>Created by AchillesMaximus</span><br>Ми — тітани індустрії. Кажуть, Стів Джобс пустив сльозу, коли побачив наш перший рядок коду (але це не точно).<br><br><b>🔥 Переваги:</b><br>• Миттєва хмарна синхронізація ☁️<br>• ШІ для чеків 🤖<br>• Інтерфейс 'Рідке скло'<br>• Аналітика, яка збереже ваш бюджет<br><br>Робимо так, щоб ваші гроші рахували себе самі!"},
+        en: { regTitle: "Profile", regPhoto: "Add Photo", regM: "Male", regF: "Female", regBtn: "Save & Start",
               mNew: "New Shared<br>Budget", mJoin: "Join by<br>Code", mCont: "My Budgets", mInfo: "Profile", mSet: "Settings", mAb: "About App",
               back: "← Back", uTitle: "My Profile", uChng: "Tap to change", pTitle: "My Budgets", bBal: "BALANCE", bInc: "INCOME", bExp: "EXPENSE",
               btnExp: "➖ Expense", btnInc: "➕ Income", bHist: "Transaction History", bAdd: "➕ Add User (Code)", bChart: "Last 7 Days 📊",
@@ -621,97 +613,83 @@
         const d = dict[appData.lang];
         document.getElementById('langBtn').innerText = appData.lang.toUpperCase();
         document.getElementById('t-reg-title').innerText = d.regTitle; document.getElementById('t-reg-photo').innerText = d.regPhoto;
-        document.getElementById('t-reg-m').innerText = d.regM; document.getElementById('t-reg-f').innerText = d.regF;
-        document.getElementById('t-reg-btn').innerText = d.regBtn;
+        document.getElementById('t-reg-m').innerText = d.regM; document.getElementById('t-reg-f').innerText = d.regF; document.getElementById('t-reg-btn').innerText = d.regBtn;
         document.getElementById('t-menu-new').innerHTML = d.mNew; document.getElementById('t-menu-join').innerHTML = d.mJoin;
         document.getElementById('t-menu-cont').innerText = d.mCont; document.getElementById('t-menu-info').innerText = d.mInfo;
         document.getElementById('t-menu-set').innerText = d.mSet; document.getElementById('t-menu-about').innerText = d.mAb;
         for(let i=1; i<=5; i++) document.getElementById('t-back-'+i).innerText = d.back;
         document.getElementById('t-user-title').innerText = d.uTitle; document.getElementById('t-user-change').innerText = d.uChng; document.getElementById('t-proj-title').innerText = d.pTitle;
-        document.getElementById('t-bud-bal').innerText = d.bBal; document.getElementById('t-bud-inc').innerText = d.bInc;
-        document.getElementById('t-bud-exp').innerText = d.bExp; document.getElementById('t-bud-btn-exp').innerText = d.btnExp;
-        document.getElementById('t-bud-btn-inc').innerText = d.btnInc; document.getElementById('t-bud-hist').innerText = d.bHist;
+        document.getElementById('t-bud-bal').innerText = d.bBal; document.getElementById('t-bud-inc').innerText = d.bInc; document.getElementById('t-bud-exp').innerText = d.bExp; 
+        document.getElementById('t-bud-btn-exp').innerText = d.btnExp; document.getElementById('t-bud-btn-inc').innerText = d.btnInc; document.getElementById('t-bud-hist').innerText = d.bHist;
         document.getElementById('t-bud-add').innerText = d.bAdd; document.getElementById('t-bud-chart').innerText = d.bChart;
-        document.getElementById('t-set-title').innerText = d.setTitle; document.getElementById('t-set-lang').innerText = d.setLang;
-        document.getElementById('t-set-snd').innerText = d.setSnd; document.getElementById('t-set-t1').innerText = d.setT1;
-        document.getElementById('t-set-t2').innerText = d.setT2;
+        document.getElementById('t-set-title').innerText = d.setTitle; document.getElementById('t-set-lang').innerText = d.setLang; document.getElementById('t-set-snd').innerText = d.setSnd; 
+        document.getElementById('t-set-t1').innerText = d.setT1; document.getElementById('t-set-t2').innerText = d.setT2;
         document.getElementById('t-about-title').innerText = d.abTitle; document.getElementById('t-about-text').innerHTML = d.abText;
         document.getElementById('t-mod-btn').innerText = d.modBtn; document.getElementById('t-bud-ai').innerText = d.aiBtn; document.getElementById('t-ai-title').innerText = d.aiTitle;
     }
 
     // ШІ АНАЛІЗ
     function generateAIReport() {
-        playHaptic();
-        const p = allProjects.find(x => x.id === currentBudgetId);
+        playHaptic(); const p = allProjects.find(x => x.id === currentBudgetId);
         if(!p || p.history.length === 0) { alert(appData.lang==='uk'?"Мало даних для ШІ!":"Not enough data for AI!"); return; }
-        
-        let catSums = {};
-        p.history.filter(h => h.type === 'expense').forEach(h => {
-            let cName = h.cat.substring(2);
-            catSums[cName] = (catSums[cName] || 0) + h.amount;
-        });
-        
-        // Знаходимо найбільшу статтю витрат
+        let catSums = {}; p.history.filter(h => h.type === 'expense').forEach(h => { let cName = h.cat.substring(2); catSums[cName] = (catSums[cName] || 0) + h.amount; });
         let topCat = Object.keys(catSums).reduce((a, b) => catSums[a] > catSums[b] ? a : b, "");
         
         let aiCritique = "";
-        if(topCat.includes("Кафе") || topCat.includes("Розваги")) aiCritique = "ШІ-Критика: Ви занадто багато витрачаєте на задоволення! ☕🍿 Зменшіть походи в кафе, готуйте вдома. Це зекономить вам до 20% бюджету.";
-        else if(topCat.includes("Одяг")) aiCritique = "ШІ-Критика: Шафа вже не закривається! 👕 Зробіть паузу в шопінгу.";
-        else if(topCat.includes("Авто")) aiCritique = "ШІ-Критика: Машина з'їдає багато грошей. 🚗 Розгляньте варіант частіше ходити пішки — це корисно для здоров'я і гаманця.";
-        else aiCritique = "ШІ-Критика: Витрати виглядають стабільно, але завжди є куди оптимізувати. Почніть відкладати 10% від доходу!";
+        if(topCat.includes("Кафе") || topCat.includes("Розваги") || topCat.includes("Cafe") || topCat.includes("Fun")) aiCritique = appData.lang==='uk'?"ШІ-Критика: Ви занадто багато витрачаєте на задоволення! ☕🍿 Зменшіть походи в кафе, готуйте вдома. Це зекономить вам до 20% бюджету.":"AI-Critique: Too much spent on fun! ☕🍿 Cook at home to save 20% of your budget.";
+        else if(topCat.includes("Одяг") || topCat.includes("Clothes")) aiCritique = appData.lang==='uk'?"ШІ-Критика: Шафа вже не закривається! 👕 Зробіть паузу в шопінгу.":"AI-Critique: Your closet is full! 👕 Take a break from shopping.";
+        else if(topCat.includes("Авто") || topCat.includes("Car")) aiCritique = appData.lang==='uk'?"ШІ-Критика: Машина з'їдає багато грошей. 🚗 Розгляньте варіант частіше ходити пішки.":"AI-Critique: The car is eating your money. 🚗 Consider walking more often.";
+        else aiCritique = appData.lang==='uk'?"ШІ-Критика: Витрати виглядають стабільно. Почніть відкладати 10% від доходу!":"AI-Critique: Spending looks stable. Start saving 10% of your income!";
 
-        const reportHTML = `
+        document.getElementById('ai-report-content').innerHTML = `
             <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 20px; margin-bottom: 15px;">
-                <b>Всього витрат:</b> <span style="color:var(--expense)">${p.exp} ₴</span><br>
-                <b>Всього доходів:</b> <span style="color:var(--income)">${p.inc} ₴</span><br>
-                <b>Залишок:</b> ${p.bal} ₴
+                <b>${appData.lang==='uk'?'Всього витрат':'Total Expenses'}:</b> <span style="color:var(--expense)">${p.exp} ₴</span><br>
+                <b>${appData.lang==='uk'?'Всього доходів':'Total Income'}:</b> <span style="color:var(--income)">${p.inc} ₴</span><br>
+                <b>${appData.lang==='uk'?'Залишок':'Balance'}:</b> ${p.bal} ₴
             </div>
-            <div style="margin-bottom: 10px; color: var(--accent);"><b>Топ витрата:</b> ${topCat} (${catSums[topCat]} ₴)</div>
-            <div style="padding: 15px; border-left: 4px solid var(--accent); background: rgba(10,132,255,0.1); border-radius: 0 15px 15px 0;">
-                ${aiCritique}
-            </div>
-        `;
-        document.getElementById('ai-report-content').innerHTML = reportHTML;
+            <div style="margin-bottom: 10px; color: var(--accent);"><b>${appData.lang==='uk'?'Топ витрата':'Top Expense'}:</b> ${topCat} (${catSums[topCat]} ₴)</div>
+            <div style="padding: 15px; border-left: 4px solid var(--accent); background: rgba(10,132,255,0.1); border-radius: 0 15px 15px 0;">${aiCritique}</div>`;
         document.getElementById('modal-ai').classList.add('active');
     }
 
-    // РОЗУМНИЙ OCR
+    // РОЗУМНИЙ OCR З ЗАХИСТОМ ВІД ШТРИХ-КОДІВ
     async function startOCR(event) {
         const file = event.target.files[0]; if (!file) return;
-        playHaptic();
-        const loader = document.getElementById('scanLoader'); loader.classList.add('active');
+        playHaptic(); const loader = document.getElementById('scanLoader'); loader.classList.add('active');
         document.getElementById('t-scan-ai').innerText = appData.lang==='uk'?"ШІ читає чек...":"AI reading...";
         
         try {
             const result = await Tesseract.recognize(file, 'ukr+eng');
             const text = result.data.text.toLowerCase();
-            const lines = text.split('\n');
             let maxAmount = 0;
-            const keywords = ['сума', 'разом', 'всього', 'підсумок', 'total', 'sum'];
             
-            // Розумний пошук по рядках з ключовими словами
+            // 1. Шукаємо ключові слова
+            const keywords = ['сума', 'разом', 'всього', 'підсумок', 'total', 'sum', 'до сплати'];
+            const lines = text.split('\n');
             for (let line of lines) {
                 if (keywords.some(kw => line.includes(kw))) {
-                    const match = line.match(/\d+[.,]\d{2}/);
+                    const match = line.match(/\d+([.,]\d{2})/);
                     if (match) { maxAmount = parseFloat(match[0].replace(',', '.')); break; }
                 }
             }
             
-            // Запасний варіант: шукаємо будь-яку велику суму, але МЕНШУ за 50000 (щоб відкинути штрих-коди)
+            // 2. Якщо слів немає, шукаємо найбільшу логічну цифру (з крапкою і 2 нулями, < 50000)
             if (maxAmount === 0) {
                 const nums = text.match(/\d+[.,]\d{2}/g);
-                if(nums) nums.forEach(n => { let val = parseFloat(n.replace(',', '.')); if(val > maxAmount && val < 50000) maxAmount = val; });
+                if(nums) nums.forEach(n => { 
+                    let val = parseFloat(n.replace(',', '.')); 
+                    if(val > maxAmount && val < 50000) maxAmount = val; 
+                });
             }
 
             loader.classList.remove('active');
-
             if(maxAmount > 0) {
                 openModal('expense'); document.getElementById('amountInput').value = maxAmount;
-                alert(appData.lang==='uk'?`Знайдено суму: ${maxAmount} ₴`:`Found amount: ${maxAmount}`);
+                alert(appData.lang==='uk'?`ШІ знайшов суму: ${maxAmount} ₴`:`AI found amount: ${maxAmount}`);
             } else {
-                alert(appData.lang==='uk'?"Не розпізнано. Введіть вручну.":"Not recognized. Enter manually."); openModal('expense');
+                alert(appData.lang==='uk'?"Суму не розпізнано. Чек розмитий.":"Amount not recognized. Receipt blurred."); openModal('expense');
             }
-        } catch(e) { loader.classList.remove('active'); alert("Error"); }
+        } catch(e) { loader.classList.remove('active'); alert("Помилка читання чеку."); }
     }
 
     init();
