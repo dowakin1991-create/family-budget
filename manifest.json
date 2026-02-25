@@ -1,0 +1,21 @@
+{
+  "name": "Budget Together",
+  "short_name": "Budget",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "IMG_9283.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "IMG_9283.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
