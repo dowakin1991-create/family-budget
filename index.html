@@ -2,12 +2,18 @@
 <html lang="uk" data-theme="dark-blue">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Budget">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    
     <link rel="apple-touch-icon" href="IMG_9283.png">
     <link rel="icon" href="IMG_9283.png">
+    
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Budget%20Together%22%2C%22short_name%22%3A%22Budget%22%2C%22display%22%3A%22standalone%22%2C%22start_url%22%3A%22.%2F%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23000000%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22IMG_9283.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
     
     <title>Budget Together</title>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -140,15 +146,15 @@
         .scanner-loader.active { opacity: 1; pointer-events: auto; }
         .scan-line { width: 80%; height: 3px; background: var(--accent); box-shadow: 0 0 15px var(--accent); animation: scanAnim 1.5s infinite alternate ease-in-out; margin-top: 20px;}
 
+        /* Оптимізована сітка налаштувань (Адаптивна) */
+        .theme-grid-opt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .theme-tile { padding: 15px 5px; border-radius: 20px; text-align: center; font-weight: 800; font-size: 0.85rem; cursor: pointer; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); transition: 0.2s;}
+        .theme-tile:active { transform: scale(0.9); }
+
         @keyframes applePop { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes pulseCloud { 0% { opacity: 0.4; box-shadow: none; } 100% { opacity: 1; box-shadow: 0 0 15px var(--neon-glow); } }
         @keyframes neonPulse { 0% { text-shadow: 0 0 5px var(--neon-glow), 0 0 10px var(--neon-glow); } 100% { text-shadow: 0 0 2px var(--neon-glow), 0 0 5px var(--neon-glow); } }
         @keyframes scanAnim { 0% { transform: translateY(-30px); } 100% { transform: translateY(30px); } }
-
-        /* Оптимізована сітка налаштувань */
-        .theme-grid-opt { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; }
-        .theme-tile { padding: 15px 5px; border-radius: 20px; text-align: center; font-weight: 800; font-size: 0.85rem; cursor: pointer; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); transition: 0.2s;}
-        .theme-tile:active { transform: scale(0.9); }
     </style>
 </head>
 <body>
@@ -214,8 +220,8 @@
             <div style="font-size: 1.1rem; opacity: 0.8; margin-top: 10px; font-weight: 700;" id="profile-details"></div>
         </div>
         <div class="stat-row">
-            <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800; margin-bottom: 5px;">ВСІ ДОХОДИ</div><div class="stat-val val-inc" id="info-inc">0 ₴</div></div>
-            <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800; margin-bottom: 5px;">ВСІ ВИТРАТИ</div><div class="stat-val val-exp" id="info-exp">0 ₴</div></div>
+            <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800; margin-bottom: 5px;" id="t-stat-inc">ВСІ ДОХОДИ</div><div class="stat-val val-inc" id="info-inc">0 ₴</div></div>
+            <div class="glass-panel stat-card"><div style="font-size: 0.85rem; opacity: 0.8; font-weight: 800; margin-bottom: 5px;" id="t-stat-exp">ВСІ ВИТРАТИ</div><div class="stat-val val-exp" id="info-exp">0 ₴</div></div>
         </div>
     </div>
 
@@ -290,8 +296,8 @@
             <div style="font-weight: 900; margin-bottom: 15px; font-size: 0.9rem; opacity: 0.8;" id="t-set-t2">ТЕМНІ ТЕМИ</div>
             <div class="theme-grid-opt">
                 <div class="theme-tile" style="background:#000510; color:white; border-color:#00aaff;" onclick="setTheme('dark-blue')">Неон<br>Синій</div>
-                <div class="theme-tile" style="background:#100000; color:white; border-color:#ff3333;" onclick="setTheme('dark-red')">Неон<br>Червоний</div>
-                <div class="theme-tile" style="background:#001005; color:white; border-color:#33ff77;" onclick="setTheme('dark-green')">Неон<br>Зелений</div>
+                <div class="theme-tile" style="background:#100000; color:white; border-color:#ff3333;" onclick="setTheme('dark-red')">Неон<br>Червон.</div>
+                <div class="theme-tile" style="background:#001005; color:white; border-color:#33ff77;" onclick="setTheme('dark-green')">Неон<br>Зелен.</div>
             </div>
         </div>
     </div>
@@ -353,11 +359,11 @@
     db.enablePersistence().catch(function(err) { console.error("Firebase Persistence Error:", err.code); });
     
     let appData = { 
-        profile: JSON.parse(localStorage.getItem('budget_profile_v8')) || null, 
-        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v8')) || [],
-        theme: localStorage.getItem('budget_theme_v8') || 'dark-blue',
-        lang: localStorage.getItem('budget_lang_v8') || 'uk',
-        sound: localStorage.getItem('budget_sound_v8') !== 'false'
+        profile: JSON.parse(localStorage.getItem('budget_profile_v9')) || null, 
+        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v9')) || [],
+        theme: localStorage.getItem('budget_theme_v9') || 'dark-blue',
+        lang: localStorage.getItem('budget_lang_v9') || 'uk',
+        sound: localStorage.getItem('budget_sound_v9') !== 'false'
     };
     
     let currentBudgetId = null, tempMode = 'expense', tempCat = '❓ Інше', isCloudActive = false, allProjects = [];
@@ -376,21 +382,20 @@
     function checkAuth() { playHaptic(); if(appData.profile && appData.profile.name) goToScreen('screen-main'); else goToScreen('screen-register'); }
     function init() { setTheme(appData.theme); document.getElementById('soundToggle').checked = appData.sound; applyLang(); }
 
-    // АЛГОРИТМ СТИСНЕННЯ ФОТО (ВИРІШУЄ БАГ З АВАТАРКАМИ)
+    // АЛГОРИТМ СТИСНЕННЯ ФОТО (МІНІ-ФОТОШОП)
     function resizeAndCompressImage(file, callback) {
         const reader = new FileReader();
         reader.onload = function(e) {
             const img = new Image();
             img.onload = function() {
                 const canvas = document.createElement('canvas');
-                const MAX_SIZE = 200; // Пікселів
+                const MAX_SIZE = 200; 
                 let width = img.width, height = img.height;
                 if (width > height) { if (width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; } } 
                 else { if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; } }
                 canvas.width = width; canvas.height = height;
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
-                // Стискаємо в JPEG з якістю 70% (перетворює 5МБ в 10КБ)
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
                 callback(dataUrl);
             };
@@ -411,9 +416,8 @@
         const file = e.target.files[0]; if(!file) return;
         resizeAndCompressImage(file, function(compressedDataUrl) {
             appData.profile.avatar = compressedDataUrl;
-            localStorage.setItem('budget_profile_v8', JSON.stringify(appData.profile));
+            localStorage.setItem('budget_profile_v9', JSON.stringify(appData.profile));
             document.getElementById('profile-avatar').src = appData.profile.avatar;
-            // Оновлюємо аватарки у відкритому проекті, якщо там є наші операції
             if(currentBudgetId) updateBudgetUI();
         });
     }
@@ -422,7 +426,7 @@
         playHaptic(); const n = document.getElementById('regName').value;
         if(n.length < 2) { alert(appData.lang==='uk'?"Введіть ім'я!":"Enter name!"); return; }
         appData.profile = { name: n, gender: document.getElementById('regGender').value, avatar: document.getElementById('avatarPreview').src };
-        localStorage.setItem('budget_profile_v8', JSON.stringify(appData.profile));
+        localStorage.setItem('budget_profile_v9', JSON.stringify(appData.profile));
         goToScreen('screen-main');
     }
 
@@ -465,7 +469,7 @@
         if(!pName) return;
         const joinCode = Math.floor(1000 + Math.random() * 9000).toString();
         db.collection("projects").add({ name: pName, code: joinCode, bal: 0, inc: 0, exp: 0, history: [], createdAt: firebase.firestore.FieldValue.serverTimestamp() })
-        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v8', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); })
+        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v9', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); })
         .catch((e) => { alert("Помилка створення."); });
     }
 
@@ -474,7 +478,7 @@
         const found = allProjects.find(p => p.code === code);
         if(found) {
             if(!appData.joinedProjects.includes(found.id)) {
-                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v8', JSON.stringify(appData.joinedProjects));
+                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v9', JSON.stringify(appData.joinedProjects));
                 alert(appData.lang==='uk'?"Успішно приєднано!":"Successfully joined!");
             }
             openBudget(found.id);
@@ -540,7 +544,7 @@
         playHaptic(); let pass = prompt(appData.lang==='uk'?"Пароль 0000 для підтвердження:":"Enter password 0000:");
         if (pass === "0000") {
             appData.joinedProjects = appData.joinedProjects.filter(id => id !== targetId);
-            localStorage.setItem('budget_joined_v8', JSON.stringify(appData.joinedProjects));
+            localStorage.setItem('budget_joined_v9', JSON.stringify(appData.joinedProjects));
             db.collection("projects").doc(targetId).delete().then(() => { goToScreen('screen-projects'); });
         } else if(pass !== null) alert("❌");
     }
@@ -582,27 +586,20 @@
         closeModal();
     }
 
-    // НОВА ФІЧА: ШЕРІНГ ЗВІТУ
     function shareReport() {
         playHaptic();
-        const p = allProjects.find(x => x.id === currentBudgetId);
-        if(!p) return;
+        const p = allProjects.find(x => x.id === currentBudgetId); if(!p) return;
         const text = appData.lang==='uk' 
             ? `📊 Звіт: ${p.name}\n💰 Залишок: ${p.bal} ₴\n📈 Доходи: ${p.inc} ₴\n📉 Витрати: ${p.exp} ₴\n\nСтворено в Budget Together від AchillesMaximus`
             : `📊 Report: ${p.name}\n💰 Balance: ${p.bal} ₴\n📈 Income: ${p.inc} ₴\n📉 Expense: ${p.exp} ₴\n\nCreated with Budget Together by AchillesMaximus`;
         
-        if (navigator.share) {
-            navigator.share({ title: p.name, text: text }).catch(console.error);
-        } else {
-            navigator.clipboard.writeText(text);
-            alert(appData.lang==='uk'?"Звіт скопійовано! Можете вставити його в месенджер.":"Report copied to clipboard!");
-        }
+        if (navigator.share) { navigator.share({ title: p.name, text: text }).catch(console.error); } 
+        else { navigator.clipboard.writeText(text); alert(appData.lang==='uk'?"Звіт скопійовано!":"Report copied!"); }
     }
 
-    // НАЛАШТУВАННЯ ТА ЛОКАЛІЗАЦІЯ
-    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v8', t); document.documentElement.setAttribute('data-theme', t); }
-    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v8', appData.sound); playHaptic(); }
-    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v8', appData.lang); applyLang(); }
+    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v9', t); document.documentElement.setAttribute('data-theme', t); }
+    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v9', appData.sound); playHaptic(); }
+    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v9', appData.lang); applyLang(); }
 
     const dict = {
         uk: { regTitle: "Профіль", regPhoto: "Додати фото", regM: "Чоловік", regF: "Жінка", regBtn: "Зберегти та Почати",
@@ -611,14 +608,16 @@
               btnExp: "➖ Витрата", btnInc: "➕ Прибуток", bHist: "Історія операцій", bAdd: "➕ Додати користувача (Код)", bChart: "Витрати за 7 днів 📊",
               setTitle: "Налаштування", setLang: "Мова (Укр / Eng)", setSnd: "Звуки інтерфейсу", setT1: "СВІТЛІ ТЕМИ", setT2: "ТЕМНІ ТЕМИ",
               abTitle: "Про додаток", modBtn: "ДОДАТИ", aiBtn: "🧠 Звіт та ШІ-Аналіз", aiTitle: "ШІ-Аналіз", shareBtn: "📤 Поділитися звітом",
-              abText: "<b style='font-size: 1.2rem;'>Візія AchillesMaximus</b><br>Ми — архітектори цифрового майбутнього. Budget Together був створений з єдиною місією: назавжди знищити побутові сварки через гроші. Ми перетворюємо нудну фінансову рутину на елегантний процес.<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.4rem; font-family: var(--font-neon);'>AchillesMaximus</span><br><i>«Робимо так, щоб ваші гроші рахували себе самі!»</i><br><br><b>🧠 Глибока ШІ-Аналітика</b><br>Наш вбудований штучний інтелект не просто зводить цифри — він розуміє ваші звички. Він аналізує категорії витрат і надає безкомпромісну критику, яка вбереже ваш бюджет від емоційних покупок.<br><br><b>☁️ Безпека та Хмарні Технології</b><br>Ваші дані синхронізуються за мілісекунди завдяки інфраструктурі Firebase від Google. Навіть без інтернету додаток збереже транзакції та відправить їх у хмару при першому ж підключенні.<br><br><b>🔮 Майбутні оновлення:</b><br>• Мультивалютність<br>• Експорт в Excel<br>• ШІ-розпізнавання чеків з усіх супермаркетів світу!"},
+              statInc: "ВСІ ДОХОДИ", statExp: "ВСІ ВИТРАТИ",
+              abText: "<b style='font-size: 1.2rem;'>Візія AchillesMaximus</b><br>Ми — архітектори цифрового майбутнього. Budget Together був створений з єдиною місією: назавжди знищити побутові сварки через гроші. Ми перетворюємо нудну фінансову рутину на елегантний процес.<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.5rem; font-family: var(--font-neon); display: block; margin-bottom: 5px;'>AchillesMaximus</span><i>«Робимо так, щоб ваші гроші рахували себе самі!»</i><br><br><b>🧠 Глибока ШІ-Аналітика</b><br>Наш штучний інтелект не просто зводить цифри — він розуміє звички. Він аналізує категорії і надає безкомпромісну критику, яка вбереже ваш бюджет від емоційних покупок.<br><br><b>☁️ Хмарні Технології</b><br>Дані синхронізуються за мілісекунди завдяки інфраструктурі Google Firebase. Навіть без інтернету додаток збереже транзакції та відправить їх у хмару при першому ж підключенні.<br><br><b>🔮 Майбутні оновлення:</b><br>• Мультивалютність та Крипта<br>• Експорт в Excel<br>• Глобальне ШІ-розпізнавання чеків!"},
         en: { regTitle: "Profile", regPhoto: "Add Photo", regM: "Male", regF: "Female", regBtn: "Save & Start",
               mNew: "New Shared<br>Budget", mJoin: "Join by<br>Code", mCont: "My Budgets", mInfo: "Profile", mSet: "Settings", mAb: "About App",
               back: "← Back", uTitle: "My Profile", uChng: "Tap to change", pTitle: "My Budgets", bBal: "BALANCE", bInc: "INCOME", bExp: "EXPENSE",
               btnExp: "➖ Expense", btnInc: "➕ Income", bHist: "Transaction History", bAdd: "➕ Add User (Code)", bChart: "Last 7 Days 📊",
               setTitle: "Settings", setLang: "Language (Ukr / Eng)", setSnd: "UI Sounds", setT1: "LIGHT THEMES", setT2: "DARK THEMES",
               abTitle: "About App", modBtn: "ADD", aiBtn: "🧠 AI Monthly Report", aiTitle: "AI Analysis", shareBtn: "📤 Share Report",
-              abText: "<b style='font-size: 1.2rem;'>The AchillesMaximus Vision</b><br>We are architects of the digital future. Budget Together was created with a single mission: to destroy domestic arguments over money forever. We turn boring financial routines into an elegant process.<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.4rem; font-family: var(--font-neon);'>AchillesMaximus</span><br><i>«We make your money count itself!»</i><br><br><b>🧠 Deep AI Analytics</b><br>Our built-in AI doesn't just calculate numbers—it understands your habits. It analyzes spending categories and provides uncompromising critique to save your budget from emotional purchases.<br><br><b>☁️ Security & Cloud</b><br>Your data syncs in milliseconds thanks to Google's Firebase infrastructure. Even offline, the app saves transactions and sends them to the cloud upon connection.<br><br><b>🔮 Future Updates:</b><br>• Multi-currency<br>• Excel Export<br>• Global AI receipt scanning!"}
+              statInc: "TOTAL INCOME", statExp: "TOTAL EXPENSE",
+              abText: "<b style='font-size: 1.2rem;'>The AchillesMaximus Vision</b><br>We are architects of the digital future. Budget Together was created with a single mission: to destroy domestic arguments over money forever. We turn boring financial routines into an elegant process.<br><br><span style='color: var(--neon-glow); font-weight: 900; font-size: 1.5rem; font-family: var(--font-neon); display: block; margin-bottom: 5px;'>AchillesMaximus</span><i>«We make your money count itself!»</i><br><br><b>🧠 Deep AI Analytics</b><br>Our AI doesn't just calculate numbers—it understands habits. It analyzes categories and provides uncompromising critique to save your budget from emotional purchases.<br><br><b>☁️ Cloud Technology</b><br>Data syncs in milliseconds thanks to Google Firebase. Even offline, the app saves transactions and sends them to the cloud upon connection.<br><br><b>🔮 Future Updates:</b><br>• Multi-currency & Crypto<br>• Excel Export<br>• Global AI receipt scanning!"}
     };
 
     function applyLang() {
@@ -638,6 +637,7 @@
         document.getElementById('t-set-t1').innerText = d.setT1; document.getElementById('t-set-t2').innerText = d.setT2;
         document.getElementById('t-about-title').innerText = d.abTitle; document.getElementById('t-about-text').innerHTML = d.abText;
         document.getElementById('t-mod-btn').innerText = d.modBtn; document.getElementById('t-bud-ai').innerText = d.aiBtn; document.getElementById('t-ai-title').innerText = d.aiTitle;
+        document.getElementById('t-stat-inc').innerText = d.statInc; document.getElementById('t-stat-exp').innerText = d.statExp;
     }
 
     function generateAIReport() {
@@ -663,6 +663,7 @@
         document.getElementById('modal-ai').classList.add('active');
     }
 
+    // РОЗУМНИЙ OCR З ЗАХИСТОМ ВІД ГОТІВКИ ТА ШТРИХ-КОДІВ
     async function startOCR(event) {
         const file = event.target.files[0]; if (!file) return;
         playHaptic(); const loader = document.getElementById('scanLoader'); loader.classList.add('active');
@@ -672,18 +673,37 @@
             const result = await Tesseract.recognize(file, 'ukr+eng');
             const text = result.data.text.toLowerCase();
             let maxAmount = 0;
-            const keywords = ['сума', 'разом', 'всього', 'підсумок', 'total', 'sum', 'до сплати'];
+            
+            const targetWords = ['сума', 'разом', 'всього', 'підсумок', 'total', 'sum', 'до сплати'];
+            // СТОП-СЛОВА, ЯКІ ШІ БУДЕ ІГНОРУВАТИ (Щоб не взяти готівку замість суми)
+            const stopWords = ['готівка', 'готівкою', 'картка', 'карткою', 'решта', 'сдача', 'знижка', 'cash', 'change', 'відмінено'];
+            
             const lines = text.split('\n');
+            let possibleAmounts = [];
+
             for (let line of lines) {
-                if (keywords.some(kw => line.includes(kw))) {
-                    const match = line.match(/\d+([.,]\d{2})/);
-                    if (match) { maxAmount = parseFloat(match[0].replace(',', '.')); break; }
+                if (stopWords.some(sw => line.includes(sw))) continue; // Пропускаємо рядок, якщо там є готівка
+                
+                if (targetWords.some(kw => line.includes(kw))) {
+                    const nums = line.match(/\d+[.,]\d{2}/g);
+                    if (nums) nums.forEach(n => possibleAmounts.push(parseFloat(n.replace(',', '.'))));
                 }
             }
-            if (maxAmount === 0) {
-                const nums = text.match(/\d+[.,]\d{2}/g);
-                if(nums) nums.forEach(n => { let val = parseFloat(n.replace(',', '.')); if(val > maxAmount && val < 50000) maxAmount = val; });
+            
+            if (possibleAmounts.length > 0) {
+                maxAmount = Math.max(...possibleAmounts);
+            } else {
+                // Запасний варіант: шукаємо найбільшу цифру, але уникаємо рядків зі стоп-словами
+                for (let line of lines) {
+                    if (stopWords.some(sw => line.includes(sw))) continue;
+                    const nums = line.match(/\d+[.,]\d{2}/g);
+                    if(nums) nums.forEach(n => { 
+                        let val = parseFloat(n.replace(',', '.')); 
+                        if(val > maxAmount && val < 50000) maxAmount = val; 
+                    });
+                }
             }
+
             loader.classList.remove('active');
             if(maxAmount > 0) {
                 openModal('expense'); document.getElementById('amountInput').value = maxAmount;
