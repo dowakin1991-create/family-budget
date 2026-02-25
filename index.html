@@ -2,12 +2,18 @@
 <html lang="uk" data-theme="dark-blue">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Budget">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    
     <link rel="apple-touch-icon" href="IMG_9283.png">
     <link rel="icon" href="IMG_9283.png">
+    
+    <link rel="manifest" href="manifest.json">
     
     <title>Budget Together</title>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -332,7 +338,6 @@
 </div>
 
 <script>
-    // 1. FIREBASE INITIALIZATION
     const firebaseConfig = {
       apiKey: "AIzaSyC0Gq5UWe3aNcxLRn0zj9vGsPTKxGwl-tM",
       authDomain: "family-budget-63f9c.firebaseapp.com",
@@ -344,14 +349,14 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    db.enablePersistence().catch(function(err) { console.error("Firebase Persistence Error:", err.code); });
+    db.enablePersistence().catch(function(err) { console.error("Firebase Persistence:", err.code); });
     
     let appData = { 
-        profile: JSON.parse(localStorage.getItem('budget_profile_v10')) || null, 
-        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v10')) || [],
-        theme: localStorage.getItem('budget_theme_v10') || 'dark-blue',
-        lang: localStorage.getItem('budget_lang_v10') || 'uk',
-        sound: localStorage.getItem('budget_sound_v10') !== 'false'
+        profile: JSON.parse(localStorage.getItem('budget_profile_v11')) || null, 
+        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v11')) || [],
+        theme: localStorage.getItem('budget_theme_v11') || 'dark-blue',
+        lang: localStorage.getItem('budget_lang_v11') || 'uk',
+        sound: localStorage.getItem('budget_sound_v11') !== 'false'
     };
     
     let currentBudgetId = null, tempMode = 'expense', tempCat = '❓ Інше', isCloudActive = false, allProjects = [];
@@ -406,7 +411,7 @@
         const file = e.target.files[0]; if(!file) return;
         resizeAndCompressImage(file, function(compressedDataUrl) {
             appData.profile.avatar = compressedDataUrl;
-            localStorage.setItem('budget_profile_v10', JSON.stringify(appData.profile));
+            localStorage.setItem('budget_profile_v11', JSON.stringify(appData.profile));
             document.getElementById('profile-avatar').src = appData.profile.avatar;
             if(currentBudgetId) updateBudgetUI();
         });
@@ -416,7 +421,7 @@
         playHaptic(); const n = document.getElementById('regName').value;
         if(n.length < 2) { alert(appData.lang==='uk'?"Введіть ім'я!":"Enter name!"); return; }
         appData.profile = { name: n, gender: document.getElementById('regGender').value, avatar: document.getElementById('avatarPreview').src };
-        localStorage.setItem('budget_profile_v10', JSON.stringify(appData.profile));
+        localStorage.setItem('budget_profile_v11', JSON.stringify(appData.profile));
         goToScreen('screen-main');
     }
 
@@ -433,7 +438,6 @@
         goToScreen('screen-user');
     }
 
-    // ХМАРА
     db.collection("projects").onSnapshot((snapshot) => {
         allProjects = [];
         snapshot.forEach((doc) => { let data = doc.data(); data.id = doc.id; allProjects.push(data); });
@@ -460,7 +464,7 @@
         if(!pName) return;
         const joinCode = Math.floor(1000 + Math.random() * 9000).toString();
         db.collection("projects").add({ name: pName, code: joinCode, bal: 0, inc: 0, exp: 0, history: [], createdAt: firebase.firestore.FieldValue.serverTimestamp() })
-        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v10', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); })
+        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v11', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); })
         .catch((e) => { alert("Помилка створення."); });
     }
 
@@ -469,7 +473,7 @@
         const found = allProjects.find(p => p.code === code);
         if(found) {
             if(!appData.joinedProjects.includes(found.id)) {
-                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v10', JSON.stringify(appData.joinedProjects));
+                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v11', JSON.stringify(appData.joinedProjects));
                 alert(appData.lang==='uk'?"Успішно приєднано!":"Successfully joined!");
             }
             openBudget(found.id);
@@ -535,7 +539,7 @@
         playHaptic(); let pass = prompt(appData.lang==='uk'?"Пароль 0000 для підтвердження:":"Enter password 0000:");
         if (pass === "0000") {
             appData.joinedProjects = appData.joinedProjects.filter(id => id !== targetId);
-            localStorage.setItem('budget_joined_v10', JSON.stringify(appData.joinedProjects));
+            localStorage.setItem('budget_joined_v11', JSON.stringify(appData.joinedProjects));
             db.collection("projects").doc(targetId).delete().then(() => { goToScreen('screen-projects'); });
         } else if(pass !== null) alert("❌");
     }
@@ -591,9 +595,9 @@
         else { navigator.clipboard.writeText(text); alert(appData.lang==='uk'?"Звіт скопійовано!":"Report copied!"); }
     }
 
-    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v10', t); document.documentElement.setAttribute('data-theme', t); }
-    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v10', appData.sound); playHaptic(); }
-    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v10', appData.lang); applyLang(); }
+    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v11', t); document.documentElement.setAttribute('data-theme', t); }
+    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v11', appData.sound); playHaptic(); }
+    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v11', appData.lang); applyLang(); }
 
     const dict = {
         uk: { regTitle: "Профіль", regPhoto: "Додати фото", regM: "Чоловік", regF: "Жінка", regBtn: "Зберегти та Почати",
