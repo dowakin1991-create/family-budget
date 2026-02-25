@@ -2,18 +2,12 @@
 <html lang="uk" data-theme="dark-blue">
 <head>
     <meta charset="UTF-8">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Budget">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#000000">
-    
     <link rel="apple-touch-icon" href="IMG_9283.png">
     <link rel="icon" href="IMG_9283.png">
-    
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Budget%20Together%22%2C%22short_name%22%3A%22Budget%22%2C%22display%22%3A%22standalone%22%2C%22start_url%22%3A%22.%2F%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23000000%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22IMG_9283.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
     
     <title>Budget Together</title>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
@@ -67,19 +61,16 @@
         
         .glass-panel { background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: 32px; box-shadow: var(--glass-shadow); }
 
-        /* Сплеш */
         #screen-splash { justify-content: center; align-items: center; padding-top: 0; z-index: 100;}
         .app-logo { width: 250px; height: 250px; border-radius: 50%; object-fit: cover; border: 4px solid var(--glass-border); box-shadow: 0 15px 40px rgba(0,0,0,0.4); animation: applePop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
         .author-text { position: absolute; bottom: 50px; font-weight: 800; font-size: 0.85rem; opacity: 0.5; letter-spacing: 2px; text-transform: uppercase; animation: pulseCloud 2s infinite; text-align: center;}
 
-        /* Реєстрація */
         .reg-card { padding: 40px 25px; text-align: center; display: flex; flex-direction: column; align-items: center;}
         .reg-input { width: 100%; padding: 20px; border-radius: 24px; border: 2px solid transparent; background: rgba(0,0,0,0.1); color: var(--text-current); font-size: 1.2rem; font-family: var(--font-main); font-weight: 800; margin-bottom: 20px; box-sizing: border-box; outline: none; text-align: center; transition: 0.3s;}
         .reg-input:focus { border-color: var(--accent); background: rgba(0,0,0,0.2); }
         .avatar-preview { width: 130px; height: 130px; border-radius: 50%; background: var(--glass-bg); margin: 0 auto 15px; display: flex; justify-content: center; align-items: center; font-size: 3rem; border: 3px dashed var(--glass-border); cursor: pointer; object-fit: cover; transition: 0.3s;}
         .avatar-preview:active { transform: scale(0.9); }
 
-        /* Меню */
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .tile {
             background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -100,7 +91,6 @@
         .p-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--bg-current); margin-left: -10px; object-fit: cover; background: var(--glass-bg); }
         .p-avatar:first-child { margin-left: 0; }
 
-        /* Бюджет */
         .budget-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .cloud-status { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 900; padding: 8px 15px; border-radius: 20px; background: var(--glass-bg); border: 1px solid var(--glass-border); transition: 0.3s;}
         .cloud-syncing { color: var(--neon-glow); animation: pulseCloud 1.5s infinite alternate; border-color: var(--neon-glow);}
@@ -132,7 +122,6 @@
         .ai-btn { width: 100%; padding: 20px; border-radius: 24px; background: linear-gradient(135deg, #8a2be2, #4b0082); color: white; font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 10px; border: none; box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);}
         .share-btn { width: 100%; padding: 20px; border-radius: 24px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-current); font-weight: 900; font-size: 1.1rem; cursor: pointer; margin-bottom: 40px; font-family: var(--font-main); display: flex; justify-content: center; align-items: center; gap: 10px;}
 
-        /* Модалка */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: 0.5s ease; z-index: 1000; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content { background: var(--bg-current); border-top: 1px solid var(--glass-border); width: 100%; border-radius: 40px 40px 0 0; padding: 30px 20px calc(env(safe-area-inset-bottom, 20px) + 20px); transform: translateY(100%); transition: 0.7s cubic-bezier(0.25, 0.8, 0.25, 1); box-sizing: border-box; box-shadow: 0 -10px 40px rgba(0,0,0,0.3); max-height: 90dvh; overflow-y: auto;}
@@ -146,7 +135,6 @@
         .scanner-loader.active { opacity: 1; pointer-events: auto; }
         .scan-line { width: 80%; height: 3px; background: var(--accent); box-shadow: 0 0 15px var(--accent); animation: scanAnim 1.5s infinite alternate ease-in-out; margin-top: 20px;}
 
-        /* Оптимізована сітка налаштувань (Адаптивна) */
         .theme-grid-opt { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .theme-tile { padding: 15px 5px; border-radius: 20px; text-align: center; font-weight: 800; font-size: 0.85rem; cursor: pointer; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); transition: 0.2s;}
         .theme-tile:active { transform: scale(0.9); }
@@ -359,14 +347,17 @@
     db.enablePersistence().catch(function(err) { console.error("Firebase Persistence Error:", err.code); });
     
     let appData = { 
-        profile: JSON.parse(localStorage.getItem('budget_profile_v9')) || null, 
-        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v9')) || [],
-        theme: localStorage.getItem('budget_theme_v9') || 'dark-blue',
-        lang: localStorage.getItem('budget_lang_v9') || 'uk',
-        sound: localStorage.getItem('budget_sound_v9') !== 'false'
+        profile: JSON.parse(localStorage.getItem('budget_profile_v10')) || null, 
+        joinedProjects: JSON.parse(localStorage.getItem('budget_joined_v10')) || [],
+        theme: localStorage.getItem('budget_theme_v10') || 'dark-blue',
+        lang: localStorage.getItem('budget_lang_v10') || 'uk',
+        sound: localStorage.getItem('budget_sound_v10') !== 'false'
     };
     
     let currentBudgetId = null, tempMode = 'expense', tempCat = '❓ Інше', isCloudActive = false, allProjects = [];
+
+    // ФУНКЦІЯ ДЛЯ ВИПРАВЛЕННЯ БАГУ ПЛАВАЮЧОЇ КОМИ
+    const fixNum = (n) => parseFloat(Number(n).toFixed(2));
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playHaptic() {
@@ -382,7 +373,6 @@
     function checkAuth() { playHaptic(); if(appData.profile && appData.profile.name) goToScreen('screen-main'); else goToScreen('screen-register'); }
     function init() { setTheme(appData.theme); document.getElementById('soundToggle').checked = appData.sound; applyLang(); }
 
-    // АЛГОРИТМ СТИСНЕННЯ ФОТО (МІНІ-ФОТОШОП)
     function resizeAndCompressImage(file, callback) {
         const reader = new FileReader();
         reader.onload = function(e) {
@@ -416,7 +406,7 @@
         const file = e.target.files[0]; if(!file) return;
         resizeAndCompressImage(file, function(compressedDataUrl) {
             appData.profile.avatar = compressedDataUrl;
-            localStorage.setItem('budget_profile_v9', JSON.stringify(appData.profile));
+            localStorage.setItem('budget_profile_v10', JSON.stringify(appData.profile));
             document.getElementById('profile-avatar').src = appData.profile.avatar;
             if(currentBudgetId) updateBudgetUI();
         });
@@ -426,7 +416,7 @@
         playHaptic(); const n = document.getElementById('regName').value;
         if(n.length < 2) { alert(appData.lang==='uk'?"Введіть ім'я!":"Enter name!"); return; }
         appData.profile = { name: n, gender: document.getElementById('regGender').value, avatar: document.getElementById('avatarPreview').src };
-        localStorage.setItem('budget_profile_v9', JSON.stringify(appData.profile));
+        localStorage.setItem('budget_profile_v10', JSON.stringify(appData.profile));
         goToScreen('screen-main');
     }
 
@@ -438,7 +428,8 @@
         let totInc = 0, totExp = 0;
         const myProj = allProjects.filter(p => appData.joinedProjects.includes(p.id));
         myProj.forEach(p => { totInc += p.inc; totExp += p.exp; });
-        document.getElementById('info-inc').innerText = totInc + ' ₴'; document.getElementById('info-exp').innerText = totExp + ' ₴';
+        document.getElementById('info-inc').innerText = fixNum(totInc) + ' ₴'; 
+        document.getElementById('info-exp').innerText = fixNum(totExp) + ' ₴';
         goToScreen('screen-user');
     }
 
@@ -469,7 +460,7 @@
         if(!pName) return;
         const joinCode = Math.floor(1000 + Math.random() * 9000).toString();
         db.collection("projects").add({ name: pName, code: joinCode, bal: 0, inc: 0, exp: 0, history: [], createdAt: firebase.firestore.FieldValue.serverTimestamp() })
-        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v9', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); })
+        .then((docRef) => { appData.joinedProjects.push(docRef.id); localStorage.setItem('budget_joined_v10', JSON.stringify(appData.joinedProjects)); openBudget(docRef.id); })
         .catch((e) => { alert("Помилка створення."); });
     }
 
@@ -478,7 +469,7 @@
         const found = allProjects.find(p => p.code === code);
         if(found) {
             if(!appData.joinedProjects.includes(found.id)) {
-                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v9', JSON.stringify(appData.joinedProjects));
+                appData.joinedProjects.push(found.id); localStorage.setItem('budget_joined_v10', JSON.stringify(appData.joinedProjects));
                 alert(appData.lang==='uk'?"Успішно приєднано!":"Successfully joined!");
             }
             openBudget(found.id);
@@ -492,7 +483,7 @@
         const myProj = allProjects.filter(p => appData.joinedProjects.includes(p.id));
         myProj.forEach(p => {
             const btn = document.createElement('div'); btn.className = 'tile wide';
-            btn.innerHTML = `<div class="tile-icon">📁</div> <div style="width:100%; display:flex; justify-content:space-between; align-items:center;"><div>${p.name}<br><span style="font-size:0.85rem; opacity:0.8;">Залишок: <b style="color:var(--neon-glow)">${p.bal} ₴</b></span></div><button style="background: rgba(255,0,0,0.2); width: 45px; height: 45px; border-radius:50%; border:none; font-size: 1.2rem; cursor:pointer;" onclick="event.stopPropagation(); deleteBudget('${p.id}')">🗑️</button></div>`;
+            btn.innerHTML = `<div class="tile-icon">📁</div> <div style="width:100%; display:flex; justify-content:space-between; align-items:center;"><div>${p.name}<br><span style="font-size:0.85rem; opacity:0.8;">Залишок: <b style="color:var(--neon-glow)">${fixNum(p.bal)} ₴</b></span></div><button style="background: rgba(255,0,0,0.2); width: 45px; height: 45px; border-radius:50%; border:none; font-size: 1.2rem; cursor:pointer;" onclick="event.stopPropagation(); deleteBudget('${p.id}')">🗑️</button></div>`;
             btn.onclick = () => openBudget(p.id); list.appendChild(btn);
         });
     }
@@ -502,9 +493,9 @@
     function updateBudgetUI() {
         const p = allProjects.find(x => x.id === currentBudgetId); if(!p) return;
         document.getElementById('budget-title').innerText = p.name;
-        document.getElementById('b-balance').innerText = p.bal + ' ₴';
-        document.getElementById('b-inc').innerText = p.inc + ' ₴';
-        document.getElementById('b-exp').innerText = p.exp + ' ₴';
+        document.getElementById('b-balance').innerText = fixNum(p.bal) + ' ₴';
+        document.getElementById('b-inc').innerText = fixNum(p.inc) + ' ₴';
+        document.getElementById('b-exp').innerText = fixNum(p.exp) + ' ₴';
         
         const avBox = document.getElementById('project-avatars-box');
         const uniqueAvatars = [...new Set(p.history.map(h => h.avatar))].filter(Boolean);
@@ -514,7 +505,7 @@
         const chart = document.getElementById('weekly-chart'); chart.innerHTML = '';
         const days = appData.lang === 'uk' ? ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'] : ['Mo','Tu','We','Th','Fr','Sa','Su'];
         let daySums = [0,0,0,0,0,0,0];
-        p.history.filter(h => h.type === 'expense').forEach((h, i) => { daySums[i % 7] += h.amount; });
+        p.history.filter(h => h.type === 'expense').forEach((h, i) => { daySums[i % 7] = fixNum(daySums[i % 7] + h.amount); });
         let maxDay = Math.max(...daySums, 1);
         days.forEach((day, i) => {
             let height = (daySums[i] / maxDay) * 100; if(height === 0) height = 5;
@@ -533,7 +524,7 @@
                         <div><div>${h.cat}</div><span class="hist-user">${h.user}</span></div>
                     </div>
                     <div style="display:flex; align-items:center;">
-                        <span style="color: ${color}; font-weight: 900; font-size:1.15rem;">${isExp ? '-' : '+'}${h.amount} ₴</span>
+                        <span style="color: ${color}; font-weight: 900; font-size:1.15rem;">${isExp ? '-' : '+'}${fixNum(h.amount)} ₴</span>
                         <button class="delete-btn" style="border:none; border-radius:50%; width:35px; height:35px; background:rgba(255,0,0,0.2); color:var(--expense); margin-left:12px; font-size:1.1rem;" onclick="deleteTx(${h.id})">✕</button>
                     </div>
                 </div>`;
@@ -544,7 +535,7 @@
         playHaptic(); let pass = prompt(appData.lang==='uk'?"Пароль 0000 для підтвердження:":"Enter password 0000:");
         if (pass === "0000") {
             appData.joinedProjects = appData.joinedProjects.filter(id => id !== targetId);
-            localStorage.setItem('budget_joined_v9', JSON.stringify(appData.joinedProjects));
+            localStorage.setItem('budget_joined_v10', JSON.stringify(appData.joinedProjects));
             db.collection("projects").doc(targetId).delete().then(() => { goToScreen('screen-projects'); });
         } else if(pass !== null) alert("❌");
     }
@@ -559,7 +550,8 @@
                 let newBal = p.bal, newInc = p.inc, newExp = p.exp;
                 if(tx.type === 'expense') { newBal += tx.amount; newExp -= tx.amount; } else { newBal -= tx.amount; newInc -= tx.amount; }
                 const updHistory = p.history.filter(x => x.id !== txId);
-                db.collection("projects").doc(currentBudgetId).update({ bal: newBal, inc: newInc, exp: newExp, history: updHistory });
+                
+                db.collection("projects").doc(currentBudgetId).update({ bal: fixNum(newBal), inc: fixNum(newInc), exp: fixNum(newExp), history: updHistory });
             }
         }
     }
@@ -575,13 +567,15 @@
     function selCat(el, catName) { playHaptic(); tempCat = catName; document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected')); el.classList.add('selected'); }
 
     function saveTransaction() {
-        const val = parseFloat(document.getElementById('amountInput').value);
+        const val = fixNum(document.getElementById('amountInput').value);
         if(val > 0) {
             const p = allProjects.find(x => x.id === currentBudgetId);
             let newBal = p.bal, newInc = p.inc, newExp = p.exp;
             if(tempMode === 'expense') { newBal -= val; newExp += val; } else { newBal += val; newInc += val; }
             const newTx = { id: Date.now(), type: tempMode, amount: val, cat: tempCat, user: appData.profile.name, avatar: appData.profile.avatar };
-            db.collection("projects").doc(currentBudgetId).update({ bal: newBal, inc: newInc, exp: newExp, history: [...p.history, newTx] });
+            
+            db.collection("projects").doc(currentBudgetId).update({ bal: fixNum(newBal), inc: fixNum(newInc), exp: fixNum(newExp), history: [...p.history, newTx] })
+            .catch(e => { alert("Не вдалося зберегти в хмару! Перевірте інтернет."); });
         }
         closeModal();
     }
@@ -590,16 +584,16 @@
         playHaptic();
         const p = allProjects.find(x => x.id === currentBudgetId); if(!p) return;
         const text = appData.lang==='uk' 
-            ? `📊 Звіт: ${p.name}\n💰 Залишок: ${p.bal} ₴\n📈 Доходи: ${p.inc} ₴\n📉 Витрати: ${p.exp} ₴\n\nСтворено в Budget Together від AchillesMaximus`
-            : `📊 Report: ${p.name}\n💰 Balance: ${p.bal} ₴\n📈 Income: ${p.inc} ₴\n📉 Expense: ${p.exp} ₴\n\nCreated with Budget Together by AchillesMaximus`;
+            ? `📊 Звіт: ${p.name}\n💰 Залишок: ${fixNum(p.bal)} ₴\n📈 Доходи: ${fixNum(p.inc)} ₴\n📉 Витрати: ${fixNum(p.exp)} ₴\n\nСтворено в Budget Together від AchillesMaximus`
+            : `📊 Report: ${p.name}\n💰 Balance: ${fixNum(p.bal)} ₴\n📈 Income: ${fixNum(p.inc)} ₴\n📉 Expense: ${fixNum(p.exp)} ₴\n\nCreated with Budget Together by AchillesMaximus`;
         
         if (navigator.share) { navigator.share({ title: p.name, text: text }).catch(console.error); } 
         else { navigator.clipboard.writeText(text); alert(appData.lang==='uk'?"Звіт скопійовано!":"Report copied!"); }
     }
 
-    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v9', t); document.documentElement.setAttribute('data-theme', t); }
-    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v9', appData.sound); playHaptic(); }
-    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v9', appData.lang); applyLang(); }
+    function setTheme(t) { playHaptic(); appData.theme = t; localStorage.setItem('budget_theme_v10', t); document.documentElement.setAttribute('data-theme', t); }
+    function toggleSound() { appData.sound = document.getElementById('soundToggle').checked; localStorage.setItem('budget_sound_v10', appData.sound); playHaptic(); }
+    function toggleLang() { playHaptic(); appData.lang = appData.lang === 'uk' ? 'en' : 'uk'; localStorage.setItem('budget_lang_v10', appData.lang); applyLang(); }
 
     const dict = {
         uk: { regTitle: "Профіль", regPhoto: "Додати фото", regM: "Чоловік", regF: "Жінка", regBtn: "Зберегти та Почати",
@@ -643,7 +637,7 @@
     function generateAIReport() {
         playHaptic(); const p = allProjects.find(x => x.id === currentBudgetId);
         if(!p || p.history.length === 0) { alert(appData.lang==='uk'?"Мало даних для ШІ!":"Not enough data for AI!"); return; }
-        let catSums = {}; p.history.filter(h => h.type === 'expense').forEach(h => { let cName = h.cat.substring(2); catSums[cName] = (catSums[cName] || 0) + h.amount; });
+        let catSums = {}; p.history.filter(h => h.type === 'expense').forEach(h => { let cName = h.cat.substring(2); catSums[cName] = fixNum((catSums[cName] || 0) + h.amount); });
         let topCat = Object.keys(catSums).reduce((a, b) => catSums[a] > catSums[b] ? a : b, "");
         
         let aiCritique = "";
@@ -654,16 +648,15 @@
 
         document.getElementById('ai-report-content').innerHTML = `
             <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 20px; margin-bottom: 15px;">
-                <b>${appData.lang==='uk'?'Всього витрат':'Total Expenses'}:</b> <span style="color:var(--expense)">${p.exp} ₴</span><br>
-                <b>${appData.lang==='uk'?'Всього доходів':'Total Income'}:</b> <span style="color:var(--income)">${p.inc} ₴</span><br>
-                <b>${appData.lang==='uk'?'Залишок':'Balance'}:</b> ${p.bal} ₴
+                <b>${appData.lang==='uk'?'Всього витрат':'Total Expenses'}:</b> <span style="color:var(--expense)">${fixNum(p.exp)} ₴</span><br>
+                <b>${appData.lang==='uk'?'Всього доходів':'Total Income'}:</b> <span style="color:var(--income)">${fixNum(p.inc)} ₴</span><br>
+                <b>${appData.lang==='uk'?'Залишок':'Balance'}:</b> ${fixNum(p.bal)} ₴
             </div>
-            <div style="margin-bottom: 10px; color: var(--accent);"><b>${appData.lang==='uk'?'Топ витрата':'Top Expense'}:</b> ${topCat} (${catSums[topCat]} ₴)</div>
+            <div style="margin-bottom: 10px; color: var(--accent);"><b>${appData.lang==='uk'?'Топ витрата':'Top Expense'}:</b> ${topCat} (${fixNum(catSums[topCat])} ₴)</div>
             <div style="padding: 15px; border-left: 4px solid var(--accent); background: rgba(10,132,255,0.1); border-radius: 0 15px 15px 0;">${aiCritique}</div>`;
         document.getElementById('modal-ai').classList.add('active');
     }
 
-    // РОЗУМНИЙ OCR З ЗАХИСТОМ ВІД ГОТІВКИ ТА ШТРИХ-КОДІВ
     async function startOCR(event) {
         const file = event.target.files[0]; if (!file) return;
         playHaptic(); const loader = document.getElementById('scanLoader'); loader.classList.add('active');
@@ -675,14 +668,13 @@
             let maxAmount = 0;
             
             const targetWords = ['сума', 'разом', 'всього', 'підсумок', 'total', 'sum', 'до сплати'];
-            // СТОП-СЛОВА, ЯКІ ШІ БУДЕ ІГНОРУВАТИ (Щоб не взяти готівку замість суми)
             const stopWords = ['готівка', 'готівкою', 'картка', 'карткою', 'решта', 'сдача', 'знижка', 'cash', 'change', 'відмінено'];
             
             const lines = text.split('\n');
             let possibleAmounts = [];
 
             for (let line of lines) {
-                if (stopWords.some(sw => line.includes(sw))) continue; // Пропускаємо рядок, якщо там є готівка
+                if (stopWords.some(sw => line.includes(sw))) continue; 
                 
                 if (targetWords.some(kw => line.includes(kw))) {
                     const nums = line.match(/\d+[.,]\d{2}/g);
@@ -693,7 +685,6 @@
             if (possibleAmounts.length > 0) {
                 maxAmount = Math.max(...possibleAmounts);
             } else {
-                // Запасний варіант: шукаємо найбільшу цифру, але уникаємо рядків зі стоп-словами
                 for (let line of lines) {
                     if (stopWords.some(sw => line.includes(sw))) continue;
                     const nums = line.match(/\d+[.,]\d{2}/g);
@@ -706,6 +697,7 @@
 
             loader.classList.remove('active');
             if(maxAmount > 0) {
+                maxAmount = fixNum(maxAmount);
                 openModal('expense'); document.getElementById('amountInput').value = maxAmount;
                 alert(appData.lang==='uk'?`ШІ знайшов суму: ${maxAmount} ₴`:`AI found amount: ${maxAmount}`);
             } else {
